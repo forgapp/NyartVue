@@ -7,6 +7,7 @@ import store from './store';
 import Spinner from './components/spinner';
 import Selectbox from './components/selectbox';
 import { Lookup, CompanyLookup, RecruiterLookup, CompanyContactLookup } from './components/lookup';
+import { CurrencyInput, CurrencyDisplay } from './components/currency';
 
 import 'bulma/css/bulma.css';
 import 'font-awesome/css/font-awesome.min.css';
@@ -19,6 +20,8 @@ Vue.component('Lookup', Lookup);
 Vue.component('CompanyLookup', CompanyLookup);
 Vue.component('RecruiterLookup', RecruiterLookup);
 Vue.component('CompanyContactLookup', CompanyContactLookup);
+Vue.component('CurrencyInput', CurrencyInput);
+Vue.component('CurrencyDisplay', CurrencyDisplay);
 
 /* eslint-disable no-new */
 new Vue({

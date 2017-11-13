@@ -39,6 +39,7 @@
         :company="Company"
         :contact="ClientContact"
         @companyChanged="handleCompanyChange"
+        @contactChanged="handleContactChange"
       />
     </div>
 
@@ -47,24 +48,15 @@
         <label class="label">Salary</label>
       </div>
       <div class="field-body">
-        <div class="field is-grouped">
+        <div class="field">
           <p class="control is-expanded">
-            <input
-              class="input"
-              type="number"
-              placeholder="Minimum"
-              v-model.number="SalaryMinimun"
-            />
+            <currency-input v-model.number="SalaryMinimun" placeholder="Minimum" />
           </p>
+          <p class="help">Type 'm' for million, 'k' for thousand.</p>
         </div>
         <div class="field">
           <p class="control is-expanded">
-            <input
-              class="input"
-              type="number"
-              placeholder="Maximum"
-              v-model.number="SalaryMaximun"
-            />
+            <currency-input v-model.number="SalaryMaximun" placeholder="Maximum" />
           </p>
         </div>
       </div>
@@ -169,6 +161,12 @@
         this.Company = Object.assign(
           { ref: firestore.collection('Company').doc(company.id) },
           company
+        );
+      },
+      handleContactChange: function (contact) {
+        this.ClientContact = Object.assign(
+          { ref: firestore.collection('ClientContact').doc(contact.id) },
+          contact
         );
       },
       handleSave: function (event) {
