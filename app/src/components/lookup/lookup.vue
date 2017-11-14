@@ -4,7 +4,7 @@
     <div :class="dropdownClass">
       <div class="dropdown-trigger">
         <p class="control has-icons-right">
-          <input class="input" v-model="searchText" @keyup="keyup" :placeholder="placeholder" />
+          <input class="input" v-model="searchText" @keyup="keyup" @keydown="keydown" :placeholder="placeholder" />
           <span :class="{ 'icon': true, 'is-small': true, 'is-right': true, clear: true, 'is-hidden': isEmpty }" @click="clearSelection">
             <i class="fa fa-times"></i>
           </span>
@@ -13,7 +13,14 @@
       <div class="dropdown-menu is-fullwitdth" id="dropdown-menu" role="menu">
         <div class="dropdown-content">
           <span class="dropdown-item" v-if="noResults">No Results.</span>
-          <a @mouseenter="handleOver(index)" :class="{ 'dropdown-item': true, 'is-active': isHiglighted(index)  }" v-if="hasResults" v-for="(suggestion, index) in suggestions" @click.prevent="handleSelect(suggestion)">
+          <a
+            @mouseenter="handleOver(index)"
+            :class="{ 'dropdown-item': true, 'is-active': isHiglighted(index)  }"
+            v-if="hasResults"
+            v-for="(suggestion, index) in suggestions"
+            @click.prevent="handleSelect(suggestion)"
+            :key="suggestion._id"
+          >
             {{ formatLabel(suggestion._source) }}
           </a>
         </div>
@@ -71,6 +78,11 @@
       }
     },
     methods: {
+      keydown: function (event) {
+        if (this.hasResults) {
+          event.preventDefault();
+        }
+      },
       keyup: function (event) {
         switch (event.keyCode) {
         case KEY_UP:
