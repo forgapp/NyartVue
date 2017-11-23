@@ -15,6 +15,18 @@ export default new Router({
     name: 'New',
     component: () => import('@/pages/new')
   }, {
+    path: '/search',
+    name: 'Search',
+    component: () => import('@/pages/search')
+  }, {
+    path: '/details/:type/:id',
+    name: 'Details',
+    component: () => import('@/pages/details')
+  }, {
+    path: '/edit-info/:type/:id',
+    name: 'EditInformation',
+    component: () => import('@/pages/editInformation')
+  }, {
     path: '*',
     name: 'NotFound',
     component: NotFound

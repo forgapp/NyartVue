@@ -1,9 +1,9 @@
 <template>
-  <div class="container">
+  <div class="container is-fluid">
     <div class="box">
       <div class="field is-horizontal">
         <div class="field-label is-normal">
-          <label class="label">Type</label>
+          <label class="label">Select a type to create</label>
         </div>
         <div class="field-body">
           <div class="field">
@@ -21,12 +21,10 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="box">
       <candidate-form v-if="isType('Candidate')" @addRecord="addRecord" @cancel="cancel" :recruiter="user" :isSaving="isSaving" />
       <company-form v-if="isType('Company')" @addRecord="addRecord" @cancel="cancel" :recruiter="user" :isSaving="isSaving" />
       <client-contact-form v-if="isType('ClientContact')" @addRecord="addRecord" @cancel="cancel" :recruiter="user" :isSaving="isSaving" />
-      <job-form v-if="isType('Job')" @addRecord="addRecord" @cancel="cancel" :recruiter="user" :isSaving="isSaving" />
+      <job-form v-if="isType('Job')" @addRecord="addRecord" @cancel="cancel" :recruiter="user" :isSaving="isSaving" />   
     </div>
   </div>
 </template>
@@ -50,7 +48,6 @@
       },
       addRecord: function (record) {
         this.isSaving = true;
-        console.log(record);
 
         firestore.collection(this.selectedType)
           .add(record)
