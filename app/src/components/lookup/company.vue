@@ -12,6 +12,7 @@
 
 <script>
   import lookup from './lookup';
+  import { firestore } from '@/lib/firebase';
 
   export default {
     name: 'companyLookup',
@@ -30,7 +31,8 @@
     methods: {
       formatCompanyObject: item => ({
         id: item._id,
-        Name: item._source.Name
+        Name: item._source.Name,
+        ref: item._id ? firestore.collection('Company').doc(item._id) : ''
       })
     }
   };
