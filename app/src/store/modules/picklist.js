@@ -23,9 +23,11 @@ const actions = {
     firestore.collection('Picklist')
       .doc(type)
       .get().then(doc => {
-        const { Values } = doc.data();
+        console.log(doc, doc.exists);
+        const values = doc.exists ? doc.data().Values : [];
+        //  const { Values } = doc.data();
 
-        commit(SET_PICKLIST, { type, values: Values });
+        commit(SET_PICKLIST, { type, values });
       });
   }
 };

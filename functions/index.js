@@ -12,6 +12,6 @@ admin.initializeApp(functions.config().firebase);
 exports.onUserCreated = onUserCreated;
 exports.onUserDeleted = onUserDeleted;
 
-exports.onCompanyCreatedIndex = onCompanyCreatedIndex;
-exports.onCompanyupdatedIndex = onCompanyupdatedIndex;
-exports.onCompanyDeletedIndex = onCompanyDeletedIndex;
+// exports.onCompanyCreatedIndex = onCompanyCreatedIndex;
+// exports.onCompanyupdatedIndex = onCompanyupdatedIndex;
+// exports.onCompanyDeletedIndex = onCompanyDeletedIndex;
