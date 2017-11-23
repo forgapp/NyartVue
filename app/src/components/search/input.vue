@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="search">
+  <form @submit.prevent="searchAndRoute">
     <div class="field has-addons">
       <p class="control">
         <span class="select">
@@ -60,6 +60,15 @@
         }
       }
     },
-    methods: mapActions('search', ['search'])
+    methods: {
+      ...mapActions('search', ['search']),
+      searchAndRoute: function (event) {
+        event.preventDefault();
+        this.search()
+          .then(() => {
+            this.$router.push({ path: '/search' });
+          });
+      }
+    }
   };
 </script>
