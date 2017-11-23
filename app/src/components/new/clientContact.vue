@@ -80,7 +80,7 @@
       <Selectbox
         placeholder="Role Level"
         type="RoleLevel"
-        v-model="Source"
+        v-model="RoleLevel"
       />
     </div>
   </div>
@@ -148,6 +148,7 @@
           id: '',
           Name: ''
         },
+        RoleLevel: '',
         RegistrationDate: formatdateForInput(new Date()),
         Recruiter: {
           id: this.recruiter.id,

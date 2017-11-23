@@ -109,7 +109,6 @@
 <script>
   import { isEmpty } from '@/lib/utils';
   import { formatdateForInput } from '@/lib/date';
-  import { firestore } from '@/lib/firebase';
 
   export default {
     name: 'jobForm',
@@ -158,16 +157,10 @@
     },
     methods: {
       handleCompanyChange: function (company) {
-        this.Company = Object.assign(
-          { ref: firestore.collection('Company').doc(company.id) },
-          company
-        );
+        this.Company = company;
       },
       handleContactChange: function (contact) {
-        this.ClientContact = Object.assign(
-          { ref: firestore.collection('ClientContact').doc(contact.id) },
-          contact
-        );
+        this.ClientContact = contact;
       },
       handleSave: function (event) {
         if (this.isValid) {
