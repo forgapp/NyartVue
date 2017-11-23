@@ -99,8 +99,6 @@ const CandidateCard = ({ id, record }) => {
             { key }: { jobFunctionCodes[key].join(', ') }
           </p>))
         }
-
-
       </div>
       <div class="content">
         <div>

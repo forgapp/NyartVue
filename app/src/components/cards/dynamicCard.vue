@@ -3,7 +3,7 @@
     <candidate-card :id="hit._id" :record="hit._source" />
   </div>
   <div v-else-if="type === 'Company'">
-    Company
+    <company-card :id="hit._id" :record="hit._source" />
   </div>
   <div v-else-if="type === 'Job'">
     Job
@@ -17,11 +17,12 @@
 </template>
 
 <script>
-  import candidateCard from './candidate';
+  import CandidateCard from './candidate';
+  import CompanyCard from './company';
 
   export default {
     name: 'dynamicCard',
-    components: { candidateCard },
+    components: { CandidateCard, CompanyCard },
     props: [ 'type', 'hit' ]
   };
 </script>
