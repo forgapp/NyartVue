@@ -60,6 +60,11 @@
   }
 
   .main-content {
-    padding-top: 110px;
+    padding-top: 115px;
+  }
+
+  .columns.is-gapless > .column.column-label {
+    text-align: right;
+    padding-right: 1rem !important;
   }
 </style>

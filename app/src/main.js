@@ -8,6 +8,7 @@ import Spinner from './components/spinner';
 import Selectbox from './components/selectbox';
 import { Lookup, CompanyLookup, RecruiterLookup, CompanyContactLookup } from './components/lookup';
 import { CurrencyInput, CurrencyDisplay } from './components/currency';
+import { VTab, VPane } from './components/tabs';
 
 import 'bulma/css/bulma.css';
 import 'font-awesome/css/font-awesome.min.css';
@@ -22,6 +23,8 @@ Vue.component('RecruiterLookup', RecruiterLookup);
 Vue.component('CompanyContactLookup', CompanyContactLookup);
 Vue.component('CurrencyInput', CurrencyInput);
 Vue.component('CurrencyDisplay', CurrencyDisplay);
+Vue.component('VTab', VTab);
+Vue.component('VPane', VPane);
 
 /* eslint-disable no-new */
 new Vue({

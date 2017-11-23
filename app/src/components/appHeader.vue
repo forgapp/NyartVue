@@ -16,6 +16,9 @@
           <router-link class="navbar-item is-tab" active-class="is-active" to="/whiteboard">
             Whiteboard
           </router-link>
+          <router-link class="navbar-item is-tab" active-class="is-active" to="/search">
+            Search
+          </router-link>
           <router-link class="navbar-item is-tab" active-class="is-active" to="/new">
             New
           </router-link>
