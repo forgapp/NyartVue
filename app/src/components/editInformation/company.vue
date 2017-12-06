@@ -58,6 +58,13 @@
             </div>
         </div>
       </div>
+
+      <div class="column is-6">
+        <div class="box">
+          <h1 class="title is-5">Industries</h1>
+          <edit-codes type="Industry" v-model="company.Industry" />
+        </div>
+      </div>
     </div>
 
     <div class="box">
@@ -89,10 +96,11 @@
   import { firestore } from '@/lib/firebase';
   import { PhonesEdit } from '../phones';
   import { EmailsEdit } from '../emails';
+  import { EditCodes } from '../codes';
 
   export default {
     name: 'CompanyEdit',
-    components: { PhonesEdit, EmailsEdit },
+    components: { PhonesEdit, EmailsEdit, EditCodes },
     props: ['id'],
     data() {
       return {
