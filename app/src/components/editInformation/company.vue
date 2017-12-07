@@ -62,7 +62,7 @@
       <div class="column is-6">
         <div class="box">
           <h1 class="title is-5">Industries</h1>
-          <edit-codes type="Industry" v-model="company.Industry" />
+          <edit-codes type="Industry" :codes="company.Industry" @codesChanged="handleCodesChange" />
         </div>
       </div>
     </div>
@@ -142,6 +142,9 @@
       }
     },
     methods: {
+      handleCodesChange(codes) {
+        this.company = Object.assign({}, this.company, { Industry: codes });
+      },
       handlePhoneChange(phones) {
         this.company = Object.assign({}, this.company, { Phones: phones });
       },
