@@ -7,8 +7,15 @@ const state = {
 };
 
 const mutations = {
-  [SET_CODES](state, { type, values }) {
-    state.codes = { ...state.codes, [type]: values };
+  [SET_CODES](state, { type, codes }) {
+    const newCodes = codes.reduce((aggr, current) => {
+      const currentCodes = aggr[current.Category] || [];
+      const categoryCodes = [ ...currentCodes, current.Code ];
+
+      return Object.assign({}, aggr, { [current.Category]: categoryCodes });
+    }, {});
+
+    state.codes = { ...state.codes, [type]: newCodes };
   }
 };
 
@@ -22,12 +29,12 @@ const actions = {
   getCodeValues({ commit }, type) {
     firestore.collection('Codes')
       .where('Type', '==', type)
-      .get().then(doc => {
-        console.log(doc, doc.exists);
-        // const values = doc.exists ? doc.data().Values : [];
-        //  const { Values } = doc.data();
+      .get().then(documentSnapshots => {
+        const codes = documentSnapshots.docs.map(doc => doc.data());
 
-        // commit(SET_CODES, { type, values });
+        console.log(codes);
+
+        commit(SET_CODES, { type, codes });
       });
   }
 };

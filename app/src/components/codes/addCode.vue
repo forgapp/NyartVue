@@ -1,102 +1,86 @@
 <template>
-  <div>
-
+  <div class="field is-grouped">
+    <div class="control is-expanded">
+      <div :class="categorySelectClass">
+        <select :value="selectedCategory" :disabled="isLoading" v-model="selectedCategory">
+          <option value="">Category</option>
+          <option v-for="(category, index) in categories" :value="category" :key="index">{{ category }}</option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="control is-expanded">
+      <div class='select is-fullwidth'>
+        <select :value="selectedCode" :disabled="isLoading" v-model="selectedCode">
+          <option value="">Codes</option>
+          <option v-for="(code, index) in codes" :value="code" :key="index">{{ code }}</option>
+        </select>
+      </div>
+    </div>
+    
+    <p class="control">
+      <button class="button is-primary" @click.prevent="handleClick">
+        <i class="fa fa-plus"></i>
+      </button>
+    </p>
   </div>
 </template>
 
 <script>
+  import { mapGetters, mapActions } from 'vuex';
+  
   export default {
-    name: 'addCode'
-  }
+    name: 'addCode',
+    props: [ 'type' ],
+    data() {
+      return {
+        selectedCategory: '',
+        selectedCode: ''
+      };
+    },
+    beforeMount: function () {
+      if (!this.sources) {
+        this.getCodeValues(this.type);
+      }
+    },
+    methods: {
+      ...mapActions('code', ['getCodeValues']),
+      handleClick(event) {
+        if (this.selectedCode === '') {
+          return;
+        }
+
+        const code = {
+          Category: this.selectedCategory,
+          Code: this.selectedCode
+        };
+
+        this.$emit('codeAdded', code);
+        this.selectedCode = '';
+      }
+    },
+    computed: {
+      ...mapGetters('code', ['getCodesByType']),
+      categorySelectClass() {
+        return this.isLoading ? 'select is-fullwidth is-loading' : 'select is-fullwidth';
+      },
+      isLoading() {
+        return !this.sources;
+      },
+      sources() {
+        return this.getCodesByType(this.type);
+      },
+      categories() {
+        return !this.isLoading ? Object.keys(this.sources) : [];
+      },
+      codes() {
+        return !this.isLoading ? this.sources[this.selectedCategory] : [];
+      }
+    },
+    watch: {
+      selectedCategory(val, oldVal) {
+        this.selectedCode = '';
+      }
+    }
+  };
 </script>
-
-<style scoped>
-
-</style>
-
-import { h, Component } from 'preact';
-import getPicklist from '../../lib/picklist';
-
-class AddCode extends Component {
-  state = {
-    isLoadingCategory: true,
-    selectedCategory: '',
-    selectedCode: '',
-    categories: {}
-  }
-
-  constructor(props) {
-    super(props);
-
-    this.handleCategoryChange = this.handleCategoryChange.bind(this);
-    this.handleCodeChange = this.handleCodeChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  componentWillMount() {
-    getPicklist(this.props.type)
-      .then(values => this.setState({
-        isLoadingCategory: false,
-        categories: values
-      }));
-  }
-
-  handleCategoryChange(event) {
-    this.setState({
-      selectedCategory: event.target.value,
-      selectedCode: ''
-    });
-  }
-
-  handleCodeChange(event) {
-    this.setState({ selectedCode: event.target.value });
-  }
-
-  handleClick(event) {
-    event.preventDefault();
-
-    this.props.update({
-      Category: this.state.selectedCategory,
-      Code: this.state.selectedCode
-    });
-
-    this.setState({ selectedCode: '' });
-  }
-
-  render({ id }, { isLoadingCategory, categories, selectedCategory, selectedCode }) {
-    const categorySelectClass = isLoadingCategory ? 'select is-fullwidth is-loading' : 'select is-fullwidth';
-    const categoryElements = Object.keys(categories)
-      .map(option => (<option value={ option }>{ option }</option>));
-
-    const codeElements = categories[selectedCategory] ? categories[selectedCategory]
-      .map(option => (<option value={ option }>{ option }</option>)) : [];
-
-    return (<div class="field has-addons">
-      <div class="control">
-        <div class={ categorySelectClass }>
-          <select id={ id } onChange={ this.handleCategoryChange } value={ selectedCategory }>
-            <option value="">Category</option> }
-            { categoryElements }
-          </select>
-        </div>
-      </div>
-
-      <div class="control">
-        <div class='select is-fullwidth'>
-          <select id={ id } onChange={ this.handleCodeChange } value={ selectedCode }>
-            <option value="">Codes</option> }
-              { codeElements }
-          </select>
-        </div>
-      </div>
-
-      <p class="control">
-        <button onClick={ this.handleClick } class="button is-primary">
-          <i class="fa fa-check"></i>
-        </button>
-      </p>
-    </div>);
-  }
-}
-
-export default AddCode;
