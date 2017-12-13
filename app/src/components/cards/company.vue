@@ -1,22 +1,21 @@
 <template>
-  <div class="card">
-    <header class="card-header">
-      <div class="card-header-icon">
+  <div class="box is-fullheight">
+    <article class="media">
+      <div class="media-left">
         <span class="icon">
           <i class="fa fa-building-o"></i>
         </span>
       </div>
-      <p class="card-header-title">
-         <router-link :to="companyLink">{{ record.Name }}</router-link>
-      </p>
-    </header>
-    <div class="card-content">
-      <div class="content">
-        <div>
-        {{ recruiterName }} <small>{{ registrationDate }}</small>
+      <div class="media-content">
+        <div class="content">
+          <p>
+            <strong><router-link :to="companyLink">{{ record.Name }}</router-link></strong>
+            <br />
+            {{ record.Recruiter.Name && `Registered by ${record.Recruiter.Name}` }} <small>{{ record.RegistrationDate && `@${record.RegistrationDate}` }}</small>
+          </p>
         </div>
       </div>
-    </div>
+    </article>
   </div>
 </template>
 

@@ -3,15 +3,15 @@
     <article class="media">
       <div class="media-left">
         <span class="icon">
-          <i class="fa fa-user-o"></i>
+          <i class="fa fa-briefcase"></i>
         </span>
       </div>
       <div class="media-content">
         <div class="content">
           <p>
-            <strong><router-link :to="links.candidate">{{ record.Firstname }} {{ record.Lastname }}</router-link></strong> <small> {{ record.Nationality }}</small> <small>{{ age }}</small>
+            <strong><router-link :to="links.job">{{ record.JobTitle }}</router-link></strong> <small> {{ record.Status }}</small>
             <br />
-            Works as {{ record.JobTitle }} at <router-link :to="links.company">{{ record.Company.Name }}</router-link> with a base salary of <currency-display :value="record.Salary" symbol="¥" />
+            Job for <router-link :to="links.company">{{ record.Company.Name }}</router-link> followed by <router-link :to="links.clientContact">{{ record.ClientContact.Name }}</router-link> with a salary range of <currency-display :value="record.SalaryMinimun" symbol="¥" /> - <currency-display :value="record.SalaryMaximun" symbol="¥" />
             <br />
             {{ record.Recruiter.Name && `Registered by ${record.Recruiter.Name}` }} <small>{{ record.RegistrationDate && `@${record.RegistrationDate}` }}</small>
           </p>
@@ -32,24 +32,21 @@
 </template>
 
 <script>
-  import { calculateAge } from '@/lib/date';
   import { DisplayLanguages } from '@/components/languages';
 
   export default {
-    name: 'candidateCard',
+    name: 'jobCard',
     props: [ 'id', 'record' ],
     components: { DisplayLanguages },
     computed: {
-      age() {
-        return this.record.Birthdate ? `(${calculateAge(this.record.Birthdate)} yrs old)` : '';
-      },
       links() {
         return {
-          candidate: `/details/candidate/${this.id}`,
-          company: `/details/company/${this.record.Company.id}`
+          job: `/details/job/${this.id}`,
+          company: `/details/company/${this.record.Company.id}`,
+          clientContact: `/details/clientContact/${this.record.ClientContact.id}`
         };
       },
-      jobFunctionCodes() {
+      jobFunctionCodes: function () {
         return this.record.JobFunction ? this.record.JobFunction.reduce((aggr, jobFunction) => {
           if (!aggr[jobFunction.Category]) {
             return Object.assign({}, aggr, { [jobFunction.Category]: [jobFunction.Code] });
