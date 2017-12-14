@@ -51,7 +51,7 @@
 
                 <Selectbox
                   placeholder="Source"
-                  type="CandidateSource"
+                  type="CompanySource"
                   v-model="company.Source"
                 />
               </div>
@@ -111,6 +111,7 @@
           RegistrationDate: '',
           Phones: [],
           Emails: [],
+          Addresses: [],
           Recruiter: {
             id: '',
             Name: ''
