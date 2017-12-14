@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="container is-fluid">
+    <stat-selector selectedPeriods="THIS_FQ" />
     <div>Home</div>
     <div>Home</div>
     <div>Home</div>
@@ -143,11 +144,15 @@
     <div>Home</div>
     <div>Home</div>
     <div>Last</div>
+
   </div>
 </template>
 
 <script>
-export default {
-  name: 'home'
-};
+  import StatSelector from '@/components/statSelector';
+
+  export default {
+    name: 'home',
+    components: { StatSelector }
+  };
 </script>

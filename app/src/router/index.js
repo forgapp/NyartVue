@@ -27,6 +27,18 @@ export default new Router({
     name: 'EditInformation',
     component: () => import('@/pages/editInformation')
   }, {
+    path: '/edit-resumes/:id',
+    name: 'EditResumes',
+    component: () => import('@/pages/editResumes')
+  }, {
+    path: '/edit-notes/:type/:fieldname/:id',
+    name: 'EditNotes',
+    component: () => import('@/pages/editNotes')
+  }, {
+    path: '/process/new',
+    name: 'NewProcess',
+    component: () => import('@/pages/newProcess')
+  }, {
     path: '*',
     name: 'NotFound',
     component: NotFound

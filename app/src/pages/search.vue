@@ -1,16 +1,20 @@
 <template>
-  <div class="container is-widescreen">
-    <h3 class="title is-5 header">Search</h3>
+  <div class="container is-fluid">
+    <h3 class="title is-5 header">Search <small v-if="total !== null">({{ total }} results)</small></h3>
     <search-results />
   </div>
 </template>
 
 <script>
   import SearchResults from '@/components/search/results';
+  import { mapState } from 'vuex';
 
   export default {
     name: 'home',
-    components: { SearchResults }
+    components: { SearchResults },
+    computed: {
+      ...mapState('search', [ 'total' ])
+    }
   };
 </script>
 

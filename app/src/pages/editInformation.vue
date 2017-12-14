@@ -1,22 +1,24 @@
 <template>
   <div class="container is-fluid">
     <company-edit v-if="isType('Company')" :id="id" @save="save" @cancel="redirectToRecord" />
+    <candidate-edit v-if="isType('Candidate')" :id="id" @save="save" @cancel="redirectToRecord" />
+    <client-contact-edit v-if="isType('ClientContact')" :id="id" @save="save" @cancel="redirectToRecord" />
+    <job-edit v-if="isType('Job')" :id="id" @save="save" @cancel="redirectToRecord" />
   </div>
 </template>
 
 <script>
   import { firestore } from '@/lib/firebase';
-  import { CompanyEdit } from '@/components/editInformation';
+  import { CompanyEdit, CandidateEdit, ClientContactEdit, JobEdit } from '@/components/editInformation';
 
   export default {
     name: 'EditInformation',
-    components: { CompanyEdit },
+    components: { CompanyEdit, CandidateEdit, ClientContactEdit, JobEdit },
     methods: {
       isType(type) {
         return this.type === type;
       },
       save(record) {
-        console.log(record);
         firestore.collection(this.type)
           .doc(this.id)
           .update(record)
