@@ -59,7 +59,8 @@
         }, []);
       },
       add(code) {
-        const newCodes = [ ...this.codes, code ];
+        const codes = this.codes || [];
+        const newCodes = [ ...codes, code ];
 
         this.$emit('codesChanged', newCodes);
       },

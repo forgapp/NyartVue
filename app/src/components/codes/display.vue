@@ -1,9 +1,13 @@
 <template>
   <div class="menu">
-    <div v-for="(codes, category) in formattedCode" :key="category">
-      <h6 class="title is-6 is-marginless">{{ category }}</h6>
-      <div class="tags">
-        <div v-for="(code, index) in codes" class="tag" :key="index">{{ code }}</div>
+    <div v-for="(codes, category) in formattedCode" :key="category" class="columns no-bottom-margin">
+      <div class="column is-one-quarter"> 
+        <h6 class="title is-6 is-marginless has-text-right">{{ category }}</h6>
+      </div>
+      <div class="column">
+        <div class="tags">
+          <div v-for="(code, index) in codes" class="tag" :key="index">{{ code }}</div>
+        </div>
       </div>
     </div>
   </div>
@@ -39,3 +43,9 @@
     }
   };
 </script>
+
+<style scoped>
+  .no-bottom-margin {
+    margin-bottom: 0rem;
+  }
+</style>
