@@ -7,6 +7,7 @@
     :formatLabel="formatRecruiterLabel"
     :formatInputValue="(recruiter) => recruiter.Name"
     :formatItem="formatRecruiterObject"
+    :is-small="isSmall"
   />
 </template>
 
@@ -16,7 +17,7 @@
   export default {
     name: 'companyLookup',
     components: { lookup },
-    props: ['value'],
+    props: ['value', 'isSmall'],
     computed: {
       inputValue: {
         get() {

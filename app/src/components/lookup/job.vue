@@ -1,12 +1,12 @@
 <template>
   <lookup
-    index="companies"
+    index="jobs"
     type="doc"
-    placeholder="Company Name"
+    placeholder="Job Title"
     v-model="inputValue"
-    :formatLabel="item => item.Name"
-    :formatInputValue="item => item.Name"
-    :formatItem="formatCompanyObject"
+    :formatLabel="item => item.JobTitle"
+    :formatInputValue="item => item.Title"
+    :formatItem="formatJobObject"
   />
 </template>
 
@@ -15,7 +15,7 @@
   import { firestore } from '@/lib/firebase';
 
   export default {
-    name: 'companyLookup',
+    name: 'jobLookup',
     components: { lookup },
     props: ['value'],
     computed: {
@@ -29,10 +29,10 @@
       }
     },
     methods: {
-      formatCompanyObject: item => ({
+      formatJobObject: item => ({
         id: item._id,
-        Name: item._source.Name,
-        ref: item._id ? firestore.collection('Company').doc(item._id) : ''
+        Title: item._source.JobTitle,
+        ref: item._id ? firestore.collection('Job').doc(item._id) : ''
       })
     }
   };

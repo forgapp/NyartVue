@@ -1,12 +1,13 @@
 <template>
   <lookup
-    index="companies"
+    index="contacts"
     type="doc"
-    placeholder="Company Name"
+    placeholder="Candidate Name"
     v-model="inputValue"
-    :formatLabel="item => item.Name"
+    :formatLabel="item => `${item.Firstname} ${item.Lastname}`"
     :formatInputValue="item => item.Name"
-    :formatItem="formatCompanyObject"
+    :formatItem="formatCandidateObject"
+    extra-query="AND Type:candidate"
   />
 </template>
 
@@ -15,7 +16,7 @@
   import { firestore } from '@/lib/firebase';
 
   export default {
-    name: 'companyLookup',
+    name: 'candidateLookup',
     components: { lookup },
     props: ['value'],
     computed: {
@@ -29,10 +30,10 @@
       }
     },
     methods: {
-      formatCompanyObject: item => ({
+      formatCandidateObject: item => ({
         id: item._id,
-        Name: item._source.Name,
-        ref: item._id ? firestore.collection('Company').doc(item._id) : ''
+        Name: `${item._source.Firstname} ${item._source.Lastname}`,
+        ref: item._id ? firestore.collection('Candidate').doc(item._id) : ''
       })
     }
   };

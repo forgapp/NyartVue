@@ -1,8 +1,8 @@
 <template>
   <div class="field-body">
     <lookup
-      index="record"
-      type="Company"
+      index="companies"
+      type="doc"
       placeholder="Company Name"
       v-model="inputCompany"
       :formatLabel="item => item.Name"
@@ -13,7 +13,7 @@
        <p class="control is-expanded">
         <div class="control">
           <div class="select is-fullwidth">
-            <select :value="contact.id" @change.prevent="handleContactSelect">
+            <select v-model="contact.id" @change.prevent="handleContactSelect">
               <option value="">Client Contact</option>
               <option v-for="contact in contacts" :key="contact.value" :value="contact.value">{{contact.label}}</option>
             </select>
@@ -65,10 +65,10 @@
       }
     },
     watch: {
-      company: function (val) {
-        if (val) {
+      company: function (val, old) {
+        if (val.hasOwnProperty('ref') && val.ref !== old.ref) {
           firestore.collection('ClientContact')
-            .where('Company.ref', '==', firestore.collection('Company').doc(val.id))
+            .where('Company.ref', '==', val.ref)
             .get()
             .then(querySnapshot => {
               let results = [];
@@ -89,6 +89,8 @@
             .catch(error => {
               console.log('Error getting documents: ', error);
             });
+        } else {
+          this.contacts = [];
         }
       }
     }

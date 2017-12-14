@@ -4,7 +4,7 @@
     <div :class="dropdownClass">
       <div class="dropdown-trigger">
         <p class="control has-icons-right">
-          <input class="input" v-model="searchText" @keyup="keyup" @keydown="keydown" :placeholder="placeholder" />
+          <input :class="{ 'input': true, 'is-small': isSmall }" v-model="searchText" @keyup="keyup" @keydown="keydown" :placeholder="placeholder" />
           <span :class="{ 'icon': true, 'is-small': true, 'is-right': true, clear: true, 'is-hidden': isEmpty }" @click="clearSelection">
             <i class="fa fa-times"></i>
           </span>
@@ -40,7 +40,7 @@
 
   export default {
     name: 'lookup',
-    props: ['label', 'formatLabel', 'value', 'index', 'type', 'placeholder', 'formatInputValue', 'formatItem'],
+    props: ['label', 'formatLabel', 'value', 'index', 'type', 'extraQuery', 'placeholder', 'formatInputValue', 'formatItem', 'isSmall'],
     beforeMount() {
       this.elastic = new Elastic();
       this.elastic
@@ -112,7 +112,7 @@
       search: debounce(function (value) {
         const searchText = `${value}*`;
 
-        this.elastic.query(searchText)
+        this.elastic.query(searchText + ' ' + this.extraQuery)
           .search()
           .then(response => {
             this.suggestions = response.hits.hits;
@@ -148,7 +148,6 @@
       },
       clickAway: function (event) {
         if (this.suggestions && !this.$el.contains(event.target)) {
-          console.log('click away');
           this.suggestions = null;
           this.highlightedIndex = -1;
           this.searchText = this.formatInputValue(this.value);
