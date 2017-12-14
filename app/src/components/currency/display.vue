@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <span>
     {{ formattedCurrency }}
-  </div>
+  </span>
 </template>
 
 <script>
@@ -10,6 +10,10 @@
     props: [ 'value', 'symbol' ],
     computed: {
       formattedCurrency() {
+        if (!this.value) {
+          return '';
+        }
+
         const currency = this.value.toString();
         const currencyString = currency.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
 
