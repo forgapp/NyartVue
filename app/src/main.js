@@ -6,17 +6,21 @@ import store from './store';
 
 import Spinner from './components/spinner';
 import Selectbox from './components/selectbox';
+import SelectboxObject from './components/selectboxObject';
 import { Lookup, CompanyLookup, RecruiterLookup, CompanyContactLookup } from './components/lookup';
 import { CurrencyInput, CurrencyDisplay } from './components/currency';
 import { VTab, VPane } from './components/tabs';
 
-import 'bulma/css/bulma.css';
+import './styles.sass';
+// import 'bulma/bulma.sass';
+// import 'bulma-steps-component/bulma-steps.sass';
 import 'font-awesome/css/font-awesome.min.css';
 
 Vue.config.productionTip = process.env.NODE_ENV === 'production';
 Vue.use(Vuex);
 Vue.component('Spinner', Spinner);
 Vue.component('Selectbox', Selectbox);
+Vue.component('SelectboxObject', SelectboxObject);
 Vue.component('Lookup', Lookup);
 Vue.component('CompanyLookup', CompanyLookup);
 Vue.component('RecruiterLookup', RecruiterLookup);

@@ -58,6 +58,10 @@
   	-webkit-font-smoothing: antialiased;
   	-moz-osx-font-smoothing: grayscale;
   }
+  
+  #app-container {
+    overflow: hidden;
+  }
 
   .main-content {
     padding-top: 115px;
@@ -66,5 +70,13 @@
   .columns.is-gapless > .column.column-label {
     text-align: right;
     padding-right: 1rem !important;
+  }
+  
+  #app .CodeMirror {
+    height: auto;
+  }
+  
+  .is-fullheight {
+    height: 100%;
   }
 </style>
