@@ -2,13 +2,33 @@ const functions = require('firebase-functions');
 // const admin = require('firebase-admin');
 const utils = require('./utils');
 
+function transformPhones(phones) {
+  if (!phones) {
+    return [];
+  }
+  
+  return phones.map(phone => phone.Number);
+}
+
+function transformEmails(emails) {
+  if (!emails) {
+    return [];
+  }
+  
+  return emails.map(email => email.Address);
+}
+
 const onCompanyCreatedIndex = functions.firestore
   .document('Company/{companyId}')
   .onCreate(event => {
     const original = event.data.data();
     const id = event.params.companyId;
+    const recordToIndex = Object.assign({}, original, {
+      Phones: transformPhones(original.Phones),
+      Emails: transformEmails(original.Emails)
+    });
     
-    utils.indexRecord('Company', id, original);
+    return utils.indexRecord('companies', 'doc', id, recordToIndex);
   });
 
 const onCompanyupdatedIndex = functions.firestore
@@ -16,8 +36,12 @@ const onCompanyupdatedIndex = functions.firestore
   .onUpdate(event => {
     const original = event.data.data();
     const id = event.params.companyId;
+    const recordToIndex = Object.assign({}, original, {
+      Phones: transformPhones(original.Phones),
+      Emails: transformEmails(original.Emails)
+    });
     
-    utils.indexRecord('Company', id, original);
+    return utils.indexRecord('companies', 'doc', id, recordToIndex);
   });
   
 const onCompanyDeletedIndex = functions.firestore
@@ -25,7 +49,7 @@ const onCompanyDeletedIndex = functions.firestore
   .onDelete(event => {
     const id = event.params.companyId;
     
-    utils.deleteIndex('Company', id);
+    return utils.deleteIndex('companies', 'doc', id);
   });
 
 module.exports = {

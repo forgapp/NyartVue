@@ -4,35 +4,35 @@ const fetch = require('node-fetch');
 
 // admin.initializeApp(functions.config().firebase);
 
-function indexRecord(type, id, record) {
+function indexRecord(index, type, id, record) {
   const elasticUrl = functions.config().elastic.url;
   const elasticKey = functions.config().elastic.key;
 
-  return fetch(`${elasticUrl}/record/${type}/${id}`, {
+  return fetch(`${elasticUrl}/${index}/${type}/${id}`, {
     method: 'PUT',
     body: JSON.stringify(record),
     headers: { 'Authorization': `Basic ${elasticKey}` }
-  }).then(response => response.json())
-  .then(response => console.log(response))
-  .catch(error => console.log(error));
+  }).then(response => response.json());
+  // .then(response => console.log(response))
+  // .catch(error => console.log(error));
 }
 
-function deleteIndex(type, id) {
+function deleteRecord(index, type, id) {
   const elasticUrl = functions.config().elastic.url;
   const elasticKey = functions.config().elastic.key;
 
-  return fetch(`${elasticUrl}/record/${type}/${id}`, {
+  return fetch(`${elasticUrl}/${index}/${type}/${id}`, {
     method: 'DELETE',
     headers: { 'Authorization': `Basic ${elasticKey}` }
-  }).then(response => response.json())
-  .then(response => console.log(response))
-  .catch(error => console.log(error));
+  }).then(response => response.json());
+  // .then(response => console.log(response))
+  // .catch(error => console.log(error));
 }
 
 function indexProcess(type, id, record, parentId) {
   const elasticUrl = functions.config().elastic.url;
   const elasticKey = functions.config().elastic.key;
-  const parentClause = parentId ? `?parent=${parentId}` : ''
+  const parentClause = parentId ? `?parent=${parentId}` : '';
 
   return fetch(`${elasticUrl}/process/${type}/${id}${parentClause}`, {
     method: 'PUT',
@@ -71,7 +71,7 @@ function getCurrentStage(process) {
 
 module.exports = {
   indexRecord,
-  deleteIndex,
+  deleteRecord,
   indexProcess,
   deleteProcess,
   getCurrentStage
