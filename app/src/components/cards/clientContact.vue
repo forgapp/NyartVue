@@ -9,7 +9,7 @@
       <div class="media-content">
         <div class="content">
           <p>
-            <strong><router-link :to="links.clientContact">{{ record.Firstname }} {{ record.Lastname }}</router-link></strong> <small>{{ record.Nationality }}</small>
+            <strong class="name"><router-link :to="links.clientContact">{{ record.Firstname }} {{ record.Lastname }}</router-link></strong> <small><span class="icon"><img class="flag" :src="flagImageUrl" /></span></small>
             <br />
             Works as {{ record.JobTitle }} at <router-link :to="links.company">{{ record.Company.Name }}</router-link>.
             <br />
@@ -36,6 +36,9 @@
     props: [ 'id', 'record' ],
     components: { DisplayLanguages },
     computed: {
+      flagImageUrl() {
+        return this.record.NationalityCode ? require(`../../assets/flags/${this.record.NationalityCode.toLowerCase()}.svg`) : '';
+      },
       links() {
         return {
           clientContact: `/details/clientContact/${this.id}`,
@@ -45,3 +48,13 @@
     }
   };
 </script>
+
+<style scoped>
+  .name {
+    padding-right: 1.5rem;
+  }
+  
+  .flag {
+    box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.75);
+  }
+</style>

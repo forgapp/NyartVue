@@ -9,7 +9,7 @@
       <div class="media-content">
         <div class="content">
           <p>
-            <strong><router-link :to="links.candidate">{{ record.Firstname }} {{ record.Lastname }}</router-link></strong> <small> {{ record.Nationality }}</small> <small>{{ age }}</small>
+            <strong class="name"><router-link :to="links.candidate">{{ record.Firstname }} {{ record.Lastname }}</router-link></strong> <small><span class="icon"><img class="flag" :src="flagImageUrl" /></span></small> <small>{{ age }}</small>
             <br />
             Works as {{ record.JobTitle }} at <router-link :to="links.company">{{ record.Company.Name }}</router-link> with a base salary of <currency-display :value="record.Salary" symbol="¥" />
             <br />
@@ -40,6 +40,9 @@
     props: [ 'id', 'record' ],
     components: { DisplayLanguages },
     computed: {
+      flagImageUrl() {
+        return this.record.NationalityCode ? require(`../../assets/flags/${this.record.NationalityCode.toLowerCase()}.svg`) : '';
+      },
       age() {
         return this.record.Birthdate ? `(${calculateAge(this.record.Birthdate)} yrs old)` : '';
       },
@@ -64,3 +67,13 @@
     }
   };
 </script>
+
+<style scoped>
+  .name {
+    padding-right: 1.5rem;
+  }
+  
+  .flag {
+    box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.75);
+  }
+</style>
