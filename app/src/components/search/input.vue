@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent="searchAndRoute">
     <div class="field has-addons">
-      <p class="control">
+      <p class="control is-hidden-mobile">
         <span class="select">
           <select v-model="predefinedSearch">
             <option value="">Views</option>
@@ -34,10 +34,10 @@
       ...mapState('app', [ 'user' ]),
       definedSearch: function () {
         return {
-          MY_CANDIDATES: `Recruiter.Name:"${this.user.displayName}" AND _type:Candidate`,
+          MY_CANDIDATES: `Recruiter.Name:"${this.user.displayName}" AND Type:Candidate`,
           MY_JOBS: `Recruiter.Name:"${this.user.displayName}" AND _type:Job`,
           MY_COMPANIES: `Recruiter.Name:"${this.user.displayName}" AND _type:Company`,
-          MY_CONTACTS: `Recruiter.Name:"${this.user.displayName}" AND _type:ClientContact`
+          MY_CONTACTS: `Recruiter.Name:"${this.user.displayName}" AND Type:"client contact"`
         };
       },
       searchText: {

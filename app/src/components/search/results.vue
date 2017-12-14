@@ -9,8 +9,8 @@
 	    <div class="notification is-warning fullwidth" v-if="this.total === 0">
 	      No Results Found.
 	    </div>
-	    <div class="column is-3" v-for="item in results" v-if="total > 0" :key="item._id">
-	      <dynamic-card :key="item._id" :type="item._type" :hit="item" />
+	    <div class="column is-half is-fullheight" v-for="item in results" v-if="total > 0" :key="item._id">
+	      <dynamic-card :key="item._id" :index="item._index" :hit="item" />
 	     </div>
 	  </div>
   </div>
