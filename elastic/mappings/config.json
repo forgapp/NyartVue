@@ -1,0 +1,11 @@
+{
+  "mappings": {
+    "doc": {
+      "properties": {
+        "Type": { "type": "keyword" },
+        "Lastname": { "type":  "text" },
+        "Firstname": { "type":  "text" }
+      }
+    }
+  }
+}

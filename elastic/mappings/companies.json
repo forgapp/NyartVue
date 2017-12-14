@@ -1,0 +1,39 @@
+{
+  "mappings": {
+    "doc": {
+      "properties": {
+        "Name": { "type":  "text" },
+        "Type": { "type":  "keyword" },
+        "Source": { "type":  "keyword" },
+        "RegistrationDate": {
+          "type":   "date",
+          "format": "yyyy-MM-dd"
+        },
+        "Recruiter": {
+          "properties": {
+            "id": { "type":  "keyword" },
+            "Name": { "type":  "text" }
+          }
+        },
+        "Industry": {
+          "properties": {
+            "Category": { "type":  "keyword" },
+            "Code": { "type":  "keyword" }
+          }
+        },
+        "Phones": { "type":  "keyword" },
+        "Emails": { "type":  "keyword" },
+        "Addresses": {
+          "properties": {
+            "Street": { "type":  "keyword" },
+            "Complement": { "type":  "keyword" },
+            "City": { "type":  "keyword" },
+            "State": { "type":  "keyword" },
+            "Country": { "type":  "keyword" }
+          }
+        },
+        "Profile": { "type": "text" }
+      }
+    }
+  }
+}

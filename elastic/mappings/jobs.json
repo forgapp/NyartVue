@@ -1,0 +1,34 @@
+{
+  "mappings": {
+    "doc": {
+      "properties": {
+        "ClientContact": {
+          "properties": {
+            "Name": { "type":  "text" },
+            "id": { "type":  "keyword" }
+          }
+        },
+        "Company": {
+          "properties": {
+            "id": { "type":  "keyword" },
+            "Name": { "type":  "text" }
+          }
+        },
+        "Headcount": { "type":  "short" }, 
+        "JobTitle": { "type":  "text" },
+        "Recruiter": {
+          "properties": {
+            "id": { "type":  "keyword" },
+            "Name": { "type":  "text" }
+          }
+        },
+        "RegistrationDate": {
+          "type":   "date",
+          "format": "yyyy-MM-dd"
+        },
+        "SalaryMaximun": { "type": "long" },
+        "SalaryMinimun": { "type": "long" }
+      }
+    }
+  }
+}

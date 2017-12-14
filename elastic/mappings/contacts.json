@@ -1,0 +1,63 @@
+{
+  "mappings": {
+    "doc": {
+      "properties": {
+        "Type": { "type": "keyword" },
+        "Lastname": { "type":  "text" },
+        "Firstname": { "type":  "text" },
+        "FirstnameKanji": { "type":  "text" },
+        "LastnameKanji": { "type":  "text" },
+        "Source": { "type":  "keyword" },
+        "JobTitle": { "type":  "text" },
+        "Company": {
+          "properties": {
+            "id": { "type":  "text" },
+            "Name": { "type":  "keyword" }
+          }
+        },
+        "RoleLevel": { "type":  "keyword" },
+        "RegistrationDate": {
+          "type":   "date",
+          "format": "yyyy-MM-dd"
+        },
+        "Recruiter": {
+          "properties": {
+            "id": { "type":  "keyword" },
+            "Name": { "type":  "text" }
+          }
+        },
+        "Industry": {
+          "properties": {
+            "Category": { "type":  "keyword" },
+            "Code": { "type":  "keyword" }
+          }
+        },
+        "Phones": { "type":  "keyword" },
+        "Emails": { "type":  "keyword" },
+        "Addresses": {
+          "properties": {
+            "Street": { "type":  "keyword" },
+            "Complement": { "type":  "keyword" },
+            "City": { "type":  "keyword" },
+            "State": { "type":  "keyword" },
+            "Country": { "type":  "keyword" }
+          }
+        },
+        "InterviewNotes": { "type": "text" },
+        "Nationality": { "type": "keyword" },
+        "Birthdate": { 
+          "type": "date",
+          "format": "yyyy-MM-dd"
+        },
+        "Status": { "type": "keyword" },
+        "Salary": { "type": "long" },
+        "JobFunction": {
+          "properties": {
+            "Category": { "type":  "keyword" },
+            "Code": { "type":  "keyword" }
+          }
+        }
+      }
+    }
+  }
+}

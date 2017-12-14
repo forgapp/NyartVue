@@ -1,0 +1,14 @@
+curl -XGET 'https://first-cluster-8947855740.us-west-2.bonsaisearch.net/_search?pretty' -H 'Authorization: Basic dnI5ZHZvaGlmbDp0dXZua2w5dTQ4' -H 'Content-Type: application/json' -d '{"size": 2,"query": {"match_all": {}},"sort": [{ "_score": "desc" },{"_id": "desc"}],"search_after": [1.0, "doc#sXTb2M5jroIKMyXQv94K"]}'
+
+
+{
+  "size": 2,
+  "query": {
+    "match_all": {}
+  },
+  "sort": [
+    { "_score": "desc" },
+    {"_id": "desc"}
+  ],
+  "search_after": [1.0, "doc#sXTb2M5jroIKMyXQv94K"]
+}
