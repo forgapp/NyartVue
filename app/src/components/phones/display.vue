@@ -2,11 +2,13 @@
   <ul>
     <li v-if="!hasResults">No Phones</li>
     <li class="phoneElement" v-for="(phone, index) in phones" :key="index">
-      <span class="icon leftIcon">
-        <i class="fa fa-phone" aria-hidden="true"></i>
-      </span>
-      <a :href="`tel:${phone.Number}`">{{ phone.Number }}</a>
-      <small class="rigthIcon" v-if="phone.Type">({{ phone.Type }})</small>
+      <div>
+        <span class="icon leftIcon">
+          <i class="fa fa-phone" aria-hidden="true"></i>
+        </span>
+        <a :href="`tel:${phone.Number}`">{{ phone.Number }}</a>
+      </div>
+      <div class="heading" v-if="phone.Type">({{ phone.Type }})</div>
     </li>
   </ul>
 </template>
@@ -26,8 +28,9 @@
 <style scoped>
   .phoneElement {
     display: flex;
-    align-items: center;
+    /*align-items: center;*/
     margin-bottom: 0.5em;
+    flex-direction: column;
   }
 
   .phoneElement .leftIcon {

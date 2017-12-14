@@ -70,8 +70,9 @@
         this.$emit('phoneChanged', phones);
       },
       addNewPhone: function () {
-        const phones = [ ...this.phones, { Type: '', Number: '' } ];
-        this.$emit('phoneChanged', phones);
+        const phones = this.phones || [];
+        const newPhones = [ ...phones, { Type: '', Number: '' } ];
+        this.$emit('phoneChanged', newPhones);
       }
     }
   };
