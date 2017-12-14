@@ -142,6 +142,7 @@
         Firstname: '',
         FirstnameKanji: '',
         LastnameKanji: '',
+        Status: 'Active',
         Source: '',
         JobTitle: '',
         Company: {

@@ -143,6 +143,7 @@
         FirstnameKanji: '',
         LastnameKanji: '',
         Source: 'Network',
+        Status: 'Active',
         JobTitle: '',
         Company: {
           id: '',
