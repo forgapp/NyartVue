@@ -1,3 +1,5 @@
-import display from './display';
+import Display from './display';
+import Editor from './edit';
 
-export const Markdown = display;
+export const Markdown = Display;
+export const MarkdownEditor = Editor;
