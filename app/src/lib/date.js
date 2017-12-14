@@ -80,3 +80,10 @@ export function difference(date1, date2) {
 export function differenceFromToday(date) {
   return difference(date, new Date());
 }
+
+export const periods = {
+  THIS_FQ: { label: 'This Fiscal Quarter', value: getThisFiscalQuarter() },
+  LAST_FQ: { label: 'Last Fiscal Quarter', value: getLastFiscalQuarter() },
+  THIS_MONTH: { label: 'This Month', value: getThisMonth() },
+  LAST_MONTH: { label: 'Last Month', value: getLastMonth() }
+};
