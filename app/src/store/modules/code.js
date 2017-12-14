@@ -32,8 +32,6 @@ const actions = {
       .get().then(documentSnapshots => {
         const codes = documentSnapshots.docs.map(doc => doc.data());
 
-        console.log(codes);
-
         commit(SET_CODES, { type, codes });
       });
   }

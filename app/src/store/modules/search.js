@@ -47,7 +47,8 @@ const actions = {
 
     const elastic = new Elastic();
 
-    elastic.setIndex('record')
+    elastic
+      // .setIndex('record')
       .size(250)
       .query(state.searchText)
       .search()
