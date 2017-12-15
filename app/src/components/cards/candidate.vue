@@ -32,47 +32,63 @@
 </template>
 
 <script>
+  import Vue from 'vue';
+  import { Component, Prop } from 'vue-property-decorator';
   import { calculateAge } from '@/lib/date';
   import { DisplayLanguages } from '@/components/languages';
 
-  export default {
-    name: 'candidateCard',
-    props: [ 'id', 'record' ],
-    components: { DisplayLanguages },
-    computed: {
-      flagImageUrl() {
-        return this.record.NationalityCode ? require(`../../assets/flags/${this.record.NationalityCode.toLowerCase()}.svg`) : '';
-      },
-      age() {
-        return this.record.Birthdate ? `(${calculateAge(this.record.Birthdate)} yrs old)` : '';
-      },
-      links() {
-        return {
-          candidate: `/details/candidate/${this.id}`,
-          company: `/details/company/${this.record.Company.id}`
-        };
-      },
-      jobFunctionCodes() {
-        return this.record.JobFunction ? this.record.JobFunction.reduce((aggr, jobFunction) => {
-          if (!aggr[jobFunction.Category]) {
-            return Object.assign({}, aggr, { [jobFunction.Category]: [jobFunction.Code] });
-          }
+  @Component({
+    components: { DisplayLanguages }
+  })
+  class CandidateCard extends Vue {
+    @Prop({ default: '' }) id
+    @Prop({ default: {} }) record
 
-          return Object.assign({}, aggr, { [jobFunction.Category]: [
-            ...aggr[jobFunction.Category],
-            jobFunction.Code
-          ] });
-        }, {}) : {};
+    get flagImageUrl() {
+      const code = this.record.NationalityCode.toLowerCase();
+
+      if (!code) {
+        return '';
       }
+
+      return require(`../../assets/flags/${code}.svg`);
     }
-  };
+
+    get age() {
+      return this.record.Birthdate ? `(${calculateAge(this.record.Birthdate)} yrs old)` : '';
+    }
+
+    get links() {
+      console.log(this.record);
+
+      return {
+        candidate: this.id ? `/details/candidate/${this.id}` : '',
+        company: this.record.Company ? `/details/company/${this.record.Company.id}` : ''
+      };
+    }
+
+    get jobFunctionCodes() {
+      return this.record.JobFunction ? this.record.JobFunction.reduce((aggr, jobFunction) => {
+        if (!aggr[jobFunction.Category]) {
+          return Object.assign({}, aggr, { [jobFunction.Category]: [jobFunction.Code] });
+        }
+
+        return Object.assign({}, aggr, { [jobFunction.Category]: [
+          ...aggr[jobFunction.Category],
+          jobFunction.Code
+        ] });
+      }, {}) : {};
+    }
+  }
+
+  export default CandidateCard;
 </script>
 
 <style scoped>
   .name {
     padding-right: 1.5rem;
   }
-  
+
   .flag {
     box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.75);
   }

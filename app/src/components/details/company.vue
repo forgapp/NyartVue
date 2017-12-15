@@ -73,7 +73,7 @@
                   </div>
                 </div>
               </div>
-              
+
               <div class="column">
                 <markdown label="Profile" :text="record.Profile" />
               </div>
@@ -86,6 +86,7 @@
         </div>
       </v-pane>
       <v-pane title="Candidates"> Candidates</v-pane>
+      <v-pane title="clientNumber"> {{ clientNumber }}</v-pane>
     </v-tab>
   </div>
 </template>
