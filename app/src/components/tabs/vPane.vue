@@ -1,7 +1,7 @@
 <template>
-  <section v-if="active">
+  <article v-if="active">
     <slot />
-  </section>
+  </article>
 </template>
 
 <script>
