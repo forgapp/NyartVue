@@ -39,14 +39,28 @@
 
 <script>
   import { periods } from '@/lib/date';
+  import { Vue, Component, Prop } from 'vue-property-decorator';
 
-  export default {
-    name: 'statSelector',
-    props: [ 'selectedPeriods' ],
-    data() {
-      return { periods: periods, Recruiter: {} };
-    }
-  };
+  @Component({})
+  class StatSelector extends Vue {
+    @Prop({}) selectedPeriods
+
+    periods = periods
+    Recruiter = {}
+
+    refresh() {}
+    handleChangePeriod() {}
+  }
+
+  export default StatSelector;
+
+  // export default {
+  //   name: 'statSelector',
+  //   props: [ 'selectedPeriods' ],
+  //   data() {
+  //     return { periods: periods, Recruiter: {} };
+  //   }
+  // };
 </script>
 
 <style scoped>

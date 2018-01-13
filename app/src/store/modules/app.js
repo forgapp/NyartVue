@@ -22,9 +22,7 @@ const mutations = {
 
 const actions = {
   login({ commit }) {
-    console.log('Login');
     auth.onAuthStateChanged(user => {
-      console.log('Login2');
       if (user) {
         // requestMessagingToken(user);
         const userUid = user.uid;

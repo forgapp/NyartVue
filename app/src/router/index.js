@@ -39,6 +39,22 @@ export default new Router({
     name: 'NewProcess',
     component: () => import('@/pages/newProcess')
   }, {
+    path: '/admin',
+    name: 'Admin',
+    component: () => import('@/pages/admin'),
+    children: [
+      {
+        path: 'users',
+        component: () => import('@/pages/admin/users')
+      }, {
+        path: 'picklists',
+        component: () => import('@/pages/admin/picklists')
+      }, {
+        path: 'codes',
+        component: () => import('@/pages/admin/codes')
+      }
+    ]
+  }, {
     path: '*',
     name: 'NotFound',
     component: NotFound

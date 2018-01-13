@@ -1,8 +1,9 @@
 <template>
   <lookup
     index="config"
-    type="user"
+    type="doc"
     placeholder="Recruiter"
+    extraQuery="Type:User"
     v-model="inputValue"
     :formatLabel="formatRecruiterLabel"
     :formatInputValue="(recruiter) => recruiter.Name"

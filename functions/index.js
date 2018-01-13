@@ -1,11 +1,11 @@
-const { onUserCreated, onUserDeleted } = require('./users');
-const { 
+const { onUserCreated, onUserChanged, onUserDeleted } = require('./users');
+const {
   onCompanyCreatedIndex,
   onCompanyupdatedIndex,
-  onCompanyDeletedIndex 
+  onCompanyDeletedIndex
 } = require('./company');
 
-const { 
+const {
   onCandidateCreatedIndex,
   onCandidateUpdatedIndex,
   onCandidateDeletedIndex
@@ -17,7 +17,7 @@ const {
   onClientContactDeletedIndex
 } = require('./clientContact');
 
-const { 
+const {
   onJobCreatedIndex,
   onJobupdatedIndex,
   onJobDeletedIndex
@@ -30,6 +30,7 @@ const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 
 exports.onUserCreated = onUserCreated;
+exports.onUserChanged = onUserChanged;
 exports.onUserDeleted = onUserDeleted;
 
 exports.onCompanyCreatedIndex = onCompanyCreatedIndex;
