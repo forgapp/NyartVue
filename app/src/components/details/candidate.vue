@@ -195,6 +195,7 @@
     beforeDestroy: function () {
       this.unsubscribe();
       this.resumeUnsubscribe();
+      this.atsUnsubscribe();
     },
     computed: {
       isActive() {
