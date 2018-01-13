@@ -18,6 +18,14 @@
                 <i class="fa fa-play" aria-hidden="true"></i>
               </next-step>
             </p>
+            <p v-if="status.inCCM" class="control">
+              <next-step id="id" :process="process" is-new-ccm="true">
+                <span class="icon">
+                  <i class="fa fa-plus" aria-hidden="true"></i>
+                </span>
+                <span>CCM</span>
+              </next-step>
+            </p>
             <unreject-button v-if="process.IsRejected" :id="process.id" label="label" />
             <reject-button v-else :id="process.id" label="label" />
           </div>
@@ -26,22 +34,22 @@
     </div>
     <div class="column">
       <div class="columns is-gapless steps">
-        <step :step="process.Application" :is-rejected="process.IsRejected">
+        <step :step="stages.Application" :is-rejected="status.IsRejected">
           <p>Application</p>
         </step>
-        <step :step="process.Submittal" :is-rejected="process.IsRejected">
+        <step :step="stages.Submittal" :is-rejected="status.IsRejected">
           <p>Submittal</p>
         </step>
-        <step :step="process.CCM1" :is-rejected="process.IsRejected">
+        <step :step="stages.CCM1" :is-rejected="status.IsRejected">
           <p>CCM1</p>
         </step>
-        <step :step="process.CCM" :is-rejected="process.IsRejected">
-          <p>CCM+</p>
+        <step :step="stages.CCM" :is-rejected="status.IsRejected">
+          <p>CCM{{ ccmNumber }}</p>
         </step>
-        <step :step="process.Offer" :is-rejected="process.IsRejected">
+        <step :step="stages.Offer" :is-rejected="status.IsRejected">
           <p>Offer</p>
         </step>
-        <step :step="process.Placement" :is-rejected="process.IsRejected">
+        <step :step="stages.Placement" :is-rejected="status.IsRejected">
           <p>Placement</p>
         </step>
       </div>
@@ -78,15 +86,37 @@
     }
 
     get status() {
+      const isRejected = this.process.IsRejected;
       const isPlaced = !!this.process.Placement;
       const isBackout = !!this.process.Backout;
+      const inProgress = !isRejected && !isPlaced && !isBackout;
 
       return {
-        inProgress: !process.IsRejected && !isPlaced && !isBackout,
+        inProgress,
+        inCCM: inProgress && !!this.process.CCM && !this.process.Offer,
         isPlaced: isPlaced && !isBackout,
         isBackout,
-        isRejected: this.process.IsRejected
+        isRejected: isRejected
       };
+    }
+
+    get stages() {
+      const CCM = this.process.CCM ? this.process.CCM.sort((prev, next) => {
+        return prev.Number > next.Number;
+      }) : null;
+
+      return {
+        Application: this.process.Application,
+        Submittal: this.process.Submittal,
+        CCM1: CCM ? CCM[0] : null,
+        CCM: CCM && CCM.length > 1 ? CCM[CCM.length - 1] : null,
+        Offer: this.process.Offer,
+        Placement: this.process.Placement
+      };
+    }
+
+    get ccmNumber() {
+      return this.stages.CCM && this.stages.CCM.Number;
     }
 
     get openedDays() {

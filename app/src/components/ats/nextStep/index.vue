@@ -8,12 +8,10 @@
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title">{{ stepInformation.label }}</p>
-          <button class="delete" aria-label="close" @click="toggleModal"></button>
+          <button class="delete" aria-label="close" @click.prevent="toggleModal"></button>
         </header>
         <section class="modal-card-body">
           <component :is="stepInformation.form" :step="stepInformation.step" @update="handleUpdate"/>
-          <!-- <StageForm stage={ stage } handleChange={ this.handleChange } /> -->
-          <!-- <submittal-form @update="handleChange"/> -->
         </section>
         <footer class="modal-card-foot">
           <button class="button is-primary" type="submit">Save</button>
@@ -27,25 +25,45 @@
 <script>
   import { Vue, Component, Prop } from 'vue-property-decorator';
   import { firestore } from '@/lib/firebase';
-  import getNextStepForm from './getNextStepForm';
+  import StepForm from './getNextStepForm';
 
   @Component({})
   class NextStep extends Vue {
     @Prop() process
+    @Prop({ Type: 'Boolean' }) isNewCcm
     isOpen = false
-    stepInformation = {}
+    // stepInformation = {}
 
-    mounted() {
-      this.stepInformation = getNextStepForm(this.process);
+    // mounted() {
+    //   console.log('MOUNTED', this.process);
+    //   this.init();
+    // }
+
+    // beforeUpdate() {
+    //   console.log('BEFORE Update', this.process);
+    // }
+
+    get stepInformation() {
+      if (this.isNewCcm) {
+        return StepForm.getCCMForm();
+      } else {
+        return StepForm.getNextStepForm(this.process);
+      }
     }
+
+    // @Watch('process', { immediate: true })
+    // onProcessChanged(value) {
+    //   console.log('Wather', value);
+    //   if (this.isNewCcm) {
+    //     this.stepInformation = StepForm.getCCMForm();
+    //   } else {
+    //     this.stepInformation = StepForm.getNextStepForm(value);
+    //   }
+    // }
 
     get modalClass() {
       return this.isOpen ? 'modal step-modal is-active' : 'modal';
     }
-
-    // get stepForm() {
-    //   return getNextStepForm(this.process);
-    // }
 
     toggleModal() {
       this.isOpen = !this.isOpen;
@@ -64,13 +82,33 @@
     }
 
     handleSubmit() {
+      let newStep = null;
+
+      if (this.stepInformation.label === 'CCM') {
+        const oldCCM = this.process.CCM ? this.process.CCM : [];
+        const newCCM = [
+          ...oldCCM,
+          {
+            ...this.stepInformation.step,
+            Number: oldCCM.length + 1
+          }
+        ].filter(p => !!p);
+        newStep = { CCM: newCCM };
+      } else {
+        newStep = {
+          [this.stepInformation.label]: this.stepInformation.step
+        };
+      }
+
       console.log('handleSubmit');
       firestore.collection('Process')
         .doc(this.process.id)
-        .update({
-          [this.stepInformation.label]: this.stepInformation.step
-        });
+        .update(newStep)
+        .then(() => this.toggleModal());
     }
+
+    // @Watch('process')
+    // onProcessChanged(val, oldVal) { console.log('WATCHER', val, oldVal); }
   }
 
   export default NextStep;

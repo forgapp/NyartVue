@@ -1,7 +1,8 @@
 import { formatdateForInput } from '@/lib/date';
 import SubmittalForm from './submittal';
+import CcmForm from './ccm';
 
-export default function getNextStepForm(stage) {
+function getNextStepForm(stage) {
   let form = null;
 
   if (stage.Offer) {
@@ -9,7 +10,15 @@ export default function getNextStepForm(stage) {
   } else if (stage.CCM) {
     return 'Offer';
   } else if (stage.Submittal) {
-    return 'CCM';
+    form = {
+      label: 'CCM',
+      form: CcmForm,
+      step: {
+        StageDate: formatdateForInput(new Date()),
+        InterviewDate: formatdateForInput(new Date()),
+        InterviewTime: ''
+      }
+    };
   } else if (stage.Application) {
     form = {
       label: 'Submittal',
@@ -22,4 +31,21 @@ export default function getNextStepForm(stage) {
   }
 
   return form;
+}
+
+function getCCMForm() {
+  return {
+    label: 'CCM',
+    form: CcmForm,
+    step: {
+      StageDate: formatdateForInput(new Date()),
+      InterviewDate: formatdateForInput(new Date()),
+      InterviewTime: ''
+    }
+  };
+}
+
+export default {
+  getNextStepForm,
+  getCCMForm
 };
