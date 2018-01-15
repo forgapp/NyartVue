@@ -4,7 +4,7 @@
       <div class="columns is-mobile is-gapless">
         <div class="column">
           <router-link :to="`/details/${type.toLowerCase()}/${label.id}`">{{ label.text }}</router-link>
-          <p>opened for {{ openedDays }} days</p>
+          <p v-if="status.inProgress">opened for {{ openedDays }} days</p>
         </div>
         <div class="column has-text-centered">
           <p v-if="status.isPlaced" class="tag is-success">Placed</p>
@@ -26,32 +26,36 @@
                 <span>CCM</span>
               </next-step>
             </p>
-            <unreject-button v-if="process.IsRejected" :id="process.id" label="label" />
-            <reject-button v-else :id="process.id" label="label" />
+            <div v-if="!status.isPlaced">
+              <unreject-button v-if="process.IsRejected" :id="process.id" label="label" />
+             <reject-button v-else :id="process.id" label="label" />
+            </div>
           </div>
         </div>
       </div>
     </div>
     <div class="column">
-      <div class="columns is-gapless steps">
-        <step :step="stages.Application" :is-rejected="status.IsRejected">
-          <p>Application</p>
-        </step>
-        <step :step="stages.Submittal" :is-rejected="status.IsRejected">
-          <p>Submittal</p>
-        </step>
-        <step :step="stages.CCM1" :is-rejected="status.IsRejected">
-          <p>CCM1</p>
-        </step>
-        <step :step="stages.CCM" :is-rejected="status.IsRejected">
-          <p>CCM{{ ccmNumber }}</p>
-        </step>
-        <step :step="stages.Offer" :is-rejected="status.IsRejected">
-          <p>Offer</p>
-        </step>
-        <step :step="stages.Placement" :is-rejected="status.IsRejected">
-          <p>Placement</p>
-        </step>
+      <div class="steps-padding">
+        <div class="columns is-gapless steps">
+          <step :step="stages.Application" :is-rejected="status.IsRejected">
+            <p>Application</p>
+          </step>
+          <step :step="stages.Submittal" :is-rejected="status.IsRejected">
+            <p>Submittal</p>
+          </step>
+          <step :step="stages.CCM1" :is-rejected="status.IsRejected">
+            <p>CCM1</p>
+          </step>
+          <step :step="stages.CCM" :is-rejected="status.IsRejected">
+            <p>CCM{{ ccmNumber }}</p>
+          </step>
+          <step :step="stages.Offer" :is-rejected="status.IsRejected">
+            <p>Offer</p>
+          </step>
+          <step :step="stages.Placement" :is-rejected="status.IsRejected">
+            <p>Placement</p>
+          </step>
+        </div>
       </div>
     </div>
   </div>
@@ -137,6 +141,10 @@
   .ats:not(:last-child) {
     border-bottom: 1px solid lightgrey;
     padding-bottom: 0.5rem;
+  }
+
+  .steps-padding {
+    padding: 0rem 0.75rem !important;
   }
 </style>
 

@@ -184,7 +184,7 @@
       return {
         record: {},
         resumes: [],
-        ats: []
+        ats: {}
       };
     },
     beforeMount: function () {
@@ -239,17 +239,19 @@
         return firestore.collection('Process')
           .where('Candidate.ref', '==', candidateRef)
           .onSnapshot(querySnapshot => {
-            var ats = [];
-
-            querySnapshot.forEach(doc => {
-              ats.push({
-                id: doc.id,
-                ...doc.data()
-              });
-            });
-
-            this.ats = ats;
+            querySnapshot.docChanges.forEach(this.setProcess);
           });
+      },
+      setProcess(change) {
+        const { type, doc } = change;
+
+        if (type !== 'removed') {
+          const process = {
+            id: doc.id,
+            ...doc.data()
+          };
+          this.ats = Object.assign({}, this.ats, { [doc.id]: process });
+        }
       }
     },
     watch: {

@@ -12,16 +12,6 @@
         />
       </p>
     </div>
-    <div class="field">
-      <label class="label">Method</label>
-      <div class="select is-fullwidth">
-        <select :value="step.Method" @change="updateMethod">
-          <option>Email</option>
-          <option>Phone</option>
-          <option>Face-to-Face</option>
-        </select>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -29,7 +19,7 @@
   import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
 
   @Component({})
-  class SubmittalForm extends Vue {
+  class PlacementForm extends Vue {
     @Prop({}) step
 
     updateStageDate(event) {
@@ -39,16 +29,9 @@
       this.update(stage);
     }
 
-    updateMethod(event) {
-      const { value } = event.target;
-      const stage = Object.assign({}, this.step, { Method: value });
-
-      this.update(stage);
-    }
-
     @Emit()
     update(stage) {}
   }
 
-  export default SubmittalForm;
+  export default PlacementForm;
 </script>

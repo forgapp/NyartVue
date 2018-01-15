@@ -1,14 +1,28 @@
 import { formatdateForInput } from '@/lib/date';
 import SubmittalForm from './submittal';
 import CcmForm from './ccm';
+import OfferForm from './offer';
+import PlacementForm from './placement';
 
 function getNextStepForm(stage) {
   let form = null;
 
   if (stage.Offer) {
-    return 'Placement';
+    form = {
+      label: 'Placement',
+      form: PlacementForm,
+      step: {
+        StageDate: formatdateForInput(new Date())
+      }
+    };
   } else if (stage.CCM) {
-    return 'Offer';
+    form = {
+      label: 'Offer',
+      form: OfferForm,
+      step: {
+        StageDate: formatdateForInput(new Date())
+      }
+    };
   } else if (stage.Submittal) {
     form = {
       label: 'CCM',

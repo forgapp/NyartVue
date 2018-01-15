@@ -23,7 +23,7 @@
 </template>
 
 <script>
-  import { Vue, Component, Prop } from 'vue-property-decorator';
+  import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
   import { firestore } from '@/lib/firebase';
   import StepForm from './getNextStepForm';
 
@@ -32,7 +32,7 @@
     @Prop() process
     @Prop({ Type: 'Boolean' }) isNewCcm
     isOpen = false
-    // stepInformation = {}
+    stepInformation = {}
 
     // mounted() {
     //   console.log('MOUNTED', this.process);
@@ -43,11 +43,19 @@
     //   console.log('BEFORE Update', this.process);
     // }
 
-    get stepInformation() {
+    getStepInformation(process) {
       if (this.isNewCcm) {
         return StepForm.getCCMForm();
       } else {
-        return StepForm.getNextStepForm(this.process);
+        return StepForm.getNextStepForm(process);
+      }
+    }
+
+    @Watch('process', { immediate: true })
+    onProcessChanged(val, oldVal) {
+      console.log(val, oldVal);
+      if (val) {
+        this.stepInformation = this.getStepInformation(val);
       }
     }
 
