@@ -50,7 +50,7 @@
       firestore.collection('Process')
         .doc(this.id)
         .update({
-          IsRejected: true,
+          Status: 'Rejected',
           RejectedDate: formatdateForInput(new Date())
         })
         .then(this.toggleModal);

@@ -10,7 +10,7 @@
     </div>
     <div v-else class="notification is-danger">
       You are not authorized to use this application.
-    </div>    
+    </div>
   </div>
 </template>
 
@@ -58,7 +58,7 @@
   	-webkit-font-smoothing: antialiased;
   	-moz-osx-font-smoothing: grayscale;
   }
-  
+
   #app-container {
     overflow: hidden;
   }
@@ -71,11 +71,11 @@
     text-align: right;
     padding-right: 1rem !important;
   }
-  
+
   #app .CodeMirror {
     height: auto;
   }
-  
+
   .is-fullheight {
     height: 100%;
   }

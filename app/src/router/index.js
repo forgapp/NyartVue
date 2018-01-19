@@ -11,6 +11,10 @@ export default new Router({
     name: 'Home',
     component: () => import('@/pages/home')
   }, {
+    path: '/whiteboard',
+    name: 'Whiteboard',
+    component: () => import('@/pages/whiteboard')
+  }, {
     path: '/new',
     name: 'New',
     component: () => import('@/pages/new')

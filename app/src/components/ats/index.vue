@@ -27,7 +27,7 @@
               </next-step>
             </p>
             <div v-if="!status.isPlaced">
-              <unreject-button v-if="process.IsRejected" :id="process.id" label="label" />
+              <unreject-button v-if="status.isRejected" :id="process.id" label="label" />
              <reject-button v-else :id="process.id" label="label" />
             </div>
           </div>
@@ -37,22 +37,22 @@
     <div class="column">
       <div class="steps-padding">
         <div class="columns is-gapless steps">
-          <step :step="stages.Application" :is-rejected="status.IsRejected">
+          <step :step="stages.Application" :is-rejected="status.isRejected">
             <p>Application</p>
           </step>
-          <step :step="stages.Submittal" :is-rejected="status.IsRejected">
+          <step :step="stages.Submittal" :is-rejected="status.isRejected">
             <p>Submittal</p>
           </step>
-          <step :step="stages.CCM1" :is-rejected="status.IsRejected">
+          <step :step="stages.CCM1" :is-rejected="status.isRejected">
             <p>CCM1</p>
           </step>
-          <step :step="stages.CCM" :is-rejected="status.IsRejected">
+          <step :step="stages.CCM" :is-rejected="status.isRejected">
             <p>CCM{{ ccmNumber }}</p>
           </step>
-          <step :step="stages.Offer" :is-rejected="status.IsRejected">
+          <step :step="stages.Offer" :is-rejected="status.isRejected">
             <p>Offer</p>
           </step>
-          <step :step="stages.Placement" :is-rejected="status.IsRejected">
+          <step :step="stages.Placement" :is-rejected="status.isRejected">
             <p>Placement</p>
           </step>
         </div>
@@ -90,7 +90,7 @@
     }
 
     get status() {
-      const isRejected = this.process.IsRejected;
+      const isRejected = this.process.Status === 'Rejected';
       const isPlaced = !!this.process.Placement;
       const isBackout = !!this.process.Backout;
       const inProgress = !isRejected && !isPlaced && !isBackout;
@@ -100,7 +100,7 @@
         inCCM: inProgress && !!this.process.CCM && !this.process.Offer,
         isPlaced: isPlaced && !isBackout,
         isBackout,
-        isRejected: isRejected
+        isRejected
       };
     }
 

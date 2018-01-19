@@ -51,7 +51,7 @@
       firestore.collection('Process')
         .doc(this.id)
         .update({
-          IsRejected: FieldValue.delete(),
+          Status: 'In Progress',
           RejectedDate: FieldValue.delete()
         })
         .then(this.toggleModal);
