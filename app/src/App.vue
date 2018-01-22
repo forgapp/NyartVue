@@ -3,7 +3,9 @@
     <Spinner v-if="isLoading" />
     <Login v-else-if="!isLoading && !isLoggedIn" />
     <div id="app-container" v-else-if="!isLoading && isLoggedIn && isAuthorized">
-      <app-header :user="user" :isAdmin="isAdmin" :signOut="handleSignOut" />
+      <div class="header">
+        <app-header :user="user" :isAdmin="isAdmin" :signOut="handleSignOut" />
+      </div>
       <div class="main-content">
         <router-view></router-view>
       </div>
@@ -55,25 +57,39 @@
     background: #fafafa;
     margin: 0;
     padding: 0;
+    overflow: hidden;
   	-webkit-font-smoothing: antialiased;
   	-moz-osx-font-smoothing: grayscale;
   }
 
   #app-container {
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .header {
+    flex: 0 0 auto;
   }
 
   .main-content {
-    padding-top: 115px;
+    background: whitesmoke;
+    flex: 1 1 auto;
+    height: 100%;
+    overflow: hidden;
   }
 
-  .columns.is-gapless > .column.column-label {
-    text-align: right;
-    padding-right: 1rem !important;
-  }
+  /*.columns.is-gapless > .column.column-label {*/
+  /*  text-align: right;*/
+  /*  padding-right: 1rem !important;*/
+  /*}*/
 
   #app .CodeMirror {
     height: auto;
+  }
+
+  .is-fullwidth {
+    width: 100%;
   }
 
   .is-fullheight {

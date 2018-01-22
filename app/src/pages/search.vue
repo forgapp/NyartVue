@@ -1,7 +1,14 @@
 <template>
-  <div class="container is-fluid">
-    <h3 class="title is-5 header">Search <small v-if="total !== null">({{ total }} results)</small></h3>
-    <search-results />
+  <div class="container is-fluid is-fullheight">
+    <div class="section">
+      <h3 class="title is-4">
+        Search <small v-if="total !== null">({{ total }} results)</small>
+      </h3>
+    </div>
+    <spinner v-if="isSearching" />
+    <div v-else class="section is-scrollable">
+      <search-results />
+    </div>
   </div>
 </template>
 
@@ -13,14 +20,14 @@
     name: 'home',
     components: { SearchResults },
     computed: {
-      ...mapState('search', [ 'total' ])
+      ...mapState('search', [ 'isSearching', 'total' ])
     }
   };
 </script>
 
 <style scoped>
-  .header {
-    margin-top: 12px;
-    margin-bottom: 0px
+  .is-scrollable {
+    height: calc(100% - 60px);
+    overflow: auto;
   }
 </style>

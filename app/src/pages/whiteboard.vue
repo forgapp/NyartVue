@@ -1,44 +1,71 @@
 <template>
-  <div class="whiteboard">
-    Whiteboard.<br />
-    <div class="columns">
-      <div class="column">
-        <h3 class="title is-6">Applications</h3>
-        <div v-for="process in processes.application" :key="process.id">{{ process.id }}</div>
-      </div>
+  <div class="container is-fluid is-fullheight">
+    <div class="section">
+      <h3 class="title is-4">
+        Whiteboard
+      </h3>
+    </div>
+    <div class="section">
+      <div class="columns">
+        <div class="column">
+          <h3 class="title is-6">Applications</h3>
+          <div v-for="process in processes.application" :key="process.id">{{ process.id }}</div>
+        </div>
 
-      <div class="column">
-        <h3 class="title is-6">Submittals</h3>
-        <div v-for="process in processes.submittal" :key="process.id">{{ process.id }}</div>
-      </div>
-
-      <div class="column">
-        <div class="box">
-          <h3 class="title is-6">CCM1</h3>
-          <process-card
-            v-for="process in processes.ccm1"
-            :key="process.id"
-            :process="process"
-            @open-ats="openDrawer"
-          />
+        <div class="column">
+          <div class="box">
+            <h3 class="title is-6">CCM1</h3>
+            <process-card
+              v-for="process in processes.ccm1"
+              :key="process.id"
+              :process="process"
+              @open-ats="openDrawer"
+            />
+          </div>
         </div>
       </div>
-
-      <div class="column">
-        <h3 class="title is-6">CCM2+</h3>
-        <div v-for="process in processes.ccm" :key="process.id">{{ process.id }}</div>
-      </div>
-
-      <div class="column">
-        <h3 class="title is-6">Offer</h3>
-        <div v-for="process in processes.offer" :key="process.id">{{ process.id }}</div>
-      </div>
-    </div>
-    <div :class="overlayClass" @click="closeDrawer"></div>
-    <div :class="drawerClass">
-      <ats v-if="isDrawerOpen" type="Job" :process="selectedProcess" />
     </div>
   </div>
+  <!--<div class="whiteboard">-->
+  <!--  Whiteboard.<br />-->
+  <!--  <div class="columns">-->
+  <!--    <div class="column">-->
+  <!--      <h3 class="title is-6">Applications</h3>-->
+  <!--      <div v-for="process in processes.application" :key="process.id">{{ process.id }}</div>-->
+  <!--    </div>-->
+
+  <!--    <div class="column">-->
+  <!--      <h3 class="title is-6">Submittals</h3>-->
+  <!--      <div v-for="process in processes.submittal" :key="process.id">{{ process.id }}</div>-->
+  <!--    </div>-->
+
+  <!--    <div class="column">-->
+  <!--      <div class="box">-->
+  <!--        <h3 class="title is-6">CCM1</h3>-->
+  <!--        <process-card-->
+  <!--          v-for="process in processes.ccm1"-->
+  <!--          :key="process.id"-->
+  <!--          :process="process"-->
+  <!--          @open-ats="openDrawer"-->
+  <!--        />-->
+  <!--      </div>-->
+  <!--    </div>-->
+
+  <!--    <div class="column">-->
+  <!--      <h3 class="title is-6">CCM2+</h3>-->
+  <!--      <div v-for="process in processes.ccm" :key="process.id">{{ process.id }}</div>-->
+  <!--    </div>-->
+
+  <!--    <div class="column">-->
+  <!--      <h3 class="title is-6">Offer</h3>-->
+  <!--      <div v-for="process in processes.offer" :key="process.id">{{ process.id }}</div>-->
+  <!--    </div>-->
+  <!--  </div>-->
+  <!--  <div :class="overlayClass" @click="closeDrawer"></div>-->
+  <!--  <div :class="drawerClass">-->
+  <!--    <ats v-if="isDrawerOpen" type="Job" :process="selectedProcess" />-->
+  <!--  </div>-->
+  <!--</div>-->
 </template>
 
 <script>

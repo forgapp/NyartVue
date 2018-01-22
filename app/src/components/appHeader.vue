@@ -1,45 +1,47 @@
 <template>
-  <div class="header">
-    <div class="container is-fluid top-row">
-      <div class="brand">
-        <router-link class="navbar-item" to="/">
+  <nav class="navbar has-shadow" role="navigation" aria-label="main navigation">
+    <div class="container is-fluid header-container">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="https://bulma.io">
           <img src="../assets/logo.png" alt="Nyart: Not Yet Another Recruiting Tool">
-        </router-link>
+        </a>
+
+        <button :class="burgerbuttonClass" @click="toggleMenu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
       </div>
-      <div class="search">
-        <search-input />
-      </div>
-    </div>
-    <nav class="navbar has-shadow">
-      <div class="container one-row">
-        <div class="navbar-tabs">
-          <router-link class="navbar-item is-tab" active-class="is-active" to="/whiteboard">
-            Whiteboard
-          </router-link>
-          <router-link class="navbar-item is-tab" active-class="is-active" to="/search">
-            Search
-          </router-link>
-          <router-link class="navbar-item is-tab" active-class="is-active" to="/new">
-            New
-          </router-link>
-          <a class="navbar-item is-tab is-hidden" href="https://bulma.io/documentation/components/card/">
-            History
-          </a>
+
+      <div :class="navbarMenuClass">
+        <div class="navbar-start">
+          <div class="navbar-item">
+            <div class="field">
+              <search-input />
+            </div>
+          </div>
         </div>
 
-        <div class="dropdown is-right is-hoverable profile">
-          <div class="dropdown-trigger">
-            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
-              <span>{{ user.displayName }}</span>
-              <span class="icon is-small">
-                <i class="fa fa-angle-down" aria-hidden="true"></i>
-              </span>
-            </button>
+        <div class="navbar-end">
+          <div class="navbar-tabs">
+            <router-link class="navbar-item is-tab" active-class="is-active" to="/whiteboard">
+              <span @click="toggleMenu">Whiteboard</span>
+            </router-link>
+            <router-link class="navbar-item is-tab" active-class="is-active" to="/search">
+              <span @click="toggleMenu">Search</span>
+            </router-link>
+            <router-link class="navbar-item is-tab" active-class="is-active" to="/new">
+              <span @click="toggleMenu">New</span>
+            </router-link>
           </div>
-          <div class="dropdown-menu" id="dropdown-menu" role="menu">
-            <div class="dropdown-content">
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link">
+              {{ user.displayName }}
+            </a>
+
+            <div class="navbar-dropdown">
               <router-link v-if="isAdmin" class="dropdown-item" active-class="is-active" to="/admin">
-                Administration
+                <span @click="toggleMenu">Administration</span>
               </router-link>
               <a class="dropdown-item" @click.prevent="signOut">
                 Sign Out
@@ -48,57 +50,46 @@
           </div>
         </div>
       </div>
-    </nav>
-  </div>
+    </div>
+  </nav>
 </template>
 
 <script>
+  import { Vue, Component, Prop } from 'vue-property-decorator';
   import SearchInput from './search/input';
 
-  export default {
-    name: 'AppHeader',
-    components: { SearchInput },
-    props: ['user', 'isAdmin', 'signOut']
-  };
+  @Component({
+    components: { SearchInput }
+  })
+  class AppHeader extends Vue {
+    @Prop() user
+    @Prop() isAdmin
+    @Prop() signOut
+    isOpen = false;
+
+    get burgerbuttonClass() {
+      return {
+        'button': true,
+        'navbar-burger': true,
+        'is-active': this.isOpen
+      };
+    }
+
+    get navbarMenuClass() {
+      return {
+        'navbar-menu': true,
+        'is-active': this.isOpen
+      };
+    }
+
+    toggleMenu() { this.isOpen = !this.isOpen; }
+  }
+
+  export default AppHeader;
 </script>
 
 <style scoped>
-  .header {
-    padding-top: 0.5rem;
-    background: #fff;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 101;
-  }
-
-  .top-row {
-    display: flex;
-    align-items: center;
-  }
-
-  .brand {
-    line-height: 1.5;
-    padding: 0rem 1rem;
-    position: relative;
-  }
-
-  .search {
-    flex-grow: 0.5;
-  }
-
-  .profile {
-    margin-right: 1rem;
-  }
-
-  .profile button {
-    border-color: transparent;
-  }
-
-  .one-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  .header-container {
+    min-height: 4rem;
   }
 </style>
