@@ -16,13 +16,8 @@
             {{ record.Recruiter.Name && `Registered by ${record.Recruiter.Name}` }} <small>{{ record.RegistrationDate && `@${record.RegistrationDate}` }}</small>
           </p>
         </div>
-        <nav class="level is-mobile">
-          <div class="level-left">
-            <a class="level-item">
-              <display-languages :languages="record.Languages" />
-            </a>
-          </div>
-        </nav>
+        <display-languages :languages="record.Languages" />
+        <p></p>
       </div>
     </article>
   </div>
@@ -53,8 +48,8 @@
   .name {
     padding-right: 1.5rem;
   }
-  
+
   .flag {
-    box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.75);
+    border: 1px solid hsla(0, 0%, 75%, 1);
   }
 </style>

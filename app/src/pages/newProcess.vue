@@ -1,8 +1,15 @@
 <template>
-  <div class="container is-fluid">
-    <div class="box">
-      <h3 class="title is-4">New Process</h3>
-      <process-form @save="save" @cancel="cancel" :recruiter="user" :isSaving="isSaving" />
+  <div class="container is-fluid is-scrollable">
+    <div class="section">
+      <div class="box">
+        <h3 class="title is-4">New Process</h3>
+        <process-form
+          @save="save"
+          @cancel="cancel"
+          :recruiter="user"
+          :isSaving="isSaving"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -48,3 +55,10 @@
     }
   };
 </script>
+
+<style scoped>
+  .is-scrollable {
+    height: 100%;
+    overflow: auto;
+  }
+</style>

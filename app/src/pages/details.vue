@@ -1,18 +1,17 @@
 <template>
-  <div class="container is-fluid">
-    <candidate-details v-if="type === 'candidate'" :id="id" />
-    <company-details v-if="type === 'company'" :id="id" />
-    <client-contact-details v-if="type === 'clientContact'" :id="id" />
-    <job-details v-if="type === 'job'" :id="id" />
+  <div class="container is-fluid is-scrollable">
+    <div class="section">
+      <detail-layout :type="type" :id="id"/>
+    </div>
   </div>
 </template>
 
 <script>
-  import { CandidateDetails, CompanyDetails, ClientContactDetails, JobDetails } from '@/components/details';
+  import DetailLayout from '@/components/details';
 
   export default {
     name: 'details',
-    components: { CandidateDetails, CompanyDetails, ClientContactDetails, JobDetails },
+    components: { DetailLayout },
     computed: {
       type: function () {
         return this.$route.params.type;
@@ -23,3 +22,10 @@
     }
   };
 </script>
+
+<style scoped>
+  .is-scrollable {
+    height: 100%;
+    overflow: auto;
+  }
+</style>

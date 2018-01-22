@@ -4,7 +4,7 @@
       <div class="box">
         <div class="field is-horizontal">
           <div class="field-label is-normal">
-            <label class="label">Select a type to create</label>
+            <label class="label">Record Type</label>
           </div>
           <div class="field-body">
             <div class="field">

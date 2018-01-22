@@ -2,15 +2,15 @@
   <nav class="navbar has-shadow" role="navigation" aria-label="main navigation">
     <div class="container is-fluid header-container">
       <div class="navbar-brand">
-        <a class="navbar-item" href="https://bulma.io">
+        <router-link class="navbar-item" to="/">
           <img src="../assets/logo.png" alt="Nyart: Not Yet Another Recruiting Tool">
-        </a>
+        </router-link>
 
-        <button :class="burgerbuttonClass" @click="toggleMenu">
+        <div :class="burgerbuttonClass" @click="toggleMenu">
           <span></span>
           <span></span>
           <span></span>
-        </button>
+        </div>
       </div>
 
       <div :class="navbarMenuClass">
@@ -69,7 +69,6 @@
 
     get burgerbuttonClass() {
       return {
-        'button': true,
         'navbar-burger': true,
         'is-active': this.isOpen
       };
@@ -89,7 +88,7 @@
 </script>
 
 <style scoped>
-  .header-container {
+  /* .header-container {
     min-height: 4rem;
-  }
+  } */
 </style>

@@ -1,14 +1,18 @@
 <template>
-  <div class="container is-fluid">
-    <div class="columns">
-      <div class="column is-2">
-        <button class="button" @click.prevent="handleBackClick">Back to Candidate</button>
+  <div class="container is-fluid is-scrollable">
+    <div class="section">
+      <div class="level is-mobile">
+        <div class="level-left">
+          <div class="level-item">
+            <h4 class="title is-4">Edit Resumes</h4>
+          </div>
+          <div class="level-item">
+            <button class="button" @click.prevent="handleBackClick">Back to Candidate</button>
+          </div>
+        </div>
       </div>
-      <div class="column">
-        <h4 class="title is-4">Edit Resumes</h4>
-      </div>
+      <resumes-editor :id="id" />
     </div>
-    <resumes-editor :id="id" />
   </div>
 </template>
 
@@ -30,3 +34,10 @@
     }
   };
 </script>
+
+<style scoped>
+  .is-scrollable {
+    height: 100%;
+    overflow: auto;
+  }
+</style>

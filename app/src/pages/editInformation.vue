@@ -1,6 +1,13 @@
 <template>
-  <div class="container is-fluid">
-    <component :is="currentComponent" :id="id" @save="save" @cancel="redirectToRecord" />
+  <div class="container is-fluid is-scrollable">
+    <div class="section">
+      <component
+        :is="currentComponent"
+        :id="id"
+        @save="save"
+        @cancel="redirectToRecord"
+      />
+    </div>
   </div>
 </template>
 
@@ -50,3 +57,10 @@
 
   export default EditInformation;
 </script>
+
+<style scoped>
+  .is-scrollable {
+    height: 100%;
+    overflow: auto;
+  }
+</style>

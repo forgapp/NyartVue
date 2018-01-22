@@ -1,11 +1,11 @@
 <template>
-  <div>
-    <div class="container">
+  <div class="container is-fluid">
+    <div v-if="!isAdmin" class="section">
   		<div class="notification is-danger">
   			You are not allowed here.
   		</div>
   	</div>
-  	<div class="container is-fluid">
+  	<div v-else class="section">
     	<div class="columns">
     	  <div class="column is-3">
     	    <aside class="menu">
@@ -33,7 +33,10 @@
 
 
 <script>
+  import { mapState } from 'vuex';
+
   export default {
-    name: 'Admin'
+    name: 'Admin',
+    computed: mapState('app', ['isAdmin'])
   };
 </script>

@@ -19,9 +19,7 @@
   export default {
     name: 'home',
     components: { SearchResults },
-    computed: {
-      ...mapState('search', [ 'isSearching', 'total' ])
-    }
+    computed: mapState('search', [ 'isSearching', 'total' ])
   };
 </script>
 

@@ -19,13 +19,8 @@
             {{ key }}: {{ code.join(', ') }}
           </p>
         </div>
-        <nav class="level is-mobile">
-          <div class="level-left">
-            <a class="level-item">
-              <display-languages :languages="record.Languages" />
-            </a>
-          </div>
-        </nav>
+        <display-languages :languages="record.Languages" />
+        <p></p>
       </div>
     </article>
   </div>
@@ -45,13 +40,13 @@
     @Prop({ default: {} }) record
 
     get flagImageUrl() {
-      const code = this.record.NationalityCode.toLowerCase();
+      const code = this.record.NationalityCode;
 
       if (!code) {
         return '';
       }
 
-      return require(`../../assets/flags/${code}.svg`);
+      return require(`../../assets/flags/${code.toLowerCase()}.svg`);
     }
 
     get age() {
@@ -59,8 +54,6 @@
     }
 
     get links() {
-      console.log(this.record);
-
       return {
         candidate: this.id ? `/details/candidate/${this.id}` : '',
         company: this.record.Company ? `/details/company/${this.record.Company.id}` : ''
@@ -90,6 +83,6 @@
   }
 
   .flag {
-    box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.75);
+    border: 1px solid hsla(0, 0%, 75%, 1);
   }
 </style>

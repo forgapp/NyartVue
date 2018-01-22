@@ -45,7 +45,8 @@
         },
         "InterviewNotes": { "type": "text" },
         "Nationality": { "type": "keyword" },
-        "Birthdate": { 
+        "NationalityCode": { "type": "keyword" },
+        "Birthdate": {
           "type": "date",
           "format": "yyyy-MM-dd"
         },

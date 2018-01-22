@@ -19,13 +19,8 @@
             {{ key }}: {{ code.join(', ') }}
           </p>
         </div>
-        <nav class="level is-mobile">
-          <div class="level-left">
-            <a class="level-item">
-              <display-languages :languages="record.Languages" />
-            </a>
-          </div>
-        </nav>
+        <display-languages :languages="record.Languages" />
+        <p></p>
       </div>
     </article>
   </div>

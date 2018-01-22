@@ -7,7 +7,7 @@
     <div class="notification is-warning is-fullwidth" v-if="this.total === 0">
       No Results Found.
     </div>
-    <div class="column is-half is-fullheight" v-for="item in results" v-if="total > 0" :key="item._id">
+    <div class="column is-half" v-for="item in results" v-if="total > 0" :key="item._id">
       <dynamic-card :key="item._id" :index="item._index" :hit="item" />
     </div>
   </div>
