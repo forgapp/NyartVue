@@ -43,6 +43,23 @@ class Elastic {
     return this;
   }
 
+  async count() {
+    const elasticKey = await getKey();
+    const { index, type, queryString } = this;
+    const saneIndex = index ? index + '/' : '';
+    const saneType = type ? type + '/' : '';
+    const results = fetch(`${this.baseUrl}/${saneIndex}${saneType}_count`, {
+      method: 'POST',
+      body: JSON.stringify(queryString),
+      headers: {
+        'Authorization': `Basic ${elasticKey}`,
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json());
+
+    return results;
+  }
+
   async search() {
     const elasticKey = await getKey();
     const { index, type, sizeLimit, queryString } = this;

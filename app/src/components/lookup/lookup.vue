@@ -4,7 +4,7 @@
     <div :class="dropdownClass">
       <div class="dropdown-trigger">
         <p class="control has-icons-right">
-          <input :class="{ 'input': true, 'is-small': isSmall }" v-model="searchText" @keyup="keyup" @keydown="keydown" :placeholder="placeholder" />
+          <input :class="{ 'input': true, 'is-small': isSmall }" v-model="searchText" @keyup="keyup" @keydown.enter="keydown" :placeholder="placeholder" />
           <span :class="{ 'icon': true, 'is-small': true, 'is-right': true, clear: true, 'is-hidden': isEmpty }" @click="clearSelection">
             <i class="fa fa-times"></i>
           </span>
@@ -79,11 +79,13 @@
     },
     methods: {
       keydown: function (event) {
+        console.log('keydown');
         if (this.hasResults) {
           event.preventDefault();
         }
       },
       keyup: function (event) {
+        console.log('keyup');
         switch (event.keyCode) {
         case KEY_UP:
           event.preventDefault();
@@ -111,8 +113,9 @@
       },
       search: debounce(function (value) {
         const searchText = `${value}*`;
+        const query = this.extraQuery ? searchText + ' ' + this.extraQuery : searchText;
 
-        this.elastic.query(searchText + ' ' + this.extraQuery)
+        this.elastic.query(query)
           .search()
           .then(response => {
             this.suggestions = response.hits.hits;

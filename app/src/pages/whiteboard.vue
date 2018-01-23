@@ -1,26 +1,57 @@
 <template>
-  <div class="container is-fluid is-fullheight">
+  <div class="container is-fluid is-fullheight whiteboard">
     <div class="section">
       <h3 class="title is-4">
         Whiteboard
       </h3>
     </div>
-    <div class="section">
-      <div class="columns">
-        <div class="column">
+    <div class="columns whiteboard-content">
+      <div class="column">
+        <div class="box">
           <h3 class="title is-6">Applications</h3>
-          <div v-for="process in processes.application" :key="process.id">{{ process.id }}</div>
+          <div>
+            <div v-for="process in processes.application" :key="process.id">{{ process.id }}</div>
+          </div>
         </div>
+      </div>
 
-        <div class="column">
-          <div class="box">
-            <h3 class="title is-6">CCM1</h3>
+      <div class="column">
+        <div class="box">
+          <h3 class="title is-6">Submittals</h3>
+          <div>
+            <div v-for="process in processes.submittal" :key="process.id">{{ process.id }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="column whiteboard-column">
+        <div class="box whiteboard-column">
+          <h3 class="title is-6 has-text-centered whiteboard-title">CCM1</h3>
+          <div class="whiteboard-column-inner">
             <process-card
               v-for="process in processes.ccm1"
               :key="process.id"
               :process="process"
               @open-ats="openDrawer"
             />
+          </div>
+        </div>
+      </div>
+
+      <div class="column">
+        <div class="box">
+          <h3 class="title is-6">CCM+</h3>
+          <div>
+            <div v-for="process in processes.application" :key="process.id">{{ process.id }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="column">
+        <div class="box">
+          <h3 class="title is-6">Offers</h3>
+          <div>
+            <div v-for="process in processes.offer" :key="process.id">{{ process.id }}</div>
           </div>
         </div>
       </div>
@@ -202,6 +233,27 @@
 <style scoped>
   .whiteboard {
     position: relative;
+  }
+
+  .whiteboard-title {
+    margin: 0.25rem;;
+  }
+
+  .whiteboard-content{
+    height: calc(100% - 60px);
+    overflow: hidden;
+  }
+
+  .whiteboard-column {
+    height: 100%;
+    overflow: hidden;
+    padding: 0.15rem;
+  }
+
+  .whiteboard-column-inner {
+    height: calc(100% - 26px);
+    overflow: auto;
+    padding: 1.25rem 0.5rem;
   }
 
   .whiteboard-overlay {

@@ -16,7 +16,7 @@
   import lookup from './lookup';
 
   export default {
-    name: 'companyLookup',
+    name: 'recruiterLookup',
     components: { lookup },
     props: ['value', 'isSmall'],
     computed: {
