@@ -1,5 +1,6 @@
 <template>
-  <div class="box">
+  <spinner v-if="isLoading" />
+  <div v-else class="box">
     <nav class="level is-mobile">
       <div class="level-left">
         <div class="level-item">
@@ -18,8 +19,8 @@
            <span>{{ record.Status }}</span>
         </div>
       -->
-      </div> 
-      
+      </div>
+
       <div class="level-right">
         <div class="level-item">
           <div class="dropdown is-right is-hoverable">
@@ -33,7 +34,7 @@
             </div>
             <div class="dropdown-menu">
               <div class="dropdown-content">
-                  <router-link class="dropdown-item" :to="`/process/new?job=${id}`">
+                  <router-link class="dropdown-item" :to="`/process/new?jobId=${id}&jobName=${record.JobTitle}`">
                     Apply a candidate
                   </router-link>
                   <router-link class="dropdown-item" :to="`/edit-info/Job/${id}`">
@@ -46,10 +47,10 @@
             </div>
           </div>
         </div>
-      </div> 
+      </div>
     </nav>
 
-    <display-languages :languages="record.Languages" /> 
+    <display-languages :languages="record.Languages" />
 
     <v-tab>
       <v-pane title="Information">
@@ -65,7 +66,7 @@
                   <div class="column is-half">
                     <router-link :to="links.company">{{ record.Company && record.Company.Name }}</router-link>
                   </div>
-                  
+
                   <div class="column is-half is-hidden-desktop column-label">Status</div>
                   <div class="column is-half is-hidden-desktop">{{ record.Status }}</div>
                   <div class="column is-half column-label">Salary Range</div>
@@ -98,7 +99,7 @@
                   <!--</div>-->
                 </div>
               </div>
-              
+
               <div class="column">
                 <markdown label="Notes" :text="record.Notes" />
               </div>
@@ -114,7 +115,7 @@
             <!--<codes-display :codes="record.Skills" />-->
           </div>
         </div>
-    <!-- 
+    <!--
         <div id="information" class="columns">
           <div class="column is-3">
             <table class="fullwidthTable is-hidden-desktop">
@@ -209,6 +210,7 @@
     props: [ 'id' ],
     data() {
       return {
+        isLoading: true,
         record: {},
         contact: {}
       };
@@ -269,7 +271,7 @@
       }
     }
   };
-  
+
 // import { h, Component } from 'preact';
 // import databaseStream from '../../lib/databaseStream';
 // import { Tabs, Pane } from '../tabs';

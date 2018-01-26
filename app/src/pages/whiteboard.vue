@@ -1,25 +1,39 @@
 <template>
   <div class="container is-fluid is-fullheight whiteboard">
     <div class="section">
-      <h3 class="title is-4">
-        Whiteboard
-      </h3>
+      <whiteboard-header
+        :recruiter="recruiter"
+        @recruiter-changed="handleRecruiterChange"
+        @refresh="refreshWhiteboard"
+      />
     </div>
     <div class="columns whiteboard-content">
-      <div class="column">
-        <div class="box">
-          <h3 class="title is-6">Applications</h3>
-          <div>
-            <div v-for="process in processes.application" :key="process.id">{{ process.id }}</div>
+      <div class="column whiteboard-column">
+        <div class="box whiteboard-column">
+          <h3 class="title is-6 has-text-centered whiteboard-title">Applications</h3>
+          <div class="whiteboard-column-inner">
+            <process-card
+              v-for="process in processes.application"
+              :key="process.id"
+              :process="process"
+              stage="Application"
+              @open-ats="openDrawer"
+            />
           </div>
         </div>
       </div>
 
-      <div class="column">
-        <div class="box">
-          <h3 class="title is-6">Submittals</h3>
-          <div>
-            <div v-for="process in processes.submittal" :key="process.id">{{ process.id }}</div>
+      <div class="column whiteboard-column">
+        <div class="box whiteboard-column">
+          <h3 class="title is-6 has-text-centered whiteboard-title">Submittals</h3>
+          <div class="whiteboard-column-inner">
+            <process-card
+              v-for="process in processes.submittal"
+              :key="process.id"
+              :process="process"
+              stage="Submittal"
+              @open-ats="openDrawer"
+            />
           </div>
         </div>
       </div>
@@ -38,65 +52,50 @@
         </div>
       </div>
 
-      <div class="column">
-        <div class="box">
-          <h3 class="title is-6">CCM+</h3>
-          <div>
-            <div v-for="process in processes.application" :key="process.id">{{ process.id }}</div>
+      <div class="column whiteboard-column">
+        <div class="box whiteboard-column">
+          <h3 class="title is-6 has-text-centered whiteboard-title">CCM+</h3>
+          <div class="whiteboard-column-inner">
+            <process-card
+              v-for="process in processes.ccm"
+              :key="process.id"
+              :process="process"
+              @open-ats="openDrawer"
+            />
           </div>
         </div>
       </div>
 
-      <div class="column">
-        <div class="box">
-          <h3 class="title is-6">Offers</h3>
-          <div>
-            <div v-for="process in processes.offer" :key="process.id">{{ process.id }}</div>
+      <div class="column whiteboard-column">
+        <div class="box whiteboard-column">
+          <h3 class="title is-6 has-text-centered whiteboard-title">Offers</h3>
+          <div class="whiteboard-column-inner">
+            <process-card
+              v-for="process in processes.offer"
+              :key="process.id"
+              :process="process"
+              @open-ats="openDrawer"
+            />
           </div>
         </div>
+      </div>
+
+    </div>
+    <div :class="overlayClass" @click="closeDrawer"></div>
+    <div :class="drawerClass">
+      <div v-if="isDrawerOpen">
+        <ats type="Job" :process="selectedProcess" />
+        <pre>{{ selectedProcess.Application }}</pre>
+        <pre>{{ selectedProcess.Submittal }}</pre>
+        <pre>{{ selectedProcess.ccm }}</pre>
+        <pre>{{ selectedProcess.Offer }}</pre>
+        <pre>{{ selectedProcess.Placement }}</pre>
+      </div>
+      <div v-else>
+        No Process Selected.
       </div>
     </div>
   </div>
-  <!--<div class="whiteboard">-->
-  <!--  Whiteboard.<br />-->
-  <!--  <div class="columns">-->
-  <!--    <div class="column">-->
-  <!--      <h3 class="title is-6">Applications</h3>-->
-  <!--      <div v-for="process in processes.application" :key="process.id">{{ process.id }}</div>-->
-  <!--    </div>-->
-
-  <!--    <div class="column">-->
-  <!--      <h3 class="title is-6">Submittals</h3>-->
-  <!--      <div v-for="process in processes.submittal" :key="process.id">{{ process.id }}</div>-->
-  <!--    </div>-->
-
-  <!--    <div class="column">-->
-  <!--      <div class="box">-->
-  <!--        <h3 class="title is-6">CCM1</h3>-->
-  <!--        <process-card-->
-  <!--          v-for="process in processes.ccm1"-->
-  <!--          :key="process.id"-->
-  <!--          :process="process"-->
-  <!--          @open-ats="openDrawer"-->
-  <!--        />-->
-  <!--      </div>-->
-  <!--    </div>-->
-
-  <!--    <div class="column">-->
-  <!--      <h3 class="title is-6">CCM2+</h3>-->
-  <!--      <div v-for="process in processes.ccm" :key="process.id">{{ process.id }}</div>-->
-  <!--    </div>-->
-
-  <!--    <div class="column">-->
-  <!--      <h3 class="title is-6">Offer</h3>-->
-  <!--      <div v-for="process in processes.offer" :key="process.id">{{ process.id }}</div>-->
-  <!--    </div>-->
-  <!--  </div>-->
-  <!--  <div :class="overlayClass" @click="closeDrawer"></div>-->
-  <!--  <div :class="drawerClass">-->
-  <!--    <ats v-if="isDrawerOpen" type="Job" :process="selectedProcess" />-->
-  <!--  </div>-->
-  <!--</div>-->
 </template>
 
 <script>
@@ -106,13 +105,23 @@
   import { set, del } from '@/lib/immutable';
   import ProcessCard from '@/components/cards/process';
   import Ats from '@/components/ats';
+  import WhiteboardHeader from '@/components/whiteboardHeader';
 
-  @Component({ components: { Ats, ProcessCard } })
+  @Component({
+    components: { Ats, ProcessCard, WhiteboardHeader }
+  })
   class Whiteboard extends Vue {
+    recruiter = {}
     processes = {}
     selectedProcess = {};
 
     beforeMount() {
+      const user = this.$store.state.app.user;
+      this.recruiter = {
+        Name: user.displayName,
+        id: user.id
+      };
+
       this.unsubscribe = this.getProcessSubscription();
     }
 
@@ -147,9 +156,18 @@
     //   };
     // }
 
+    handleRecruiterChange(recruiter) { this.recruiter = recruiter; }
+
+    refreshWhiteboard() {
+      this.processes = {};
+      this.unsubscribe();
+      this.unsubscribe = this.getProcessSubscription();
+    }
+
     getProcessSubscription() {
       return firestore.collection('Process')
         .where('Status', '==', 'In Progress')
+        .where('Recruiter.id', '==', this.recruiter.id)
         .onSnapshot(querySnapshot => {
           querySnapshot.docChanges.forEach(this.setProcess);
         });
@@ -233,33 +251,42 @@
 <style scoped>
   .whiteboard {
     position: relative;
+    overflow: auto;
+  }
+
+  @media (min-width: 769px) {
+    .whiteboard {
+      overflow: hidden;
+    }
+
+    .whiteboard-content{
+      height: calc(100% - 60px);
+      overflow: hidden;
+    }
+
+    .whiteboard-column {
+      height: 100%;
+      overflow: hidden;
+      padding: 0.15rem;
+    }
+
+    .whiteboard-column-inner {
+      height: calc(100% - 26px);
+      overflow: auto;
+      padding: 1.25rem 0.5rem;
+    }
   }
 
   .whiteboard-title {
     margin: 0.25rem;;
   }
 
-  .whiteboard-content{
-    height: calc(100% - 60px);
-    overflow: hidden;
-  }
 
-  .whiteboard-column {
-    height: 100%;
-    overflow: hidden;
-    padding: 0.15rem;
-  }
-
-  .whiteboard-column-inner {
-    height: calc(100% - 26px);
-    overflow: auto;
-    padding: 1.25rem 0.5rem;
-  }
 
   .whiteboard-overlay {
     /*background-color: rgba(10, 10, 10, 0.86);*/
     /*z-index: 101;*/
-    position: absolute;
+    position: fixed;
     top: 0;
     bottom: 0;
     right: 0;
@@ -282,7 +309,7 @@
 
   .drawer {
     background: #fff;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     z-index: 1;
@@ -291,10 +318,12 @@
     transition-property: all;
     transition-duration: 250ms;
     transition-timing-function: ease-out;
-    width: 45%;
+    width: 65%;
     left: auto;
     right: 0;
     z-index: 3;
+    padding: 1.5rem;
+    overflow: auto;
   }
 
   .drawer.is-closed {

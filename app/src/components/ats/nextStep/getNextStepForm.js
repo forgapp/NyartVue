@@ -12,7 +12,8 @@ function getNextStepForm(stage) {
       label: 'Placement',
       form: PlacementForm,
       step: {
-        StageDate: formatdateForInput(new Date())
+        StageDate: formatdateForInput(new Date()),
+        Fee: 0
       }
     };
   } else if (stage.CCM) {

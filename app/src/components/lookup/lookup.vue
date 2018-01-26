@@ -1,6 +1,6 @@
 <template>
   <div class="field">
-    <div class="label is-small" v-if="label">{{ label }}</div>
+    <div class="{ 'label': true, 'is-small': isSmall }" v-if="label">{{ label }}</div>
     <div :class="dropdownClass">
       <div class="dropdown-trigger">
         <p class="control has-icons-right">

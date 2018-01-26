@@ -3,7 +3,9 @@
     <div class="container is-fluid header-container">
       <div class="navbar-brand">
         <router-link class="navbar-item" to="/">
-          <img src="../assets/logo.png" alt="Nyart: Not Yet Another Recruiting Tool">
+          <span @click="handleLogoClick">
+            <img src="../assets/logo.png" alt="Nyart: Not Yet Another Recruiting Tool">
+          </span>
         </router-link>
 
         <div :class="burgerbuttonClass" @click="toggleMenu">
@@ -82,6 +84,12 @@
     }
 
     toggleMenu() { this.isOpen = !this.isOpen; }
+
+    handleLogoClick() {
+      if (this.isOpen) {
+        this.toggleMenu();
+      }
+    }
   }
 
   export default AppHeader;

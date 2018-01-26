@@ -1,42 +1,42 @@
 <template>
-  <div class="ats columns is-gapless is-marginless">
-    <div class="column is-4">
-      <div class="columns is-mobile is-gapless">
-        <div class="column">
-          <router-link :to="`/details/${type.toLowerCase()}/${label.id}`">{{ label.text }}</router-link>
-          <p v-if="status.inProgress">opened for {{ openedDays }} days</p>
-        </div>
-        <div class="column has-text-centered">
-          <p v-if="status.isPlaced" class="tag is-success">Placed</p>
-          <p v-if="status.isBackout" class="tag is-danger">Backout</p>
-          <p v-if="status.isRejected" class="tag is-danger">Rejected</p>
-        </div>
-        <div class="column has-text-centered">
-          <div class="field is-grouped">
-            <p v-if="status.inProgress" class="control">
-              <next-step id="id" :process="process">
-                <i class="fa fa-play" aria-hidden="true"></i>
-              </next-step>
-            </p>
-            <p v-if="status.inCCM" class="control">
-              <next-step id="id" :process="process" is-new-ccm="true">
-                <span class="icon">
-                  <i class="fa fa-plus" aria-hidden="true"></i>
-                </span>
-                <span>CCM</span>
-              </next-step>
-            </p>
-            <div v-if="!status.isPlaced">
-              <unreject-button v-if="status.isRejected" :id="process.id" label="label" />
-             <reject-button v-else :id="process.id" label="label" />
+  <div class="ats">
+    <div class="columns no-margin-bottom">
+      <div class="column is-4">
+        <div class="level is-mobile small-margin">
+          <div class="level-left">
+            <div class="level-item">
+              <router-link :to="`/details/${type.toLowerCase()}/${label.id}`">{{ label.text }}</router-link>
             </div>
           </div>
+          <div class="level-right">
+            <p v-if="status.isPlaced" class="tag is-success">Placed</p>
+            <p v-else-if="status.isBackout" class="tag is-danger">Backout</p>
+            <p v-else-if="status.isRejected" class="tag is-danger">Rejected</p>
+            <p v-else class="tag is-info">In Progress</p>
+          </div>
+        </div>
+        <div class="buttons">
+          <p v-if="status.inProgress" class="control">
+            <next-step id="id" :process="process">
+              <i class="fa fa-play" aria-hidden="true"></i>
+            </next-step>
+          </p>
+          <p v-if="status.inCCM" class="control">
+            <next-step id="id" :process="process" is-new-ccm="true">
+              <span class="icon">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+              </span>
+              <span>CCM</span>
+            </next-step>
+          </p>
+          <div v-if="!status.isPlaced">
+            <unreject-button v-if="status.isRejected" :id="process.id" label="label" />
+           <reject-button v-else :id="process.id" label="label" />
+         </div>
         </div>
       </div>
-    </div>
-    <div class="column">
-      <div class="steps-padding">
-        <div class="columns is-gapless steps">
+      <div class="column">
+        <div class="columns is-gapless steps is-fullheight">
           <step :step="stages.Application" :is-rejected="status.isRejected">
             <p>Application</p>
           </step>
@@ -56,6 +56,11 @@
             <p>Placement</p>
           </step>
         </div>
+      </div>
+    </div>
+    <div class="columns">
+      <div class="column">
+        <p v-if="status.inProgress">opened for {{ openedDays }} days</p>
       </div>
     </div>
   </div>
@@ -134,17 +139,17 @@
 </script>
 
 <style scoped>
-  .ats {
-    padding-top: 0.5rem;
-  }
-
   .ats:not(:last-child) {
     border-bottom: 1px solid lightgrey;
-    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
   }
 
-  .steps-padding {
-    padding: 0rem 0.75rem !important;
+  .no-margin-bottom {
+    margin-bottom: 0;
+  }
+
+  .small-margin {
+    margin-bottom: 0.5rem;
   }
 </style>
 

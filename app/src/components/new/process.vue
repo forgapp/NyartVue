@@ -7,7 +7,7 @@
       <div class="field-body">
         <div class="field">
           <p class="control is-expanded">
-            <candidate-lookup v-model="process.Candidate" />
+            <candidate-lookup :value="process.Candidate" @input="handleCandidateChange" />
             <p class="help is-danger" v-show="!validation.Candidate">
               Candidate is required.
             </p>
@@ -23,7 +23,7 @@
       <div class="field-body">
         <div class="field">
           <p class="control is-expanded">
-            <job-lookup v-model="process.Job" />
+            <job-lookup :value="process.Job" @input="handleJobChange" />
             <p class="help is-danger" v-show="!validation.Job">
               Job is required.
             </p>
@@ -37,7 +37,7 @@
         <label class="label">Registration</label>
       </div>
       <div class="field-body">
-        <recruiter-lookup v-model="process.Recruiter" />
+        <recruiter-lookup :value="process.Recruiter" @input="handleRecruiterChange" />
 
         <div class="field">
           <p class="control is-expanded">
@@ -63,7 +63,7 @@
             </button>
           </div>
           <div class="control">
-            <button class="button" type="button" @click.prevent="handleCancel">Cancel</button>
+            <button class="button" type="button" @click.prevent="cancel">Cancel</button>
           </div>
         </div>
       </div>
@@ -72,78 +72,78 @@
 </template>
 
 <script>
-  import { isEmpty } from '@/lib/utils';
-  import { formatdateForInput } from '@/lib/date';
+  import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
   import { CandidateLookup, JobLookup } from '../lookup';
 
-  export default {
-    name: 'newProcessForm',
-    components: { CandidateLookup, JobLookup },
-    props: ['recruiter', 'isSaving'],
-    data() {
+  @Component({
+    components: { CandidateLookup, JobLookup }
+  })
+  class NewProcessForm extends Vue {
+    @Prop() process
+    @Prop() isSaving
+
+    get saveButtonClass() {
       return {
-        process: {
-          Candidate: {
-            Name: '',
-            id: ''
-          },
-          Job: {
-            Title: '',
-            id: ''
-          },
-          Status: 'In Progress',
-          Application: {
-            StageDate: formatdateForInput(new Date())
-          },
-          Recruiter: {
-            id: this.recruiter.id,
-            Name: this.recruiter.displayName
-          },
-          RegistrationDate: formatdateForInput(new Date())
-        }
+        button: true,
+        'is-primary': true,
+        'is-loading': this.isSaving
       };
-    },
-    computed: {
-      saveButtonClass() {
-        return {
-          button: true,
-          'is-primary': true,
-          'is-loading': this.isSaving
-        };
-      },
-      validation() {
-        return {
-          Candidate: !!this.process.Candidate.Name,
-          Job: !!this.process.Job.Title
-        };
-      },
-      isValid() {
-        var validation = this.validation;
-        return Object.keys(validation).every(function (key) {
-          return validation[key];
-        });
-      }
-    },
-    methods: {
-      handleRegistrationdateChange(event) {
-        const { value } = event.target;
+    }
 
-        this.Application.StageDate = value;
-      },
-      handleSave: function (event) {
-        if (this.isValid) {
-          const process = Object.keys(this.process)
-            .filter(key => !isEmpty(this.process[key]))
-            .reduce((aggr, key) =>
-              Object.assign({}, aggr, { [key]: this.process[key] }), {}
-            );
+    get validation() {
+      return {
+        Candidate: !!this.process.Candidate.Name,
+        Job: !!this.process.Job.Title
+      };
+    }
 
-          this.$emit('save', process);
-        }
-      },
-      handleCancel: function () {
-        this.$emit('cancel');
+    get isValid() {
+      const validation = this.validation;
+      return Object.keys(validation).every(function (key) {
+        return validation[key];
+      });
+    }
+
+    handleCandidateChange(candidate) {
+      this.processUpdated({
+        Candidate: candidate
+      });
+    }
+
+    handleJobChange(job) {
+      this.processUpdated({
+        Job: job
+      });
+    }
+
+    handleRecruiterChange(recruiter) {
+      this.processUpdated({
+        Recruiter: recruiter
+      });
+    }
+
+    handleRegistrationdateChange(event) {
+      const { value } = event.target;
+      const application = Object.assign({}, this.process.Application, {
+        StageDate: value
+      });
+
+      this.processUpdated({
+        Application: application,
+        RegistrationDate: value
+      });
+    }
+
+    handleSave(event) {
+      if (this.isValid) {
+        this.save();
       }
     }
-  };
+
+    @Emit() processUpdated(process) {}
+    @Emit() save() {}
+    @Emit() cancel() {}
+  }
+
+  export default NewProcessForm;
 </script>

@@ -36,11 +36,11 @@
         "Emails": { "type":  "keyword" },
         "Addresses": {
           "properties": {
-            "Street": { "type":  "keyword" },
-            "Complement": { "type":  "keyword" },
-            "City": { "type":  "keyword" },
-            "State": { "type":  "keyword" },
-            "Country": { "type":  "keyword" }
+            "Street": { "type":  "text" },
+            "Complement": { "type":  "text" },
+            "City": { "type":  "text" },
+            "State": { "type":  "text" },
+            "Country": { "type":  "text" }
           }
         },
         "InterviewNotes": { "type": "text" },

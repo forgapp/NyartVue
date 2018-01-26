@@ -13,10 +13,9 @@
    <div class="card-content">
      <div class="content">
        Applied To: <router-link :to="links.job">{{ labels.job }}</router-link>
-       <span class="is-invisible">Company: <a>Name goes Here</a></span>
      </div>
-     <div class="content is-invisible">
-       2017-11-09 (2days ago)
+     <div class="content">
+       {{ stageDate }} <small>{{ openDays }}</small>
      </div>
    </div>
  </div>
@@ -24,10 +23,12 @@
 
 <script>
   import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+  import { differenceInDays } from 'date-fns';
 
   @Component({})
   class ProcessCard extends Vue {
     @Prop({}) process
+    @Prop({}) stage
 
     get labels() {
       return {
@@ -43,6 +44,20 @@
       };
     }
 
+    get stageDate() {
+      return this.process[this.stage].StageDate;
+    }
+
+    get openDays() {
+      const diff = differenceInDays(this.stageDate, new Date());
+
+      if (diff === 0) {
+        return '(today)';
+      }
+
+      return `(${diff} days ago)`;
+    }
+
     @Emit('open-ats')
     openAts(id) {}
   }
@@ -53,6 +68,10 @@
 <style scoped>
   .whiteboard-card:not(:last-child) {
     margin-bottom: 0.75rem;
+  }
+
+  .whiteboard-card .header-title {
+    padding: 0.25rem 0.75rem;
   }
 
   .whiteboard-card .header-title,
