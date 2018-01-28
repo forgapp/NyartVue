@@ -69,7 +69,7 @@
                     <emails-display :emails="record.Emails" />
                   </div>
                   <div class="column is-12-desktop is-one-third-mobile">
-                    <addresses-display :emails="record.Addresses" />
+                    <addresses-display :addresses="record.Addresses" />
                   </div>
                 </div>
               </div>
@@ -86,7 +86,7 @@
         </div>
       </v-pane>
       <v-pane title="Candidates"> Candidates</v-pane>
-      <v-pane title="clientNumber"> {{ clientNumber }}</v-pane>
+      <v-pane :title="paneTitle.client"> {{ paneTitle.client }}</v-pane>
     </v-tab>
   </div>
 </template>
@@ -106,8 +106,7 @@
     data() {
       return {
         record: {},
-        clientContacts: [],
-        clientNumber: 0
+        clientContacts: []
       };
     },
     mounted: function () {
@@ -120,11 +119,21 @@
       this.unsubscribeClientContacts = firestore.collection('ClientContact')
         .where('Company.ref', '==', firestore.collection('Company').doc(this.id))
         .onSnapshot(querySnapshot => {
-          this.clientNumber = querySnapshot.size;
-          console.log(querySnapshot);
+          let contacts = [];
+
           querySnapshot.forEach(function (doc) {
             console.log(doc.id, '=>', doc.data());
+            const contact = {
+              id: doc.id,
+              ...doc.data
+            };
+            contacts = [
+              ...contacts,
+              contact
+            ];
           });
+
+          this.clientContacts = contacts;
         });
     },
     beforeDestroyed: function () {
@@ -132,6 +141,11 @@
       this.unsubscribeClientContacts();
     },
     computed: {
+      paneTitle: function () {
+        return {
+          client: `Contacts ${this.clientContacts.length}`
+        };
+      },
       recordNumbers: function () {
         return {
           contacts: `Client Contacts (${this.clientNumber})`

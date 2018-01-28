@@ -34,7 +34,7 @@
               </div>
             </div>
           </div>
-      
+
           <div class="field is-horizontal">
             <div class="field-label is-normal">
               <label class="label">Name (Kanji)</label>
@@ -62,7 +62,7 @@
               </div>
             </div>
           </div>
-          
+
           <!--<div class="field is-horizontal">-->
           <!--  <div class="field-label is-normal">-->
           <!--    <label class="label">Date of Birth</label>-->
@@ -75,7 +75,7 @@
           <!--    </div>-->
           <!--  </div>-->
           <!--</div>-->
-        
+
           <div class="field is-horizontal">
             <div class="field-label is-normal">
               <label class="label">Nationality</label>
@@ -93,7 +93,7 @@
               </div>
             </div>
           </div>
-      
+
           <div class="field is-horizontal">
             <div class="field-label is-normal">
               <label class="label">Employment</label>
@@ -109,9 +109,9 @@
                   />
                 </p>
               </div>
-        
+
               <company-lookup v-model="clientContact.Company" />
-        
+
               <Selectbox
                 placeholder="Level"
                 type="RoleLevel"
@@ -119,7 +119,7 @@
               />
             </div>
           </div>
-          
+
           <!--<div class="field is-horizontal">-->
           <!--  <div class="field-label is-normal">-->
           <!--    <label class="label">Salary</label>-->
@@ -133,14 +133,14 @@
           <!--    </div>-->
           <!--  </div>-->
           <!--</div>-->
-          
+
           <div class="field is-horizontal">
             <div class="field-label is-normal">
               <label class="label">Registration</label>
             </div>
             <div class="field-body">
               <recruiter-lookup v-model="clientContact.Recruiter" />
-        
+
               <div class="field">
                 <p class="control is-expanded">
                   <input
@@ -151,7 +151,7 @@
                   />
                 </p>
               </div>
-        
+
               <Selectbox
                 placeholder="Source"
                 type="clientContactSource"
@@ -182,10 +182,11 @@
         </div>
         <div class="column is-4">
           <h1 class="title is-6">Addresses</h1>
+          <addresses-edit :addresses="clientContact.Addresses" @address-changed="handleAddressChange" />
         </div>
       </div>
     </div>
-    
+
     <!--<div class="box">-->
     <!--  <div class="columns">-->
     <!--    <div class="column is-4">-->
@@ -198,7 +199,7 @@
     <!--    </div>-->
     <!--  </div>-->
     <!--</div>-->
-    
+
     <div class="box">
       <div class="buttons">
         <span class="button is-primary" @click.prevent="handleSubmit" :disabled="!isValid">Save changes</span>
@@ -213,11 +214,12 @@
   import { EditLanguages } from '../languages';
   import { PhonesEdit } from '../phones';
   import { EmailsEdit } from '../emails';
+  import { AddressesEdit } from '../addresses';
   import { EditCodes } from '../codes';
 
   export default {
     name: 'ClientContactEdit',
-    components: { PhonesEdit, EmailsEdit, EditCodes, EditLanguages },
+    components: { AddressesEdit, PhonesEdit, EmailsEdit, EditCodes, EditLanguages },
     props: [ 'id' ],
     data() {
       return {
@@ -288,6 +290,9 @@
       },
       handleEmailChange(emails) {
         this.clientContact = Object.assign({}, this.clientContact, { Emails: emails });
+      },
+      handleAddressChange(addresses) {
+        this.clientContact = Object.assign({}, this.clientContact, { Addresses: addresses });
       },
       handleSubmit() {
         if (this.isValid) {

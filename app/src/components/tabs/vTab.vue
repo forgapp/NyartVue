@@ -24,6 +24,7 @@
       this.tabs = this.$children.map(child => child.title);
       this.activatePane(this.selected);
     },
+    updated() { console.log('UPDATED'); },
     methods: {
       activatePane(index) {
         const currentTab = this.getTab(this.selected);

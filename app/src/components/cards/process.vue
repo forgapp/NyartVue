@@ -49,7 +49,7 @@
     }
 
     get openDays() {
-      const diff = differenceInDays(this.stageDate, new Date());
+      const diff = differenceInDays(new Date(), this.stageDate);
 
       if (diff === 0) {
         return '(today)';

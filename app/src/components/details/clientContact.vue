@@ -21,8 +21,8 @@
            <span>{{ record.Status }}</span>
         </div>
       -->
-      </div> 
-      
+      </div>
+
       <div class="level-right">
         <div class="level-item">
           <div class="dropdown is-right is-hoverable">
@@ -38,7 +38,6 @@
               <div class="dropdown-content">
                 <router-link class="dropdown-item" :to="`/edit-info/ClientContact/${id}`">
                   Edit Information
-                </router-link>w Notes
                 </router-link>
                 <a class="dropdown-item is-hidden">
                   Set Off-Limit
@@ -47,10 +46,10 @@
             </div>
           </div>
         </div>
-      </div> 
+      </div>
     </nav>
 
-    <display-languages :languages="record.Languages" /> 
+    <display-languages :languages="record.Languages" />
 
     <v-tab>
       <v-pane title="Information">
@@ -59,16 +58,16 @@
             <div class="columns is-multiline">
               <div class="column is-half">
                 <div id="information" class="columns is-multiline is-gapless is-mobile">
-                    
+
                   <div class="column is-half is-hidden-desktop column-label">Nationality</div>
                   <div class="column is-half is-hidden-desktop">{{ record.Nationality }}</div>
-  
+
                   <div class="column is-half is-hidden-desktop column-label">Status</div>
                   <div class="column is-half is-hidden-desktop">{{ record.Status }}</div>
-                
+
                   <div class="column is-half column-label">Title</div>
                   <div class="column is-half">{{ record.JobTitle }}</div>
-               
+
                   <div class="column is-half column-label">Company</div>
                   <div class="column is-half">
                     <router-link :to="links.company">{{ record.Company && record.Company.Name }}</router-link>
@@ -91,7 +90,7 @@
                     <emails-display :emails="record.Emails" />
                   </div>
                   <div class="column is-12-desktop is-one-third-mobile">
-                    <addresses-display :emails="record.Addresses" />
+                    <addresses-display :addresses="record.Addresses" />
                   </div>
                 </div>
               </div>
@@ -107,7 +106,7 @@
             <!--<codes-display :codes="record.Skills" />-->
           </div>
         </div>
-    <!-- 
+    <!--
         <div id="information" class="columns">
           <div class="column is-3">
             <table class="fullwidthTable is-hidden-desktop">
@@ -275,7 +274,7 @@
     width: 100%;
     margin-bottom: 7px;
   }
-  
+
   .flag {
     box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.75);
   }

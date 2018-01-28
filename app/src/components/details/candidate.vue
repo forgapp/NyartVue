@@ -56,8 +56,11 @@
               <router-link class="dropdown-item" :to="links.interviewNotes">
                 Edit Interview Notes
               </router-link>
-              <a class="dropdown-item is-hidden">
+              <a :class="statusLinkClass.offLimit" @click.prevent="changeStatus('Off-Limit')">
                 Set Off-Limit
+              </a>
+              <a :class="statusLinkClass.active" @click.prevent="changeStatus('Active')">
+                Set Active
               </a>
               <a class="dropdown-item is-hidden">
                 Lock Prefered Recruiter
@@ -224,6 +227,15 @@
       };
     }
 
+    get statusLinkClass() {
+      const isActive = this.record.Status === 'Active';
+
+      return {
+        offLimit: { 'dropdown-item': true, 'is-hidden': !isActive },
+        active: { 'dropdown-item': true, 'is-hidden': isActive }
+      };
+    }
+
     getSubscription() {
       this.isLoading = true;
 
@@ -271,6 +283,12 @@
         };
         this.ats = Object.assign({}, this.ats, { [doc.id]: process });
       }
+    }
+
+    changeStatus(status) {
+      firestore.collection('Candidate')
+        .doc(this.id)
+        .update({ Status: status });
     }
 
     @Watch('id')

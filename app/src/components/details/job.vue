@@ -185,7 +185,9 @@
         </div>
     -->
       </v-pane>
-      <v-pane title="ATS">Hello World!</v-pane>
+      <v-pane title="ATS">
+        <Ats v-for="process in ats" :key="process.id" type="Candidate" :process="process"/>
+      </v-pane>
     </v-tab>
 
   </div>
@@ -202,24 +204,28 @@
   import { EmailsDisplay } from '../emails';
   import { AddressesDisplay } from '../addresses';
   import { Markdown } from '../markdown';
+  import Ats from '../ats';
 
   export default {
     name: 'jobDetails',
     // components: { DisplayResumes, DisplayLanguages },
-    components: { ResumesDisplay, DisplayLanguages, CodesDisplay, PhonesDisplay, EmailsDisplay, AddressesDisplay, Markdown },
+    components: { Ats, ResumesDisplay, DisplayLanguages, CodesDisplay, PhonesDisplay, EmailsDisplay, AddressesDisplay, Markdown },
     props: [ 'id' ],
     data() {
       return {
         isLoading: true,
         record: {},
-        contact: {}
+        contact: {},
+        ats: {}
       };
     },
     beforeMount: function () {
       this.unsubscribe = this.getSubscription();
+      this.atsUnsubscribe = this.getAtsSubscription();
     },
     beforeDestroy: function () {
       this.unsubscribe();
+      this.atsUnsubscribe();
     },
     computed: {
       links() {
@@ -233,8 +239,30 @@
         return firestore.collection('Job')
           .doc(this.id)
           .onSnapshot(doc => {
+            this.isLoading = false;
             this.record = doc.data();
           });
+      },
+      getAtsSubscription() {
+        const candidateRef = firestore.collection('Job')
+          .doc(this.id);
+
+        return firestore.collection('Process')
+          .where('Job.ref', '==', candidateRef)
+          .onSnapshot(querySnapshot => {
+            querySnapshot.docChanges.forEach(this.setProcess);
+          });
+      },
+      setProcess(change) {
+        const { type, doc } = change;
+
+        if (type !== 'removed') {
+          const process = {
+            id: doc.id,
+            ...doc.data()
+          };
+          this.ats = Object.assign({}, this.ats, { [doc.id]: process });
+        }
       }
     },
     //   createSubscriptions: function (id) {
@@ -266,7 +294,9 @@
       id: function (val, oldVal) {
         if (val !== oldVal) {
           this.unsubscribe();
+          this.atsUnsubscribe();
           this.unsubscribe = this.getSubscription();
+          this.atsUnsubscribe = this.getAtsSubscription();
         }
       }
     }

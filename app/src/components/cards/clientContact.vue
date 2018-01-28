@@ -36,7 +36,7 @@
       },
       links() {
         return {
-          clientContact: `/details/clientContact/${this.id}`,
+          clientContact: `/details/clientcontact/${this.id}`,
           company: `/details/company/${this.record.Company.id}`
         };
       }

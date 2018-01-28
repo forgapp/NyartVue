@@ -28,7 +28,6 @@
 <style scoped>
   .phoneElement {
     display: flex;
-    /*align-items: center;*/
     margin-bottom: 0.5em;
     flex-direction: column;
   }

@@ -45,7 +45,6 @@ exports.onJobCreatedIndex = onJobCreatedIndex;
 exports.onJobupdatedIndex = onJobupdatedIndex;
 exports.onJobDeletedIndex = onJobDeletedIndex;
 
-
 exports.onClientContactCreatedIndex = onClientContactCreatedIndex;
 exports.onClientContactUpdatedIndex = onClientContactUpdatedIndex;
 exports.onClientContactDeletedIndex = onClientContactDeletedIndex;

@@ -79,6 +79,7 @@
         </div>
         <div class="column is-4">
           <h1 class="title is-6">Addresses</h1>
+          <addresses-edit :addresses="company.Addresses" @address-changed="handleAddressChange" />
         </div>
       </div>
     </div>
@@ -96,11 +97,12 @@
   import { firestore } from '@/lib/firebase';
   import { PhonesEdit } from '../phones';
   import { EmailsEdit } from '../emails';
+  import { AddressesEdit } from '../addresses';
   import { EditCodes } from '../codes';
 
   export default {
     name: 'CompanyEdit',
-    components: { PhonesEdit, EmailsEdit, EditCodes },
+    components: { PhonesEdit, EmailsEdit, EditCodes, AddressesEdit },
     props: ['id'],
     data() {
       return {
@@ -151,6 +153,9 @@
       },
       handleEmailChange(emails) {
         this.company = Object.assign({}, this.company, { Emails: emails });
+      },
+      handleAddressChange(addresses) {
+        this.company = Object.assign({}, this.company, { Addresses: addresses });
       },
       handleSubmit() {
         if (this.isValid) {

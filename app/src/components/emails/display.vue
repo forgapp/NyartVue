@@ -2,11 +2,13 @@
   <ul>
     <li v-if="!hasResults">No Emails</li>
     <li class="emailElement" v-for="(email, index) in emails" :key="index">
-      <span class="icon leftIcon">
-        <i class="fa fa-at" aria-hidden="true"></i>
-      </span>
-      <a :href="`mailto:${email.Address}`">{{ email.Address }}</a>
-      <small v-if="email.Type" class="rigthIcon">({{ email.Type }})</small>
+      <div>
+        <span class="icon leftIcon">
+          <i class="fa fa-at" aria-hidden="true"></i>
+        </span>
+        <a :href="`mailto:${email.Address}`">{{ email.Address }}</a>
+      </div>
+      <div v-if="email.Type" class="heading">({{ email.Type }})</div>
     </li>
   </ul>
 </template>
@@ -26,7 +28,8 @@
 <style scoped>
   .emailElement {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    /* align-items: center; */
     margin-bottom: 0.5em;
   }
 
