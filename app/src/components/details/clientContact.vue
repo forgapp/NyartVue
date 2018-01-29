@@ -1,26 +1,36 @@
 <template>
-  <div class="box">
-    <nav class="level is-mobile">
-      <div class="level-left">
-        <div class="level-item">
-          <div>
-            <h3 class="title is-3 levelTitle">{{ record.Firstname }} {{ record.Lastname }}</h3>
-            <h4 class="subtitle is-5">{{ record.FirstnameKanji }} {{ record.LastnameKanji }}</h4>
-            <p class="image is-32x32">
-              <img class="flag" :src="flagImageUrl" />
-            </p>
-          </div>
-        </div>
-
-        <!-- <div class="level-item">
-          <span>{{ record.Nationality }}</span>
-          <span v-if="record.DateOfBirth">
-            <i class="fa fa-birthday-cake" aria-hidden="true"></i>
-            {{ record.DateOfBirth }} <small>({ calculateAge(record.DateOfBirth) } yrs)</small>
+  <spinner v-if="isLoading" />
+  <div v-else class="box">
+    <article class="media">
+      <figure class="media-left">
+        <span v-if="isActive" class="icon is-large has-text-success">
+          <i class="fa fa-2x fa-users"></i>
+        </span>
+        <span v-else class="icon is-large">
+          <span class="fa-stack fa-lg">
+            <i class="fa fa-users fa-stack-1x"></i>
+            <i class="fa fa-ban fa-stack-2x has-text-danger"></i>
           </span>
-           <span>{{ record.Status }}</span>
+        </span>
+      </figure>
+      <div class="media-content">
+        <div class="content">
+          <nav class="level">
+            <div class="level-left">
+              <a class="level-item">
+                <div>
+                  <h3 class="title is-3">{{ record.Firstname }} {{ record.Lastname }}</h3>
+                  <p class="heading">{{ record.FirstnameKanji }} {{ record.LastnameKanji }}</p>
+                </div>
+              </a>
+              <a class="level-item is-hidden-mobile">
+                <p class="image is-32x32">
+                  <img class="flag" :src="flagImageUrl" />
+                </p>
+              </a>
+            </div>
+          </nav>
         </div>
-      -->
       </div>
 
       <div class="level-right">
@@ -39,17 +49,27 @@
                 <router-link class="dropdown-item" :to="`/edit-info/ClientContact/${id}`">
                   Edit Information
                 </router-link>
-                <a class="dropdown-item is-hidden">
+                <a :class="statusLinkClass.offLimit" @click.prevent="changeStatus('Off-Limit')">
                   Set Off-Limit
+                </a>
+                <a :class="statusLinkClass.active" @click.prevent="changeStatus('Active')">
+                  Set Active
                 </a>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </article>
+
+    <nav class="level">
+      <div class="level-left">
+        <a class="level-item">
+          <display-languages :languages="record.Languages" />
+        </a>
+      </div>
     </nav>
 
-    <display-languages :languages="record.Languages" />
 
     <v-tab>
       <v-pane title="Information">
@@ -82,7 +102,7 @@
                 </div>
               </div>
               <div class="column is-half">
-                <div class="columns is-multiline is-mobile">
+                <div v-if="isActive" class="columns is-multiline is-mobile">
                   <div class="column is-12-desktop is-one-third-mobile">
                     <phones-display :phones="record.Phones" />
                   </div>
@@ -93,15 +113,21 @@
                     <addresses-display :addresses="record.Addresses" />
                   </div>
                 </div>
+                <article v-else class="message is-warning">
+                  <div class="message-body">
+                    This client contact is off-limit.<br />
+                    Please, do not client contact.
+                  </div>
+                </article>
               </div>
 
             </div>
           </div>
           <div class="column">
-            <h1 class="title is-5">Industries</h1>
-            <codes-display :codes="record.Industry" />
-            <h1 class="title is-5">Job Functions</h1>
-            <codes-display :codes="record.JobFunction" />
+            <!--<h1 class="title is-5">Industries</h1>-->
+            <!--<codes-display :codes="record.Industry" />-->
+            <!--<h1 class="title is-5">Job Functions</h1>-->
+            <!--<codes-display :codes="record.JobFunction" />-->
             <!--<h1 class="title is-5">Skills</h1>-->
             <!--<codes-display :codes="record.Skills" />-->
           </div>
@@ -176,7 +202,13 @@
         </div>
     -->
       </v-pane>
-      <v-pane title="Jobs">Hello World!</v-pane>
+      <v-pane title="Jobs">
+        <div class="columns">
+          <div class="column is-half" v-for="job in jobs" :key="job.id">
+            <job-card :id="job.id" :record="job" />
+          </div>
+        </div>
+      </v-pane>
     </v-tab>
 
   </div>
@@ -193,24 +225,40 @@
   import { EmailsDisplay } from '../emails';
   import { AddressesDisplay } from '../addresses';
   import { Markdown } from '../markdown';
+  import JobCard from '../cards/job';
 
   export default {
     name: 'clientContactDetails',
     // components: { DisplayResumes, DisplayLanguages },
-    components: { ResumesDisplay, DisplayLanguages, CodesDisplay, PhonesDisplay, EmailsDisplay, AddressesDisplay, Markdown },
+    components: { JobCard, ResumesDisplay, DisplayLanguages, CodesDisplay, PhonesDisplay, EmailsDisplay, AddressesDisplay, Markdown },
     props: [ 'id' ],
     data() {
       return {
-        record: {}
+        record: {},
+        jobs: [],
+        isLoading: true
       };
     },
     beforeMount: function () {
       this.unsubscribe = this.getSubscription();
+      this.jobUnsubscribe = this.getJobsSubcription();
     },
     beforeDestroy: function () {
       this.unsubscribe();
+      this.jobUnsubscribe();
     },
     computed: {
+      isActive() {
+        return this.record.Status === 'Active';
+      },
+      statusLinkClass() {
+        const isActive = this.record.Status === 'Active';
+
+        return {
+          offLimit: { 'dropdown-item': true, 'is-hidden': !isActive },
+          active: { 'dropdown-item': true, 'is-hidden': isActive }
+        };
+      },
       flagImageUrl() {
         return this.record.NationalityCode ? require(`../../assets/flags/${this.record.NationalityCode.toLowerCase()}.svg`) : '';
       },
@@ -221,11 +269,39 @@
       }
     },
     methods: {
+      changeStatus(status) {
+        firestore.collection('ClientContact')
+          .doc(this.id)
+          .update({ Status: status });
+      },
       getSubscription() {
+        this.isLoading = true;
+
         return firestore.collection('ClientContact')
           .doc(this.id)
           .onSnapshot(doc => {
             this.record = doc.data();
+            this.isLoading = false;
+          });
+      },
+      getJobsSubcription() {
+        return firestore.collection('Job')
+          .where('ClientContact.ref', '==', firestore.collection('ClientContact').doc(this.id))
+          .onSnapshot(querySnapshot => {
+            let jobs = [];
+
+            querySnapshot.forEach(function (doc) {
+              const job = {
+                id: doc.id,
+                ...doc.data()
+              };
+              jobs = [
+                ...jobs,
+                job
+              ];
+            });
+
+            this.jobs = jobs;
           });
       }
     },
@@ -258,7 +334,9 @@
       id: function (val, oldVal) {
         if (val !== oldVal) {
           this.unsubscribe();
+          this.jobUnsubscribe();
           this.unsubscribe = this.getSubscription();
+          this.jobUnsubscribe = this.getJobsSubcription();
         }
       }
     }
@@ -266,16 +344,16 @@
 </script>
 
 <style scoped>
-  .levelTitle{
-    margin-bottom: 1.5rem;
-  }
+  /*.levelTitle{*/
+  /*  margin-bottom: 1.5rem;*/
+  /*}*/
 
-  .fullwidthTable {
-    width: 100%;
-    margin-bottom: 7px;
-  }
+  /*.fullwidthTable {*/
+  /*  width: 100%;*/
+  /*  margin-bottom: 7px;*/
+  /*}*/
 
   .flag {
-    box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.75);
+    border: 1px solid hsla(0, 0%, 75%, 1);
   }
 </style>

@@ -85,8 +85,20 @@
           </div>
         </div>
       </v-pane>
-      <v-pane title="Candidates"> Candidates</v-pane>
-      <v-pane :title="paneTitle.client"> {{ paneTitle.client }}</v-pane>
+      <v-pane title="Candidates">
+        <div class="columns">
+          <div class="column is-half" v-for="candidate in candidates" :key="candidate.id">
+            <candidate-card :id="candidate.id" :record="candidate" />
+          </div>
+        </div>
+      </v-pane>
+      <v-pane title="Contacts">
+        <div class="columns">
+          <div class="column is-half" v-for="contact in clientContacts" :key="contact.id">
+            <client-contact-card :id="contact.id" :record="contact" />
+          </div>
+        </div>
+      </v-pane>
     </v-tab>
   </div>
 </template>
@@ -98,14 +110,17 @@
   import { EmailsDisplay } from '../emails';
   import { AddressesDisplay } from '../addresses';
   import { Markdown } from '../markdown';
+  import ClientContactCard from '../cards/clientContact';
+  import CandidateCard from '../cards/candidate';
 
   export default {
     name: 'companyDetails',
-    components: { CodesDisplay, PhonesDisplay, EmailsDisplay, AddressesDisplay, Markdown },
+    components: { CandidateCard, ClientContactCard, CodesDisplay, PhonesDisplay, EmailsDisplay, AddressesDisplay, Markdown },
     props: [ 'id' ],
     data() {
       return {
         record: {},
+        candidates: [],
         clientContacts: []
       };
     },
@@ -125,7 +140,7 @@
             console.log(doc.id, '=>', doc.data());
             const contact = {
               id: doc.id,
-              ...doc.data
+              ...doc.data()
             };
             contacts = [
               ...contacts,
@@ -135,10 +150,30 @@
 
           this.clientContacts = contacts;
         });
+
+      this.unsubscribeCandidates = firestore.collection('Candidate')
+        .where('Company.ref', '==', firestore.collection('Company').doc(this.id))
+        .onSnapshot(querySnapshot => {
+          let candidates = [];
+
+          querySnapshot.forEach(function (doc) {
+            const candidate = {
+              id: doc.id,
+              ...doc.data()
+            };
+            candidates = [
+              ...candidates,
+              candidate
+            ];
+          });
+
+          this.candidates = candidates;
+        });
     },
     beforeDestroyed: function () {
       this.unsubscribe();
       this.unsubscribeClientContacts();
+      this.unsubscribeCandidates();
     },
     computed: {
       paneTitle: function () {

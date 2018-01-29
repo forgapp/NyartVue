@@ -1,54 +1,59 @@
 <template>
   <spinner v-if="isLoading" />
   <div v-else class="box">
-    <nav class="level is-mobile">
-      <div class="level-left">
-        <div class="level-item">
-          <div>
-            <h3 class="title is-3">{{ record.JobTitle }}</h3>
-            <!--<h4 class="subtitle is-5"><Link href={ `/details/company/${record.Company.id}` }>{ record.Company.Name }</Link> <Link href={ `/details/clientcontact/${record.ClientContact.id}` }>{ record.ClientContact.Name }</Link></h4>-->
-          </div>
-        </div>
-
-        <!-- <div class="level-item">
-          <span>{{ record.Nationality }}</span>
-          <span v-if="record.DateOfBirth">
-            <i class="fa fa-birthday-cake" aria-hidden="true"></i>
-            {{ record.DateOfBirth }} <small>({ calculateAge(record.DateOfBirth) } yrs)</small>
+    <article class="media">
+      <figure class="media-left">
+        <span v-if="isOpen" class="icon is-large has-text-success">
+          <i class="fa fa-3x fa-briefcase"></i>
+        </span>
+        <span v-else class="icon is-large">
+          <span class="fa-stack fa-lg">
+            <i class="fa fa-briefcase fa-stack-1x"></i>
+            <i class="fa fa-ban fa-stack-2x has-text-danger"></i>
           </span>
-           <span>{{ record.Status }}</span>
-        </div>
-      -->
-      </div>
-
-      <div class="level-right">
-        <div class="level-item">
-          <div class="dropdown is-right is-hoverable">
-            <div class="dropdown-trigger">
-              <a class="button">
-                <span>Actions</span>
-                <span class="icon is-small">
-                  <i class="fa fa-ellipsis-v"></i>
-                </span>
+        </span>
+      </figure>
+      <div class="media-content">
+        <div class="content">
+          <nav class="level">
+            <div class="level-left">
+              <a class="level-item">
+                <div>
+                  <h3 class="title is-3">{{ record.JobTitle }}</h3>
+                </div>
               </a>
             </div>
-            <div class="dropdown-menu">
-              <div class="dropdown-content">
-                  <router-link class="dropdown-item" :to="`/process/new?jobId=${id}&jobName=${record.JobTitle}`">
-                    Apply a candidate
-                  </router-link>
-                  <router-link class="dropdown-item" :to="`/edit-info/Job/${id}`">
-                    Edit Information
-                  </router-link>
-                  <router-link class="dropdown-item" :to="`/edit-notes/Job/Notes/${id}`">
-                    Edit Notes
-                  </router-link>
-                </div>
-            </div>
+          </nav>
+        </div>
+      </div>
+
+      <div class="media-right">
+        <div class="dropdown is-right is-hoverable">
+          <div class="dropdown-trigger">
+            <a class="button">
+              <span>Actions</span>
+              <span class="icon is-small">
+                <i class="fa fa-ellipsis-v"></i>
+              </span>
+            </a>
+          </div>
+          <div class="dropdown-menu">
+            <div class="dropdown-content">
+                <router-link class="dropdown-item" :to="`/process/new?jobId=${id}&jobName=${record.JobTitle}`">
+                  Apply a candidate
+                </router-link>
+                <router-link class="dropdown-item" :to="`/edit-info/Job/${id}`">
+                  Edit Information
+                </router-link>
+                <router-link class="dropdown-item" :to="`/edit-notes/Job/Notes/${id}`">
+                  Edit Notes
+                </router-link>
+              </div>
           </div>
         </div>
       </div>
-    </nav>
+    </article>
+
 
     <display-languages :languages="record.Languages" />
 
@@ -59,9 +64,6 @@
             <div class="columns is-multiline">
               <div class="column is-half">
                 <div id="information" class="columns is-multiline is-gapless is-mobile">
-                  <div class="column is-half is-hidden-desktop column-label">Nationality</div>
-                  <div class="column is-half is-hidden-desktop">{{ record.Nationality }}</div>
-
                   <div class="column is-half column-label">Company</div>
                   <div class="column is-half">
                     <router-link :to="links.company">{{ record.Company && record.Company.Name }}</router-link>
@@ -83,25 +85,20 @@
                 </div>
               </div>
               <div class="column is-half">
+                <h1 class="title is-6">Contact Information</h1>
                 <div class="columns is-multiline is-mobile">
-                  <h1 class="title is-6">Contact Information</h1>
-                   <div class="columns is-multiline">
-                     <div class="column is-half">{{ record.ClientContact && record.ClientContact.Name }}</div>
-                   </div>
-                  <!--<div class="column is-12-desktop is-one-third-mobile">-->
-                  <!--  <phones-display :phones="record.Phones" />-->
-                  <!--</div>-->
-                  <!--<div class="column is-12-desktop is-one-third-mobile">-->
-                  <!--  <emails-display :emails="record.Emails" />-->
-                  <!--</div>-->
+                  <div class="column is-half column-label">Name</div>
+                  <div class="column is-half">{{ contact.Firstname }} {{ contact.Lastname }}</div>
+                  <div class="column is-12-desktop is-one-third-mobile">
+                    <phones-display :phones="contact.Phones" />
+                  </div>
+                  <div class="column is-12-desktop is-one-third-mobile">
+                    <emails-display :emails="contact.Emails" />
+                  </div>
+                </div>
                   <!--<div class="column is-12-desktop is-one-third-mobile">-->
                   <!--  <addresses-display :emails="record.Addresses" />-->
                   <!--</div>-->
-                </div>
-              </div>
-
-              <div class="column">
-                <markdown label="Notes" :text="record.Notes" />
               </div>
 
             </div>
@@ -185,6 +182,9 @@
         </div>
     -->
       </v-pane>
+      <v-pane title="Job Description">
+        <markdown label="Job Description" :text="record.JobDescription" />
+      </v-pane>
       <v-pane title="ATS">
         <Ats v-for="process in ats" :key="process.id" type="Candidate" :process="process"/>
       </v-pane>
@@ -195,7 +195,7 @@
 
 <script>
   // import DatabaseStream from '@/lib/databaseStream';
-  import { ResumesDisplay } from '../resumes';
+  // import { ResumesDisplay } from '../resumes';
   // import { DisplayLanguages } from '../languages';
   import { firestore } from '@/lib/firebase';
   import { DisplayLanguages } from '@/components/languages';
@@ -209,7 +209,7 @@
   export default {
     name: 'jobDetails',
     // components: { DisplayResumes, DisplayLanguages },
-    components: { Ats, ResumesDisplay, DisplayLanguages, CodesDisplay, PhonesDisplay, EmailsDisplay, AddressesDisplay, Markdown },
+    components: { Ats, DisplayLanguages, CodesDisplay, PhonesDisplay, EmailsDisplay, AddressesDisplay, Markdown },
     props: [ 'id' ],
     data() {
       return {
@@ -232,15 +232,34 @@
         return {
           company: this.record.Company ? `/details/company/${this.record.Company.id}` : ''
         };
+      },
+      isOpen() {
+        return this.record.Status === 'Open';
       }
     },
     methods: {
       getSubscription() {
+        this.isLoading = true;
+
         return firestore.collection('Job')
           .doc(this.id)
           .onSnapshot(doc => {
+            const job = doc.data();
             this.isLoading = false;
-            this.record = doc.data();
+            this.record = job;
+            this.getContactSubscription(job.ClientContact.id);
+          });
+      },
+      getContactSubscription(id) {
+        // const contactRef = firestore.collection('Job')
+        //   .doc(this.id);
+
+        return firestore.collection('ClientContact')
+          .doc(id)
+          // .where('ClientContact.ref', '==', contactRef)
+          .get().then(doc => {
+            console.log(doc.data());
+            this.contact = doc.data();
           });
       },
       getAtsSubscription() {
@@ -295,8 +314,10 @@
         if (val !== oldVal) {
           this.unsubscribe();
           this.atsUnsubscribe();
+          this.contactSubscription();
           this.unsubscribe = this.getSubscription();
           this.atsUnsubscribe = this.getAtsSubscription();
+          this.contactSubscription = this.getContactSubscription();
         }
       }
     }

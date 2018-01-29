@@ -129,6 +129,7 @@
         SalaryMaximun: 0,
         RegistrationDate: formatdateForInput(new Date()),
         Source: '',
+        Status: 'Open',
         Recruiter: {
           id: this.recruiter.id,
           Name: this.recruiter.displayName

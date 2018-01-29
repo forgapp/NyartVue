@@ -23,10 +23,13 @@
                   <p class="heading">{{ record.FirstnameKanji }} {{ record.LastnameKanji }}</p>
                 </div>
               </a>
-              <a class="level-item">
+              <a class="level-item is-hidden-mobile">
                 <p class="image is-32x32">
                   <img class="flag" :src="flagImageUrl" />
                 </p>
+              </a>
+              <a class="level-item is-hidden-mobile">
+                {{ record.Birthdate }}
               </a>
             </div>
           </nav>
@@ -143,9 +146,7 @@
                 </article>
               </div>
 
-              <div class="column">
-                <markdown label="Interview Notes" :text="record.InterviewNotes" />
-              </div>
+
             </div>
           </div>
           <div class="column">
@@ -156,6 +157,11 @@
             <!-- <h1 class="title is-5">Skills</h1> -->
             <!--<codes-display :codes="record.Skills" />-->
           </div>
+        </div>
+      </v-pane>
+      <v-pane title="Interview Notes">
+        <div class="column">
+          <markdown label="Interview Notes" :text="record.InterviewNotes" />
         </div>
       </v-pane>
       <v-pane title="ATS">
@@ -211,6 +217,7 @@
     get isActive() {
       return this.record.Status === 'Active';
     }
+
     get flagImageUrl() {
       return this.record.NationalityCode
         ? require(`../../assets/flags/${this.record.NationalityCode.toLowerCase()}.svg`)
@@ -302,7 +309,7 @@
         this.atsUnsubscribe = this.getAtsSubscription();
       }
     }
-  };
+  }
 
   export default CandidateDetails;
 </script>
