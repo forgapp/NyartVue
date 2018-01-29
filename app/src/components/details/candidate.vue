@@ -4,7 +4,7 @@
     <article class="media">
       <figure class="media-left">
         <span v-if="isActive" class="icon is-large has-text-success">
-          <i class="fa fa-3x fa-user-o"></i>
+          <i class="fa fa-2x fa-user-o"></i>
         </span>
         <span v-else class="icon is-large">
           <span class="fa-stack fa-lg">

@@ -4,7 +4,7 @@
     <article class="media">
       <figure class="media-left">
         <span v-if="isOpen" class="icon is-large has-text-success">
-          <i class="fa fa-3x fa-briefcase"></i>
+          <i class="fa fa-2x fa-briefcase"></i>
         </span>
         <span v-else class="icon is-large">
           <span class="fa-stack fa-lg">
@@ -20,6 +20,7 @@
               <a class="level-item">
                 <div>
                   <h3 class="title is-3">{{ record.JobTitle }}</h3>
+                  <p class="heading">{{ record.Company.Name }}</p>
                 </div>
               </a>
             </div>
@@ -45,8 +46,8 @@
                 <router-link class="dropdown-item" :to="`/edit-info/Job/${id}`">
                   Edit Information
                 </router-link>
-                <router-link class="dropdown-item" :to="`/edit-notes/Job/Notes/${id}`">
-                  Edit Notes
+                <router-link class="dropdown-item" :to="`/edit-notes/Job/JobDescription/${id}`">
+                  Edit Job Description
                 </router-link>
               </div>
           </div>
