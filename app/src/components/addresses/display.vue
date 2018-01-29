@@ -1,39 +1,23 @@
-
 <script>
+  import Address from './address';
+
   export default {
-    name: 'AddressesDisplay',
     functional: true,
-    props: ['addresses'],
-    render(createElement, context) {
-      const { addresses } = context.props;
+    render(h, { props }) {
+      const { addresses } = props;
       const hasResults = addresses && addresses.length > 0;
 
       if (!hasResults) {
-        return (<div>No Addresses</div>);
+        return h('div', 'No Addresses');
       }
 
-      const addressesList = addresses.map(address => (<div class="column is-12">
-        <article class="media">
-          <div class="media-left">
-            <span class="icon leftIcon">
-              <i class="fa fa-address-book-o" aria-hidden="true"></i>
-            </span>
-            <div class="heading">({ address.Type })</div>
-          </div>
-          <div class="media-content">
-            <div class="content address">
-              <p>{ address.Street }</p>
-              <p>{ address.Complement }</p>
-              <p>{ address.City } { address.State }</p>
-              <p>{ address.Country }</p>
-            </div>
-          </div>
-        </article>
-      </div>));
+      const addressesList = addresses.map(address => h(
+        'div',
+        { class: 'column is-12' },
+        [ h(Address, { props: { address } }) ]
+      ));
 
-      return (<div class="columns is-multiline">
-        { addressesList }
-      </div>);
+      return h('div', { class: 'columns is-multiline' }, addressesList);
     }
   };
 </script>

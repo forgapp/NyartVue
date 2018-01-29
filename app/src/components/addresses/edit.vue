@@ -95,7 +95,6 @@
 
     changeAddress(index, event) {
       const { name, value } = event.target;
-      console.log(index, name, value);
       const address = Object.assign({}, this.addresses[index], {
         [name]: value
       });
