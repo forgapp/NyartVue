@@ -79,13 +79,11 @@
     },
     methods: {
       keydown: function (event) {
-        console.log('keydown');
         if (this.hasResults) {
           event.preventDefault();
         }
       },
       keyup: function (event) {
-        console.log('keyup');
         switch (event.keyCode) {
         case KEY_UP:
           event.preventDefault();

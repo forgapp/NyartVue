@@ -1,9 +1,8 @@
-
 <template>
   <div class="loginForm">
-    <button 
-      type="button" 
-      class="button is-primary is-outlined is-large" 
+    <button
+      type="button"
+      class="button is-primary is-outlined is-large"
       @click="handleGoogleSignIn"
     >
       <span class="icon">
@@ -20,7 +19,7 @@
   export default {
     name: 'login',
     methods: {
-      handleGoogleSignIn: function (event) {
+      handleGoogleSignIn(event) {
         event.preventDefault();
         auth.signInWithRedirect(googleAuthProvider);
       }

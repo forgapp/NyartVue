@@ -17,6 +17,10 @@
         const { value } = event.target;
         const valueNumber = Number(value);
 
+        if (isNaN(valueNumber)) {
+          return;
+        }
+
         switch (event.key) {
         case 'm':
           this.$emit('input', valueNumber * 1e6);
@@ -26,16 +30,6 @@
           break;
         default:
           this.$emit('input', valueNumber);
-        }
-      }
-    },
-    computed: {
-      inputValue: {
-        get() {
-          return this.value;
-        },
-        set(v) {
-          this.$emit('input', v);
         }
       }
     }

@@ -94,9 +94,3 @@
 
   export default AppHeader;
 </script>
-
-<style scoped>
-  /* .header-container {
-    min-height: 4rem;
-  } */
-</style>

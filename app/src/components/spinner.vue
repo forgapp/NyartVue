@@ -1,13 +1,11 @@
-
-<template>
-  <div class="spinner"></div>
-</template>
-
 <script>
-  export default { name: 'spinner' };
+  export default {
+    functional: true,
+    render: h => h('div', { class: 'spinner ' })
+  };
 </script>
 
-<style scoped>
+<style>
   .spinner {
     width: 40px;
     height: 40px;

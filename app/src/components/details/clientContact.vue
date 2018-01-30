@@ -103,13 +103,13 @@
               </div>
               <div class="column is-half">
                 <div v-if="isActive" class="columns is-multiline is-mobile">
-                  <div class="column is-12-desktop is-one-third-mobile">
+                  <div class="column is-12-desktop is-half-mobile">
                     <phones-display :phones="record.Phones" />
                   </div>
-                  <div class="column is-12-desktop is-one-third-mobile">
+                  <div class="column is-12-desktop is-half-mobile">
                     <emails-display :emails="record.Emails" />
                   </div>
-                  <div class="column is-12-desktop is-one-third-mobile">
+                  <div class="column is-12">
                     <addresses-display :addresses="record.Addresses" />
                   </div>
                 </div>
@@ -120,87 +120,9 @@
                   </div>
                 </article>
               </div>
-
             </div>
           </div>
-          <div class="column">
-            <!--<h1 class="title is-5">Industries</h1>-->
-            <!--<codes-display :codes="record.Industry" />-->
-            <!--<h1 class="title is-5">Job Functions</h1>-->
-            <!--<codes-display :codes="record.JobFunction" />-->
-            <!--<h1 class="title is-5">Skills</h1>-->
-            <!--<codes-display :codes="record.Skills" />-->
-          </div>
         </div>
-    <!--
-        <div id="information" class="columns">
-          <div class="column is-3">
-            <table class="fullwidthTable is-hidden-desktop">
-              <tr>
-                <td>Nationality</td>
-                <td>{{ record.Nationality }}</td>
-              </tr>
-              <tr>
-                <td>Birthdate</td>
-                <td>{{ Birthdate }}  {{ Birthdate && Birthdate !== '' && <small>({{ calculateAge(Birthdate) }})</small> }}</td>
-              </tr>
-              <tr>
-                <td>Status</td>
-                <td>{{ record.Status }}</td>
-              </tr>
-            </table>
-            <table class="fullwidthTable">
-              <tr>
-                <td>Title</td>
-                <td>{{ record.JobTitle }}</td>
-              </tr>
-              <tr>
-                <td>Company</td>
-                <td><router-link :to="companyURL">{{ companyName }}</router-link></td>
-              </tr>
-              <tr>
-                <td>Salary</td>
-                <td>{{ record.Salary }}</td>
-              </tr>
-            </table>
-            <table  class="fullwidthTable">
-              <tr>
-                <td>RegistrationDate</td>
-                <td>{{ record.RegistrationDate }}</td>
-              </tr>
-              <tr>
-                <td>RecruiterName</td>
-                <td>{{ recruiterName }}</td>
-              </tr>
-              <tr>
-                <td>Source</td>
-                <td>{{ record.Source }}</td>
-              </tr>
-            </table>
-          </div>
-          <div class="column">
-            <div class="columns is-desktop">
-              <div class="column">
-                <h1 class="title is-5">Industries</h1>
-                <display-codes :codes="record.Industry" />
-              </div>
-              <div class="column">
-                <h1 class="title is-5">Job Functions</h1>
-                <display-codes :codes="record.JobFunction" />
-              </div>
-              <div class="column">
-                <h1 class="title is-5">Skills</h1>
-              </div>
-            </div>
-          </div>
-
-          <div class="column is-3">
-            <phones-display :phones="record.Phones" />
-            <emails-display :emails="record.Emails" />
-            <addresses-display :addresses="record.Addresses" />
-          </div>
-        </div>
-    -->
       </v-pane>
       <v-pane title="Jobs">
         <div class="columns">
@@ -210,149 +132,120 @@
         </div>
       </v-pane>
     </v-tab>
-
   </div>
 </template>
 
 <script>
-  // import DatabaseStream from '@/lib/databaseStream';
-  import { ResumesDisplay } from '../resumes';
-  // import { DisplayLanguages } from '../languages';
+  import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
   import { firestore } from '@/lib/firebase';
   import { DisplayLanguages } from '@/components/languages';
-  import { CodesDisplay } from '../codes';
   import { PhonesDisplay } from '../phones';
   import { EmailsDisplay } from '../emails';
   import { AddressesDisplay } from '../addresses';
-  import { Markdown } from '../markdown';
   import JobCard from '../cards/job';
 
-  export default {
-    name: 'clientContactDetails',
-    // components: { DisplayResumes, DisplayLanguages },
-    components: { JobCard, ResumesDisplay, DisplayLanguages, CodesDisplay, PhonesDisplay, EmailsDisplay, AddressesDisplay, Markdown },
-    props: [ 'id' ],
-    data() {
-      return {
-        record: {},
-        jobs: [],
-        isLoading: true
-      };
-    },
-    beforeMount: function () {
+  @Component({
+    components: {
+      JobCard,
+      DisplayLanguages,
+      PhonesDisplay,
+      EmailsDisplay,
+      AddressesDisplay
+    }
+  })
+  class ClientContactDetails extends Vue {
+    @Prop() id
+    record = {}
+    jobs = []
+    isLoading = true
+
+    beforeMount() {
       this.unsubscribe = this.getSubscription();
       this.jobUnsubscribe = this.getJobsSubcription();
-    },
-    beforeDestroy: function () {
+    }
+
+    beforeDestroy() {
       this.unsubscribe();
       this.jobUnsubscribe();
-    },
-    computed: {
-      isActive() {
-        return this.record.Status === 'Active';
-      },
-      statusLinkClass() {
-        const isActive = this.record.Status === 'Active';
+    }
 
-        return {
-          offLimit: { 'dropdown-item': true, 'is-hidden': !isActive },
-          active: { 'dropdown-item': true, 'is-hidden': isActive }
-        };
-      },
-      flagImageUrl() {
-        return this.record.NationalityCode ? require(`../../assets/flags/${this.record.NationalityCode.toLowerCase()}.svg`) : '';
-      },
-      links() {
-        return {
-          company: this.record.Company ? `/details/company/${this.record.Company.id}` : ''
-        };
-      }
-    },
-    methods: {
-      changeStatus(status) {
-        firestore.collection('ClientContact')
-          .doc(this.id)
-          .update({ Status: status });
-      },
-      getSubscription() {
-        this.isLoading = true;
+    get isActive() {
+      return this.record.Status === 'Active';
+    }
 
-        return firestore.collection('ClientContact')
-          .doc(this.id)
-          .onSnapshot(doc => {
-            this.record = doc.data();
-            this.isLoading = false;
+    get statusLinkClass() {
+      return {
+        offLimit: { 'dropdown-item': true, 'is-hidden': !this.isActive },
+        active: { 'dropdown-item': true, 'is-hidden': this.isActive }
+      };
+    }
+
+    get flagImageUrl() {
+      const nationalityCode = this.record.NationalityCode;
+      const flag = nationalityCode ? nationalityCode.toLowerCase() : '';
+
+      return nationalityCode && require(`../../assets/flags/${flag}.svg`);
+    }
+
+    get links() {
+      return {
+        company: this.record.Company ? `/details/company/${this.record.Company.id}` : ''
+      };
+    }
+
+    changeStatus(status) {
+      firestore.collection('ClientContact')
+        .doc(this.id)
+        .update({ Status: status });
+    }
+
+    getSubscription() {
+      this.isLoading = true;
+
+      return firestore.collection('ClientContact')
+        .doc(this.id)
+        .onSnapshot(doc => {
+          this.record = doc.data();
+          this.isLoading = false;
+        });
+    }
+
+    getJobsSubcription() {
+      return firestore.collection('Job')
+        .where('ClientContact.ref', '==', firestore.collection('ClientContact').doc(this.id))
+        .onSnapshot(querySnapshot => {
+          let jobs = [];
+
+          querySnapshot.forEach(function (doc) {
+            const job = {
+              id: doc.id,
+              ...doc.data()
+            };
+            jobs = [
+              ...jobs,
+              job
+            ];
           });
-      },
-      getJobsSubcription() {
-        return firestore.collection('Job')
-          .where('ClientContact.ref', '==', firestore.collection('ClientContact').doc(this.id))
-          .onSnapshot(querySnapshot => {
-            let jobs = [];
 
-            querySnapshot.forEach(function (doc) {
-              const job = {
-                id: doc.id,
-                ...doc.data()
-              };
-              jobs = [
-                ...jobs,
-                job
-              ];
-            });
+          this.jobs = jobs;
+        });
+    }
 
-            this.jobs = jobs;
-          });
-      }
-    },
-    //   createSubscriptions: function (id) {
-    //     this.candidateSub = new DatabaseStream('Candidate', 'value')
-    //       .child(id)
-    //       .subscribe({
-    //         next: snapshot => {
-    //           this.record = snapshot.val();
-    //         },
-    //         error: err => console.log(err)
-    //       });
-
-    //     this.processesSub = new DatabaseStream('Process', 'value')
-    //       .orderByChild('Candidate/id')
-    //       .equalTo(id)
-    //       .subscribe({
-    //         next: snapshot => {
-    //           this.ats = snapshot.val();
-    //         },
-    //         error: err => console.log(err)
-    //       });
-    //   },
-    //   removeSubscriptions() {
-    //     this.candidateSub.unsubscribe();
-    //     this.processesSub.unsubscribe();
-    //   }
-    // },
-    watch: {
-      id: function (val, oldVal) {
-        if (val !== oldVal) {
-          this.unsubscribe();
-          this.jobUnsubscribe();
-          this.unsubscribe = this.getSubscription();
-          this.jobUnsubscribe = this.getJobsSubcription();
-        }
+    @Watch('id')
+    onIdChanged(val, oldVal) {
+      if (val !== oldVal) {
+        this.unsubscribe();
+        this.jobUnsubscribe();
+        this.unsubscribe = this.getSubscription();
+        this.jobUnsubscribe = this.getJobsSubcription();
       }
     }
-  };
+  }
+
+  export default ClientContactDetails;
 </script>
 
 <style scoped>
-  /*.levelTitle{*/
-  /*  margin-bottom: 1.5rem;*/
-  /*}*/
-
-  /*.fullwidthTable {*/
-  /*  width: 100%;*/
-  /*  margin-bottom: 7px;*/
-  /*}*/
-
   .flag {
     border: 1px solid hsla(0, 0%, 75%, 1);
   }

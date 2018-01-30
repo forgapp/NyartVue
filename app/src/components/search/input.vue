@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent="searchAndRoute">
     <div class="field has-addons">
-      <p class="control is-hidden-mobile">
+      <p class="control is-hidden">
         <span class="select">
           <select v-model="predefinedSearch">
             <option value="">Views</option>

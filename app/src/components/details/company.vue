@@ -1,5 +1,6 @@
 <template>
-  <div class="box">
+  <spinner v-if="isLoading" />
+  <div v-else class="box">
     <nav class="level is-mobile">
       <div class="level-left">
         <div class="level-item">
@@ -62,13 +63,13 @@
               </div>
               <div class="column is-half">
                 <div class="columns is-multiline is-mobile">
-                  <div class="column is-12-desktop is-one-third-mobile">
+                  <div class="column is-12-desktop is-half-mobile">
                     <phones-display :phones="record.Phones" />
                   </div>
-                  <div class="column is-12-desktop is-one-third-mobile">
+                  <div class="column is-12-desktop is-half-mobile">
                     <emails-display :emails="record.Emails" />
                   </div>
-                  <div class="column is-12-desktop is-one-third-mobile">
+                  <div class="column is-12">
                     <addresses-display :addresses="record.Addresses" />
                   </div>
                 </div>
@@ -104,6 +105,7 @@
 </template>
 
 <script>
+  import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
   import { firestore } from '@/lib/firebase';
   import { CodesDisplay } from '../codes';
   import { PhonesDisplay } from '../phones';
@@ -113,25 +115,68 @@
   import ClientContactCard from '../cards/clientContact';
   import CandidateCard from '../cards/candidate';
 
-  export default {
-    name: 'companyDetails',
-    components: { CandidateCard, ClientContactCard, CodesDisplay, PhonesDisplay, EmailsDisplay, AddressesDisplay, Markdown },
-    props: [ 'id' ],
-    data() {
+  @Component({
+    components: {
+      CandidateCard,
+      ClientContactCard,
+      CodesDisplay,
+      PhonesDisplay,
+      EmailsDisplay,
+      AddressesDisplay,
+      Markdown
+    }
+  })
+  class CompanyDetails extends Vue {
+    @Prop() id
+    record = {}
+    candidates = []
+    clientContacts = []
+    isLoading = true;
+
+    created() {
+      this.unsubscribe = this.getSubscription();
+      this.unsubscribeClientContacts = this.getClientContactSubscription();
+      this.unsubscribeCandidates = this.getCandidateSubcription();
+    }
+
+    beforeDestroyed() {
+      this.unsubscribe();
+      this.unsubscribeClientContacts();
+      this.unsubscribeCandidates();
+    }
+
+    get paneTitle() {
       return {
-        record: {},
-        candidates: [],
-        clientContacts: []
+        client: `Contacts ${this.clientContacts.length}`
       };
-    },
-    mounted: function () {
-      this.unsubscribe = firestore.collection('Company')
+    }
+
+    get recordNumbers() {
+      return {
+        contacts: `Client Contacts (${this.clientNumber})`
+      };
+    }
+
+    get links() {
+      return {
+        editInformation: `/edit-info/Company/${this.id}`,
+        editProfile: `/edit-notes/Company/Profile/${this.id}`
+      };
+    }
+
+    getSubscription() {
+      this.isLoading = true;
+
+      return firestore.collection('Company')
         .doc(this.id)
         .onSnapshot(doc => {
           this.record = doc.data();
+          this.isLoading = false;
         });
+    }
 
-      this.unsubscribeClientContacts = firestore.collection('ClientContact')
+    getClientContactSubscription() {
+      return firestore.collection('ClientContact')
         .where('Company.ref', '==', firestore.collection('Company').doc(this.id))
         .onSnapshot(querySnapshot => {
           let contacts = [];
@@ -150,8 +195,10 @@
 
           this.clientContacts = contacts;
         });
+    }
 
-      this.unsubscribeCandidates = firestore.collection('Candidate')
+    getCandidateSubcription() {
+      return firestore.collection('Candidate')
         .where('Company.ref', '==', firestore.collection('Company').doc(this.id))
         .onSnapshot(querySnapshot => {
           let candidates = [];
@@ -169,31 +216,22 @@
 
           this.candidates = candidates;
         });
-    },
-    beforeDestroyed: function () {
-      this.unsubscribe();
-      this.unsubscribeClientContacts();
-      this.unsubscribeCandidates();
-    },
-    computed: {
-      paneTitle: function () {
-        return {
-          client: `Contacts ${this.clientContacts.length}`
-        };
-      },
-      recordNumbers: function () {
-        return {
-          contacts: `Client Contacts (${this.clientNumber})`
-        };
-      },
-      links: function () {
-        return {
-          editInformation: `/edit-info/Company/${this.id}`,
-          editProfile: `/edit-notes/Company/Profile/${this.id}`
-        };
+    }
+
+    @Watch('id')
+    onIdChanged(val, oldVal) {
+      if (val !== oldVal) {
+        this.unsubscribe();
+        this.unsubscribeClientContacts();
+        this.unsubscribeCandidates();
+        this.unsubscribe = this.getSubscription();
+        this.unsubscribeClientContacts = this.getClientContactSubscription();
+        this.unsubscribeCandidates = this.getCandidateSubcription();
       }
     }
-  };
+  }
+
+  export default CompanyDetails;
 </script>
 
 <style scoped>

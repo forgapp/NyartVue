@@ -79,11 +79,6 @@
     overflow: hidden;
   }
 
-  /*.columns.is-gapless > .column.column-label {*/
-  /*  text-align: right;*/
-  /*  padding-right: 1rem !important;*/
-  /*}*/
-
   #app .CodeMirror {
     height: auto;
   }

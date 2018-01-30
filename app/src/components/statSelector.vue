@@ -48,46 +48,6 @@
       </div>
     </form>
   </div>
-  <!--<div class="box">-->
-    <!--<nav class="level is-mobile">-->
-    <!--  <div class="level-left">-->
-    <!--    <div class="level-item">-->
-    <!--      <div class="field">-->
-    <!--        <label class="label is-small">Period</label>-->
-    <!--        <p class="control">-->
-    <!--          <span class="select is-small">-->
-    <!--            <select :value="period" @change.lazy="handlePeriodChanged">-->
-    <!--              <option v-for="(availablePeriod, key) in periods" :key="key" :value="key">{{ availablePeriod.label }}</option>-->
-    <!--            </select>-->
-    <!--          </span>-->
-    <!--        </p>-->
-    <!--      </div>-->
-    <!--    </div>-->
-    <!--    <div class="level-item">-->
-    <!--      <div class="field">-->
-    <!--        <label class="label is-small">Recruiter</label>-->
-    <!--        <p class="control">-->
-    <!--          <recruiter-lookup-->
-    <!--            :value="recruiter"-->
-    <!--            @input="recruiterChanged"-->
-    <!--            is-small="true"-->
-    <!--          />-->
-    <!--        </p>-->
-    <!--      </div>-->
-    <!--    </div>-->
-    <!--    <div class="level-item">-->
-    <!--      <div class="field">-->
-    <!--        <label class="label is-small not-visible">Refresh</label>-->
-    <!--        <button class="button is-small" @click="refresh">-->
-    <!--          <span class="icon">-->
-    <!--            <i class="fa fa-refresh"></i>-->
-    <!--          </span>-->
-    <!--        </button>-->
-    <!--      </div>-->
-    <!--    </div>-->
-    <!--  </div>-->
-    <!--</nav>-->
-	<!--</div>-->
 </template>
 
 <script>
@@ -98,13 +58,12 @@
   class StatSelector extends Vue {
     @Prop({}) period
     @Prop({}) recruiter
-    isFilterOpened = false;
+    isFilterOpened = false
+    periods = periods
 
     toggleFilter() {
       this.isFilterOpened = !this.isFilterOpened;
     }
-
-    periods = periods
 
     handlePeriodChanged(event) {
       const { value } = event.target;

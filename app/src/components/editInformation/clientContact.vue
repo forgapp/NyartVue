@@ -63,19 +63,6 @@
             </div>
           </div>
 
-          <!--<div class="field is-horizontal">-->
-          <!--  <div class="field-label is-normal">-->
-          <!--    <label class="label">Date of Birth</label>-->
-          <!--  </div>-->
-          <!--  <div class="field-body">-->
-          <!--    <div class="field is-grouped">-->
-          <!--      <p class="control is-expanded">-->
-          <!--        <input class="input" type="date" placeholder="Date of Birth" v-model="clientContact.DateOfBirth" />-->
-          <!--      </p>-->
-          <!--    </div>-->
-          <!--  </div>-->
-          <!--</div>-->
-
           <div class="field is-horizontal">
             <div class="field-label is-normal">
               <label class="label">Nationality</label>
@@ -119,20 +106,6 @@
               />
             </div>
           </div>
-
-          <!--<div class="field is-horizontal">-->
-          <!--  <div class="field-label is-normal">-->
-          <!--    <label class="label">Salary</label>-->
-          <!--  </div>-->
-          <!--  <div class="field-body">-->
-          <!--    <div class="field">-->
-          <!--      <p class="control is-expanded">-->
-          <!--        <currency-input v-model.number="clientContact.Salary" placeholder="Salary" />-->
-          <!--      </p>-->
-          <!--      <p class="help">Type 'm' for million, 'k' for thousand.</p>-->
-          <!--    </div>-->
-          <!--  </div>-->
-          <!--</div>-->
 
           <div class="field is-horizontal">
             <div class="field-label is-normal">
@@ -186,19 +159,6 @@
         </div>
       </div>
     </div>
-
-    <!--<div class="box">-->
-    <!--  <div class="columns">-->
-    <!--    <div class="column is-4">-->
-    <!--      <h1 class="title is-5">Industries</h1>-->
-    <!--      <edit-codes type="Industry" :codes="clientContact.Industry" @codesChanged="handleIndustryChange" />-->
-    <!--    </div>-->
-    <!--    <div class="column is-4">-->
-    <!--      <h1 class="title is-5">Job Functions</h1>-->
-    <!--      <edit-codes type="JobFunction" :codes="clientContact.JobFunction" @codesChanged="handleJobFunctionChange" />-->
-    <!--    </div>-->
-    <!--  </div>-->
-    <!--</div>-->
 
     <div class="box">
       <div class="buttons">
@@ -269,7 +229,7 @@
         };
       },
       isValid() {
-        var validation = this.validation;
+        const validation = this.validation;
         return Object.keys(validation).every(function (key) {
           return validation[key];
         });

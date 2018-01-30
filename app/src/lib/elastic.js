@@ -1,6 +1,6 @@
 import { auth, firestore } from './firebase';
 
-let key = null; // 'Rm9yZ0FkbWluOmltYnRrbmM5ajNoaGluY3hrY2Rq';
+let key = null;
 
 function getKey() {
   if (key) {

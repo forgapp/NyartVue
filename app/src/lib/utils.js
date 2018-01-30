@@ -1,6 +1,6 @@
 function isArray(value) {
   return Array.isArray(value);
-};
+}
 
 export function isEmpty(value) {
   if (!value) {
@@ -14,7 +14,7 @@ export function isEmpty(value) {
   }
 
   return false;
-};
+}
 
 export function capitalize(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
