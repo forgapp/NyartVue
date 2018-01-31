@@ -143,18 +143,10 @@
 
     get overlayClass() {
       return {
-        // 'is-overlay': true,
         'whiteboard-overlay': true,
         'show': this.isDrawerOpen
       };
     }
-
-    // get processesByStage() {
-    //   return {
-    //     Application: this.processes.filter(process => getCurrentStage(process) === 'application'),
-    //     Submittal: this.processes.filter(process => getCurrentStage(process) === 'submittal')
-    //   };
-    // }
 
     handleRecruiterChange(recruiter) { this.recruiter = recruiter; }
 
@@ -175,7 +167,6 @@
 
     setProcess(change) {
       const { type, doc } = change;
-      console.log(type, doc);
 
       if (type === 'added') {
         const process = {
@@ -185,18 +176,6 @@
         const currentStage = getCurrentStage(process);
 
         this.processes = set(this.processes, [currentStage, process.id], process);
-
-        // this.processes = Object.assign(
-        //   {},
-        //   this.processes,
-        //   {
-        //     [currentStage]: Object.assign(
-        //       {},
-        //       this.processes[currentStage],
-        //       { [process.id]: process }
-        //     )
-        //   }
-        // );
       }
 
       if (type === 'removed') {
@@ -219,13 +198,10 @@
           process
         );
       }
-
-      console.log(this.processes);
     }
 
     openDrawer(id) {
       this.selectedProcessUnsubscribe = this.getProcessById(id);
-      console.log(this.selectedProcess);
     }
 
     closeDrawer() {

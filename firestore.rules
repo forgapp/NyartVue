@@ -1,7 +1,7 @@
 service cloud.firestore {
   match /databases/{database}/documents {
     function isAuthenticated() {
-      return request.auth != null;
+      return request.auth != null && hasPermision('authorized');
     }
 
     function isUserAuthenticated(userId) {
@@ -13,11 +13,37 @@ service cloud.firestore {
     }
 
     match /Candidate/{document=**} {
-      allow read, write: if isAuthenticated() && hasPermision('authorized');
+      allow read, write: if isAuthenticated();
     }
 
-    match /Users/{document=**}  {
-      allow read, write: if false;
+    match /ClientContact/{clientContact} {
+      allow read, write: if isAuthenticated();
+    }
+
+    match /Company/{company} {
+      allow read, write: if isAuthenticated();
+    }
+
+    match /Job/{job} {
+      allow read, write: if isAuthenticated();
+
+    }
+
+    match /Process/{process} {
+      allow read, write: if isAuthenticated();
+    }
+
+    match /Users/{user}  {
+      allow read, write: if isAuthenticated();
+
+      match /Permissions/{permission} {
+        allow read: if isAuthenticated() && (isUserAuthenticated(user) || hasPermision('administrator'));
+        allow write: if isAuthenticated() && hasPermision('administrator');
+      }
+
+      match /apiKeys/{apiKey} {
+        allow read: if isAuthenticated() && isUserAuthenticated(user);
+      }
     }
   }
 }
