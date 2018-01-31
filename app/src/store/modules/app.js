@@ -25,25 +25,27 @@ const actions = {
     auth.onAuthStateChanged(user => {
       if (user) {
         // requestMessagingToken(user);
-        const userUid = user.uid;
+        const { uid } = user;
+        const userRef = firestore.collection('Users')
+          .doc(uid);
+        const permissionsRef = userRef.collection('Permissions');
 
-        firestore.collection('Users')
-          .doc(userUid)
-          .get().then(doc => {
-            const { Profile, Permissions } = doc.data();
-            const formattedUser = Object.assign({
-              id: userUid,
-              displayName: formatDisplayName(Profile)
-            }, user.Profile);
+        Promise.all([
+          userRef.get(),
+          permissionsRef.get()
+        ]).then(([ userDoc, permisionsShot ]) => {
+          const user = extractUser(userDoc);
+          const permissions = extractPermissions(permisionsShot);
 
-            commit(SET_USER, {
-              isLoading: false,
-              isLoggedIn: true,
-              user: formattedUser,
-              isAuthorized: Permissions.Authorized,
-              isAdmin: Permissions.Administrator
-            });
+          commit(SET_USER, {
+            isLoading: false,
+            isLoggedIn: true,
+            user: user,
+            isAuthorized: permissions.includes('authorized'),
+            isAdmin: permissions.includes('administrator'),
+            permissions
           });
+        });
       } else {
         commit(SET_USER, {
           isLoading: false,
@@ -56,6 +58,34 @@ const actions = {
     });
   }
 };
+
+function extractUser(doc) {
+  if (!doc.exists) {
+    throw new Error('No User!');
+  }
+
+  const user = doc.data();
+
+  return {
+    id: doc.id,
+    displayName: formatDisplayName(user),
+    ...user
+  };
+}
+
+function extractPermissions(querySnapshot) {
+  let permissions = [];
+
+  querySnapshot.forEach(doc => {
+    const { allow } = doc.data();
+
+    if (allow) {
+      permissions = [ ...permissions, doc.id ];
+    }
+  });
+
+  return permissions;
+}
 
 function formatDisplayName(user) {
   return `${user.Firstname} ${user.Lastname}`;

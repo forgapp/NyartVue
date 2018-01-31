@@ -7,12 +7,13 @@ function getKey() {
     return Promise.resolve(key);
   }
 
-  return firestore.collection('apiKeys')
+  return firestore.collection('Users')
     .doc(auth.currentUser.uid)
+    .collection('apiKeys')
+    .doc('elastic')
     .get()
     .then(doc => {
-      const { elastic } = doc.data();
-      key = elastic;
+      const { key } = doc.data();
 
       return key;
     });

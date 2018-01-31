@@ -1,34 +1,46 @@
 <template>
-  <table class="table is-striped is-fullwidth">
-    <thead>
-      <tr>
-        <th>Email</th>
-        <th>Firstname</th>
-        <th>Lastname</th>
-        <th>Username</th>
-        <th>Authorized</th>
-        <th>Administrator</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <user-row v-for="(user, id) in users" :user="user" :id="id" :key="id" @change="updateInformation" @save="save" @revert="revert" />
-    </tbody>
-  </table>
+  <div class="columns has-white-background">
+    <div class="column column is-4-widescreen">
+      <nav class="panel">
+        <p class="panel-heading">
+          Users
+        </p>
+        <a :class="getPanelBlockClass(id)" v-for="(user, id) in users" :key="id" @click="selectUser(id)">
+          <span class="panel-icon">
+            <i class="fa fa-user"></i>
+          </span>
+          <div>
+            <p>{{ user.Firstname }} {{ user.Lastname }}</p>
+            <p class="heading">{{ user.email }}</p>
+          </div>
+        </a>
+      </nav>
+    </div>
+    <div class="column">
+      <user-form
+        :user="user"
+        :isSaving="isSaving"
+        @change="updateInformation"
+        @save="save"
+        @cancel="cancel"
+      />
+    </div>
+  </div>
 </template>
 
 
 <script>
   import { Vue, Component } from 'vue-property-decorator';
   import { firestore } from '@/lib/firebase';
-  import UserRow from '@/components/userRow';
+  import UserForm from '@/components/userForm';
 
   @Component({
-    components: { UserRow }
+    components: { UserForm }
   })
   class Users extends Vue {
     users = {}
-    originalUsers = {}
+    user = null;
+    isSaving = false;
 
     beforeMount() {
       this.unsubscribe = this.getSubscription();
@@ -38,10 +50,42 @@
       this.unsubscribe();
     }
 
+    getPanelBlockClass(id) {
+      return {
+        'panel-block': true,
+        'is-active': this.user && this.user.id === id
+      };
+    }
+
     getSubscription() {
       return firestore.collection('Users')
         .onSnapshot(snapshot => {
           snapshot.docChanges.forEach(this.setUser);
+        });
+    }
+
+    selectUser(id) {
+      this.user = null;
+      let permissions = {};
+
+      firestore.collection('Users')
+        .doc(id)
+        .collection('Permissions')
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
+            const { allow } = doc.data();
+
+            if (allow) {
+              permissions = { ...permissions, [doc.id]: allow };
+            }
+          });
+
+          this.user = {
+            id,
+            ...this.users[id],
+            Permissions: permissions
+          };
         });
     }
 
@@ -50,26 +94,45 @@
 
       if (type !== 'removed') {
         this.users = Object.assign({}, this.users, { [doc.id]: doc.data() });
-        this.originalUsers = Object.assign({}, this.users, { [doc.id]: doc.data() });
       }
     }
 
-    updateInformation({ id, user }) {
-      this.users = Object.assign({}, this.users, { [id]: user });
+    updateInformation(user) {
+      this.user = Object.assign({}, this.user, user);
     }
 
-    save(userId) {
-      const { Profile, Permissions } = this.users[userId];
+    save() {
+      this.isSaving = true;
 
-      firestore.collection('Users')
-        .doc(userId)
-        .update({ Profile, Permissions });
+      const { id, isChanged, Permissions, ...rest } = this.user;
+      const user = rest;
+      const userRef = firestore.collection('Users').doc(id);
+      const test = Object.keys(Permissions)
+        .map(key => {
+          return userRef.collection('Permissions')
+            .doc(key)
+            .set({ allow: Permissions[key] });
+        });
+
+      Promise.all([
+        userRef.update(user),
+        ...test
+      ]).then(results => {
+        this.isSaving = false;
+        this.user = Object.assign({}, this.user, { isChanged: false });
+      });
     }
 
-    revert(userId) {
-      this.users = Object.assign({}, this.users, { [userId]: this.originalUsers[userId] });
+    cancel() {
+      this.user = null;
     }
   }
 
   export default Users;
 </script>
+
+<style scoped>
+  .has-white-background {
+    background: #fff;
+  }
+</style>
