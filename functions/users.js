@@ -7,20 +7,15 @@ const { indexRecord } = require('./utils');
 const onUserCreated = functions.auth.user()
   .onCreate(event => {
     const user = event.data;
-
-    return admin.firestore()
+    const userRef = admin.firestore()
       .collection("Users")
-      .doc(user.uid)
+      .doc(user.uid);
+
+    return userRef
       .set({
-        Profile: {
-          Lastname: '',
-          Firstname: '',
-          email: user.email
-        },
-        Permissions: {
-          Administrator: false,
-          Authorized: false
-        }
+        Lastname: '',
+        Firstname: '',
+        email: user.email
       });
   });
 

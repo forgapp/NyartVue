@@ -44,330 +44,18 @@
             <div class="notification">
 						  New Features will be added here soon.
 						</div>
-						<div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <!--<div class="container is-fluid is-scrollable">-->
-  <!--  <div class="section">-->
-
-
-    <!--  <div class="columns">-->
-				<!--<div class="column is-9">-->
-			<!--		<div class="columns">-->
-			<!--			<div class="column is-4">-->
-			<!--			  <div class="box">-->
-			<!--			    <stat-selector-->
-   <!--               :period="period"-->
-   <!--               :recruiter="recruiter"-->
-   <!--               @period-changed="handlePeriodChange"-->
-   <!--               @recruiter-changed="handleRecruiterChange"-->
-   <!--               @refresh="retrieveStats"-->
-   <!--             />-->
-  	<!--						<div class="columns is-multiline is-gapless is-mobile">-->
-   <!--               <div class="column is-half">-->
-   <!--                 <div class="stat">-->
-   <!--                   <p class="heading">Companies</p>-->
-   <!--                   <p class="title">{{ stats.companies }}</p>-->
-   <!--                 </div>-->
-   <!--               </div>-->
-   <!--               <div class="column is-half">-->
-   <!--                 <div class="stat">-->
-   <!--                   <p class="heading">Candidates</p>-->
-   <!--                   <p class="title">{{ stats.candidate }}</p>-->
-   <!--                 </div>-->
-   <!--               </div>-->
-   <!--               <div class="column is-half">-->
-   <!--                 <div class="stat">-->
-   <!--                   <p class="heading">Client Contacts</p>-->
-   <!--                   <p class="title">{{ stats.client_contact }}</p>-->
-   <!--                 </div>-->
-   <!--               </div>-->
-   <!--               <div class="column is-half">-->
-   <!--                 <div class="stat">-->
-   <!--                   <p class="heading">Jobs</p>-->
-   <!--                   <p class="title">{{ stats.jobs }}</p>-->
-   <!--                 </div>-->
-   <!--               </div>-->
-   <!--             </div>-->
-   <!--           </div>-->
-			<!--			</div>-->
-			<!--			<div class="column is-9">-->
-			<!--				<div class="notification">-->
-			<!--				  New Features will be added here soon.-->
-			<!--				</div>-->
-			<!--				<div>Home</div>-->
-
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Home</div>-->
-   <!--           <div>Last</div>-->
-			<!--			</div>-->
-			<!--		</div>-->
-			<!--	</div>-->
-			<!--</div>-->
-
-  <!--  </div>-->
-  <!--</div>-->
 </template>
 
 <script>
   import { Vue, Component } from 'vue-property-decorator';
   import Elastic from '@/lib/elastic';
   import StatSelector from '@/components/statSelector';
+  import { periods } from '@/lib/date';
 
   @Component({
     components: { StatSelector }
@@ -418,7 +106,21 @@
         .setIndex('companies')
         .query({
           'query': {
-            'term': { 'Recruiter.id': this.recruiter.id }
+            'bool': {
+              'must': {
+                'match_all': {}
+              },
+              'filter': [
+                { 'term': { 'Recruiter.id': this.recruiter.id } },
+                { 'range': {
+                  'RegistrationDate': {
+                    'gte': periods[this.period].value[0],
+                    'lte': periods[this.period].value[1],
+                    'format': 'yyyy-MM-dd'
+                  }
+                } }
+              ]
+            }
           }
         });
 
@@ -437,7 +139,21 @@
         .setIndex('jobs')
         .query({
           'query': {
-            'term': { 'Recruiter.id': this.recruiter.id }
+            'bool': {
+              'must': {
+                'match_all': {}
+              },
+              'filter': [
+                { 'term': { 'Recruiter.id': this.recruiter.id } },
+                { 'range': {
+                  'RegistrationDate': {
+                    'gte': periods[this.period].value[0],
+                    'lte': periods[this.period].value[1],
+                    'format': 'yyyy-MM-dd'
+                  }
+                } }
+              ]
+            }
           }
         });
 
@@ -455,6 +171,23 @@
       const elastic = new Elastic()
         .setIndex('contacts')
         .query({
+          'query': {
+            'bool': {
+              'must': {
+                'match_all': {}
+              },
+              'filter': [
+                { 'term': { 'Recruiter.id': this.recruiter.id } },
+                { 'range': {
+                  'RegistrationDate': {
+                    'gte': periods[this.period].value[0],
+                    'lte': periods[this.period].value[1],
+                    'format': 'yyyy-MM-dd'
+                  }
+                } }
+              ]
+            }
+          },
           'aggs': {
             'Type': { 'terms': { 'field': 'Type' } }
           }
