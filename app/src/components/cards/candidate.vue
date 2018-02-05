@@ -42,13 +42,7 @@
     get flagImageUrl() {
       const code = this.record.NationalityCode;
 
-      if (!code) {
-        return '';
-      }
-
-      // return require(`../../assets/flags/${code.toLowerCase()}.svg`);
-      return `/static/img/flags/${code.toLowerCase()}.svg`;
-      // return '/static/img/flags2/jp.svg;
+      return code ? `/static/img/flags/${code.toLowerCase()}.svg` : '';
     }
 
     get age() {
