@@ -14,7 +14,7 @@
             "Name": { "type":  "text" }
           }
         },
-        "Headcount": { "type":  "short" }, 
+        "Headcount": { "type":  "short" },
         "JobTitle": { "type":  "text" },
         "Recruiter": {
           "properties": {
@@ -26,8 +26,8 @@
           "type":   "date",
           "format": "yyyy-MM-dd"
         },
-        "SalaryMaximun": { "type": "long" },
-        "SalaryMinimun": { "type": "long" }
+        "SalaryMaximum": { "type": "long" },
+        "SalaryMinimum": { "type": "long" }
       }
     }
   }

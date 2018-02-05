@@ -73,7 +73,7 @@
                   <div class="column is-half is-hidden-desktop column-label">Status</div>
                   <div class="column is-half is-hidden-desktop">{{ record.Status }}</div>
                   <div class="column is-half column-label">Salary Range</div>
-                  <div class="column is-half"><currency-display :value="record.SalaryMinimun" symbol="¥" /> ~ <currency-display :value="record.SalaryMaximun" symbol="¥" /></div>
+                  <div class="column is-half"><currency-display :value="record.SalaryMinimum" symbol="¥" /> ~ <currency-display :value="record.SalaryMaximum" symbol="¥" /></div>
                   <div class="column is-half column-label">Work Location</div>
                   <div class="column is-half">{{ record.WorkLocation }}</div>
 

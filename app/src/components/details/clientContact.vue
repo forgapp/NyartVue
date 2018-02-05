@@ -184,7 +184,8 @@
       const nationalityCode = this.record.NationalityCode;
       const flag = nationalityCode ? nationalityCode.toLowerCase() : '';
 
-      return nationalityCode && require(`../../assets/flags/${flag}.svg`);
+      return nationalityCode && `/static/img/flags/${flag}.svg`;
+      // return nationalityCode && require(`../../assets/flags/${flag}.svg`);
     }
 
     get links() {

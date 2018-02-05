@@ -220,7 +220,7 @@
 
     get flagImageUrl() {
       return this.record.NationalityCode
-        ? require(`../../assets/flags/${this.record.NationalityCode.toLowerCase()}.svg`)
+        ? `/static/img/flags/${this.record.NationalityCode.toLowerCase()}.svg` // require(`../../assets/flags/${this.record.NationalityCode.toLowerCase()}.svg`)
         : '';
     }
 

@@ -42,7 +42,7 @@
         <div class="column">
           <div class="box">
             <div class="notification">
-						  New Features will be added here soon.
+						  Version 2.0 released!
 						</div>
           </div>
         </div>

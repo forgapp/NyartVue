@@ -11,7 +11,7 @@
           <p>
             <strong><router-link :to="links.job">{{ record.JobTitle }}</router-link></strong> <small> {{ record.Status }}</small>
             <br />
-            Job for <router-link :to="links.company">{{ record.Company.Name }}</router-link> followed by <router-link :to="links.clientContact">{{ record.ClientContact.Name }}</router-link> with a salary range of <currency-display :value="record.SalaryMinimun" symbol="¥" /> - <currency-display :value="record.SalaryMaximun" symbol="¥" />
+            Job for <router-link :to="links.company">{{ record.Company.Name }}</router-link> followed by <router-link :to="links.clientContact">{{ record.ClientContact.Name }}</router-link> with a salary range of <currency-display :value="record.SalaryMinimum" symbol="¥" /> - <currency-display :value="record.SalaryMaximum" symbol="¥" />
             <br />
             {{ record.Recruiter.Name && `Registered by ${record.Recruiter.Name}` }} <small>{{ record.RegistrationDate && `@${record.RegistrationDate}` }}</small>
           </p>

@@ -1,6 +1,6 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
-const { indexRecord } = require('./utils');
+const { indexRecord, deleteRecord } = require('./utils');
 
 // admin.initializeApp(functions.config().firebase);
 
@@ -32,10 +32,19 @@ const onUserDeleted = functions.auth.user()
 const onUserChanged = functions.firestore
   .document('Users/{userId}')
   .onUpdate(event => {
-    return Promise.all([
-      indexUser(event),
-      modifyElasticAuthorization(event)
-    ]);
+    return indexUser(event);
+    // return Promise.all([
+    //   indexUser(event),
+    //   modifyElasticAuthorization(event)
+    // ]);
+  });
+
+const onUserDeletedIndex = functions.firestore
+  .document('Users/{userId}')
+  .onDelete(event => {
+    const id = event.params.companyId;
+
+    return deleteRecord('config', 'doc', id);
   });
 
 function indexUser(event) {
@@ -43,14 +52,11 @@ function indexUser(event) {
   const newData = event.data.data();
   const oldData = event.data.previous.data();
 
-  if (!isProfileChanged(newData.Profile, oldData.Profile)) {
+  if (!isProfileChanged(newData, oldData)) {
     return Promise.resolve();
   }
 
-  const profile = Object(
-    { Type: 'user' },
-    newData.Profile
-  );
+  const profile = Object.assign({ Type: 'user' }, newData);
 
   return indexRecord('config', 'doc', userId, profile);
 }
@@ -66,17 +72,17 @@ function isProfileChanged(newProfile, oldProfile) {
 }
 
 
-function modifyElasticAuthorization() {
-  // const userId = event.params.userId;
-  const newData = event.data.data();
-  const oldData = event.data.previous.data();
+// function modifyElasticAuthorization() {
+//   // const userId = event.params.userId;
+//   const newData = event.data.data();
+//   const oldData = event.data.previous.data();
 
-  if (newData.Permissions.Authorized === oldData.Permissions.Authorized) {
-    return Promise.resolve();
-  }
+//   if (newData.Permissions.Authorized === oldData.Permissions.Authorized) {
+//     return Promise.resolve();
+//   }
 
-  return Promise.resolve();
-}
+//   return Promise.resolve();
+// }
 
 // exports.onUserAuthorized = functions.database
 //   .ref('Users/{userId}/Permissions/Authorized')
@@ -142,5 +148,6 @@ function modifyElasticAuthorization() {
 module.exports  = {
   onUserCreated,
   onUserChanged,
-  onUserDeleted
+  onUserDeleted,
+  onUserDeletedIndex
 };

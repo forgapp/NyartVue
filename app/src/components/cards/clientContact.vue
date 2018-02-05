@@ -32,7 +32,8 @@
     components: { DisplayLanguages },
     computed: {
       flagImageUrl() {
-        return this.record.NationalityCode ? require(`../../assets/flags/${this.record.NationalityCode.toLowerCase()}.svg`) : '';
+        return this.record.NationalityCode ? `/static/img/flags/${this.record.NationalityCode.toLowerCase()}.svg` : '';
+        // return this.record.NationalityCode ? require(`../../assets/flags/${this.record.NationalityCode.toLowerCase()}.svg`) : '';
       },
       links() {
         return {

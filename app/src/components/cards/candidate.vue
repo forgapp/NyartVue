@@ -46,7 +46,9 @@
         return '';
       }
 
-      return require(`../../assets/flags/${code.toLowerCase()}.svg`);
+      // return require(`../../assets/flags/${code.toLowerCase()}.svg`);
+      return `/static/img/flags/${code.toLowerCase()}.svg`;
+      // return '/static/img/flags2/jp.svg;
     }
 
     get age() {

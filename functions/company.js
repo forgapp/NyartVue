@@ -1,12 +1,11 @@
 const functions = require('firebase-functions');
-// const admin = require('firebase-admin');
-const utils = require('./utils');
+const elastic = require('./lib/elastic');
 
 function transformPhones(phones) {
   if (!phones) {
     return [];
   }
-  
+
   return phones.map(phone => phone.Number);
 }
 
@@ -14,7 +13,7 @@ function transformEmails(emails) {
   if (!emails) {
     return [];
   }
-  
+
   return emails.map(email => email.Address);
 }
 
@@ -27,8 +26,8 @@ const onCompanyCreatedIndex = functions.firestore
       Phones: transformPhones(original.Phones),
       Emails: transformEmails(original.Emails)
     });
-    
-    return utils.indexRecord('companies', 'doc', id, recordToIndex);
+
+    return elastic.indexRecord('companies', 'doc', id, recordToIndex);
   });
 
 const onCompanyupdatedIndex = functions.firestore
@@ -40,16 +39,16 @@ const onCompanyupdatedIndex = functions.firestore
       Phones: transformPhones(original.Phones),
       Emails: transformEmails(original.Emails)
     });
-    
-    return utils.indexRecord('companies', 'doc', id, recordToIndex);
+
+    return elastic.indexRecord('companies', 'doc', id, recordToIndex);
   });
-  
+
 const onCompanyDeletedIndex = functions.firestore
   .document('Company/{companyId}')
   .onDelete(event => {
     const id = event.params.companyId;
-    
-    return utils.deleteIndex('companies', 'doc', id);
+
+    return elastic.deleteRecord('companies', 'doc', id);
   });
 
 module.exports = {

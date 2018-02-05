@@ -50,13 +50,13 @@
       <div class="field-body">
         <div class="field">
           <p class="control is-expanded">
-            <currency-input v-model.number="SalaryMinimun" placeholder="Minimum" />
+            <currency-input v-model.number="SalaryMinimum" placeholder="Minimum" />
           </p>
           <p class="help">Type 'm' for million, 'k' for thousand.</p>
         </div>
         <div class="field">
           <p class="control is-expanded">
-            <currency-input v-model.number="SalaryMaximun" placeholder="Maximum" />
+            <currency-input v-model.number="SalaryMaximum" placeholder="Maximum" />
           </p>
         </div>
       </div>
@@ -125,8 +125,8 @@
           id: '',
           Name: ''
         },
-        SalaryMinimun: 0,
-        SalaryMaximun: 0,
+        SalaryMinimum: 0,
+        SalaryMaximum: 0,
         RegistrationDate: formatdateForInput(new Date()),
         Source: '',
         Status: 'Open',

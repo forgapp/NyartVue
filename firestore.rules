@@ -26,7 +26,14 @@ service cloud.firestore {
 
     match /Job/{job} {
       allow read, write: if isAuthenticated();
+    }
 
+    match /Codes/{code} {
+      allow read: if isAuthenticated();
+    }
+
+    match /Picklist/{picklist} {
+      allow read: if isAuthenticated();
     }
 
     match /Process/{process} {

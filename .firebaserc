@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "nyart-dev-c81e4"
+    "default": "nyart-dev-c81e4",
+    "prod": "nyart-dev-fd843",
+    "dev": "nyart-dev-c81e4"
   }
 }

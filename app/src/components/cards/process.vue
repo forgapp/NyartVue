@@ -45,11 +45,15 @@
     }
 
     get stageDate() {
-      return this.process[this.stage].StageDate;
+      return this.process[this.stage] && this.process[this.stage].StageDate;
     }
 
     get openDays() {
       const diff = differenceInDays(new Date(), this.stageDate);
+
+      if (isNaN(diff)) {
+        return '';
+      }
 
       if (diff === 0) {
         return '(today)';

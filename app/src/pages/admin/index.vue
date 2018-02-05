@@ -1,5 +1,5 @@
 <template>
-  <div class="container is-fluid">
+  <div class="container is-fluid is-scrollable">
     <div v-if="!isAdmin" class="section">
   		<div class="notification is-danger">
   			You are not allowed here.
@@ -40,3 +40,10 @@
     computed: mapState('app', ['isAdmin'])
   };
 </script>
+
+<style scoped>
+  .is-scrollable {
+    height: 100%;
+    overflow: auto;
+  }
+</style>

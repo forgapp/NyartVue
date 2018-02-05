@@ -1,30 +1,6 @@
 const functions = require('firebase-functions');
-// const admin = require('firebase-admin');
-const utils = require('./utils');
-
-function transformPhones(phones) {
-  if (!phones) {
-    return [];
-  }
-  
-  return phones.map(phone => phone.Number);
-}
-
-function transformEmails(emails) {
-  if (!emails) {
-    return [];
-  }
-  
-  return emails.map(email => email.Address);
-}
-
-function removeRef(info) {
-  return Object.keys(info)
-    .filter(key => key.toLowerCase() !== 'ref')
-    .reduce((aggr, current) => {
-      return Object.assign({}, aggr, { [current]: info[current] });
-    }, {});
-}
+const { indexRecord, deleteRecord } = require('./lib/elastic');
+const { transformPhones, transformEmails, removeRef } = require('./lib/transform');
 
 const onCandidateCreatedIndex = functions.firestore
   .document('Candidate/{candidateId}')
@@ -37,8 +13,8 @@ const onCandidateCreatedIndex = functions.firestore
       Company: removeRef(original.Company),
       Type: 'candidate'
     });
-    
-    return utils.indexRecord('contacts', 'doc', id, recordToIndex);
+
+    return indexRecord('contacts', 'doc', id, recordToIndex);
   });
 
 const onCandidateUpdatedIndex = functions.firestore
@@ -52,16 +28,16 @@ const onCandidateUpdatedIndex = functions.firestore
       Company: removeRef(original.Company),
       Type: 'candidate'
     });
-    
-    return utils.indexRecord('contacts', 'doc', id, recordToIndex);
+
+    return indexRecord('contacts', 'doc', id, recordToIndex);
   });
-  
+
 const onCandidateDeletedIndex = functions.firestore
   .document('Candidate/{candidateId}')
   .onDelete(event => {
     const id = event.params.companyId;
-    
-    return utils.deleteIndex('contacts', 'doc', id);
+
+    return deleteRecord('contacts', 'doc', id);
   });
 
 module.exports = {
