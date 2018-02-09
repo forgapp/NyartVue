@@ -1,84 +1,62 @@
-<template>
-  <div class="box is-fullheight">
-    <article class="media">
-      <div class="media-left">
-        <span class="icon">
-          <i class="fa fa-user-o"></i>
-        </span>
-      </div>
-      <div class="media-content">
-        <div class="content">
-          <p>
-            <strong class="name"><router-link :to="links.candidate">{{ record.Firstname }} {{ record.Lastname }}</router-link></strong> <small><span class="icon"><img class="flag" :src="flagImageUrl" /></span></small> <small>{{ age }}</small>
-            <br />
-            Works as {{ record.JobTitle }} at <router-link :to="links.company">{{ record.Company.Name }}</router-link> with a base salary of <currency-display :value="record.Salary" symbol="¥" />
-            <br />
-            {{ record.Recruiter.Name && `Registered by ${record.Recruiter.Name}` }} <small>{{ record.RegistrationDate && `@${record.RegistrationDate}` }}</small>
-          </p>
-          <p v-for="(code, key) in jobFunctionCodes" :key="key" class="is-marginless">
-            {{ key }}: {{ code.join(', ') }}
-          </p>
-        </div>
-        <display-languages :languages="record.Languages" />
-        <p></p>
-      </div>
-    </article>
-  </div>
-</template>
-
 <script>
-  import Vue from 'vue';
-  import { Component, Prop } from 'vue-property-decorator';
   import { calculateAge } from '@/lib/date';
-  import { DisplayLanguages } from '@/components/languages';
+  import { DisplayLanguages } from '@/components/languages'; // eslint-disable-line no-unused-vars
+  import Flag from '../flag'; // eslint-disable-line no-unused-vars
 
-  @Component({
-    components: { DisplayLanguages }
-  })
-  class CandidateCard extends Vue {
-    @Prop({ default: '' }) id
-    @Prop({ default: {} }) record
-
-    get flagImageUrl() {
-      const code = this.record.NationalityCode;
-
-      return code ? `/static/img/flags/${code.toLowerCase()}.svg` : '';
-    }
-
-    get age() {
-      return this.record.Birthdate ? `(${calculateAge(this.record.Birthdate)} yrs old)` : '';
-    }
-
-    get links() {
-      return {
-        candidate: this.id ? `/details/candidate/${this.id}` : '',
-        company: this.record.Company ? `/details/company/${this.record.Company.id}` : ''
+  export default {
+    functional: true,
+    render(h, { props: { id, record } }) {
+      const age = record.Birthdate
+        ? `(${calculateAge(record.Birthdate)} yrs old)`
+        : '';
+      const links = {
+        candidate: id ? `/details/candidate/${id}` : '',
+        company: record.Company ? `/details/company/${record.Company.id}` : ''
       };
+      const jobFunctionCodes = record.JobFunction
+        ? record.JobFunction.reduce((aggr, jobFunction) => {
+          if (!aggr[jobFunction.Category]) {
+            return Object.assign({}, aggr, { [jobFunction.Category]: [jobFunction.Code] });
+          }
+
+          return Object.assign({}, aggr, { [jobFunction.Category]: [
+            ...aggr[jobFunction.Category],
+            jobFunction.Code
+          ] });
+        }, {})
+        : {};
+
+      return (<div class="box is-fullheight">
+        <article class="media">
+          <div class="media-left">
+            <span class="icon">
+              <i class="fa fa-user-o"></i>
+            </span>
+          </div>
+          <div class="media-content">
+            <div class="content">
+              <p>
+                <strong class="name"><router-link to={ links.candidate }>{ record.Firstname } { record.Lastname }</router-link></strong> <FlagIcon country={ record.NationalityCode } /> { age && <small>{ age }</small> }
+                <br />
+                Works { record.JobTitle && `as ${record.JobTitle}` } { record.Company.Name && <span>at <router-link to={ links.company }>{ record.Company.Name }</router-link></span> } { record.Salary && <span>with a base salary of <currency-display value={ record.Salary } symbol="¥" /></span> }
+                <br />
+                { record.Recruiter.Name && `Registered by ${record.Recruiter.Name}` } { record.RegistrationDate && <small> @{ record.RegistrationDate } }</small> }
+              </p>
+              { Object.keys(jobFunctionCodes).map(key => (<p key={ key } class="is-marginless">
+                { key }: { jobFunctionCodes[key].join(', ') }
+              </p>)) }
+            </div>
+            <DisplayLanguages languages= { record.Languages } />
+            <p></p>
+          </div>
+        </article>
+      </div>);
     }
-
-    get jobFunctionCodes() {
-      return this.record.JobFunction ? this.record.JobFunction.reduce((aggr, jobFunction) => {
-        if (!aggr[jobFunction.Category]) {
-          return Object.assign({}, aggr, { [jobFunction.Category]: [jobFunction.Code] });
-        }
-
-        return Object.assign({}, aggr, { [jobFunction.Category]: [
-          ...aggr[jobFunction.Category],
-          jobFunction.Code
-        ] });
-      }, {}) : {};
-    }
-  }
-
-  export default CandidateCard;
+  };
 </script>
 
 <style scoped>
   .name {
     padding-right: 1.5rem;
-  }
-
-  .flag {
-    border: 1px solid hsla(0, 0%, 75%, 1);
   }
 </style>

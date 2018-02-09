@@ -50,16 +50,17 @@
 
     get openDays() {
       const diff = differenceInDays(new Date(), this.stageDate);
+      let openDaysLabel = '';
 
       if (isNaN(diff)) {
-        return '';
+        openDaysLabel = '';
+      } else if (diff === 0) {
+        openDaysLabel = '(today)';
+      } else {
+        openDaysLabel = `(${diff} days ago)`;
       }
 
-      if (diff === 0) {
-        return '(today)';
-      }
-
-      return `(${diff} days ago)`;
+      return openDaysLabel;
     }
 
     @Emit('open-ats')
