@@ -219,9 +219,9 @@
     }
 
     get flagImageUrl() {
-      return this.record.NationalityCode
-        ? `/static/img/flags/${this.record.NationalityCode.toLowerCase()}.svg` // require(`../../assets/flags/${this.record.NationalityCode.toLowerCase()}.svg`)
-        : '';
+      const code = this.record.NationalityCode;
+
+      return code ? `/static/img/flags/${code.toLowerCase()}.svg` : '';
     }
 
     get links() {
