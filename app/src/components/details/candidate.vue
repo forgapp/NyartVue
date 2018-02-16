@@ -150,9 +150,9 @@
             </div>
           </div>
           <div class="column">
-            <h1 class="title is-5">Industries</h1>
+            <h1 class="title is-5 is-marginless">Industries</h1>
             <codes-display :codes="record.Industry" />
-            <h1 class="title is-5">Job Functions</h1>
+            <h1 class="title is-5 is-marginless">Job Functions</h1>
             <codes-display :codes="record.JobFunction" />
             <!-- <h1 class="title is-5">Skills</h1> -->
             <!--<codes-display :codes="record.Skills" />-->

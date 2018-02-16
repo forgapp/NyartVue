@@ -1,7 +1,8 @@
 <script>
   import { calculateAge } from '@/lib/date';
   import { DisplayLanguages } from '@/components/languages'; // eslint-disable-line no-unused-vars
-  import Flag from '../flag'; // eslint-disable-line no-unused-vars
+  import { CodesDisplay } from '../codes'; // eslint-disable-line no-unused-vars
+  import FlagIcon from '../flagIcon'; // eslint-disable-line no-unused-vars
 
   export default {
     functional: true,
@@ -13,18 +14,6 @@
         candidate: id ? `/details/candidate/${id}` : '',
         company: record.Company ? `/details/company/${record.Company.id}` : ''
       };
-      const jobFunctionCodes = record.JobFunction
-        ? record.JobFunction.reduce((aggr, jobFunction) => {
-          if (!aggr[jobFunction.Category]) {
-            return Object.assign({}, aggr, { [jobFunction.Category]: [jobFunction.Code] });
-          }
-
-          return Object.assign({}, aggr, { [jobFunction.Category]: [
-            ...aggr[jobFunction.Category],
-            jobFunction.Code
-          ] });
-        }, {})
-        : {};
 
       return (<div class="box is-fullheight">
         <article class="media">
@@ -42,9 +31,7 @@
                 <br />
                 { record.Recruiter.Name && `Registered by ${record.Recruiter.Name}` } { record.RegistrationDate && <small> @{ record.RegistrationDate } }</small> }
               </p>
-              { Object.keys(jobFunctionCodes).map(key => (<p key={ key } class="is-marginless">
-                { key }: { jobFunctionCodes[key].join(', ') }
-              </p>)) }
+              <CodesDisplay codes={ record.JobFunction } />
             </div>
             <DisplayLanguages languages= { record.Languages } />
             <p></p>
