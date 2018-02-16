@@ -83,7 +83,7 @@
             <div class="field-body">
               <div class="field is-grouped">
                 <p class="control is-expanded">
-                  <SelectboxObject
+                  <ordered-selectbox
                     placeholder="Nationality"
                     type="Nationality"
                     v-model="candidate.NationalityCode"
@@ -216,10 +216,11 @@
   import { AddressesEdit } from '../addresses';
   import { EmailsEdit } from '../emails';
   import { EditCodes } from '../codes';
+  import OrderedSelectbox from '../orderedSelectbox';
 
   export default {
     name: 'CandidateEdit',
-    components: { PhonesEdit, EmailsEdit, EditCodes, EditLanguages, AddressesEdit },
+    components: { PhonesEdit, EmailsEdit, EditCodes, EditLanguages, AddressesEdit, OrderedSelectbox },
     props: [ 'id' ],
     data() {
       return {

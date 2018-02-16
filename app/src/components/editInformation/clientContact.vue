@@ -70,10 +70,10 @@
             <div class="field-body">
               <div class="field is-grouped">
                 <p class="control is-expanded">
-                  <SelectboxObject
+                  <ordered-selectbox
                     placeholder="Nationality"
                     type="Nationality"
-                    v-model="clientContact.NationalityCode"
+                    v-model="candidate.NationalityCode"
                     @labelChanged="handleNationalityChanged"
                   />
                 </p>
