@@ -24,8 +24,11 @@
               v-model.trim="Lastname"
             />
           </p>
-          <p class="help is-danger" v-show="!validation.Lastname">
-            Lastname is required.
+          <p class="help is-danger" v-if="!$v.Lastname.required">
+            Required.
+          </p>
+          <p class="help is-danger" v-if="!$v.Lastname.minLength">
+            Must be at least {{ $v.Lastname.$params.min }} characters.
           </p>
         </div>
       </div>
@@ -126,16 +129,20 @@
         </div>
       </div>
     </div>
+    <pre>{{ $v.Lastname }}</pre>
   </form>
 </template>
 
 <script>
   import { isEmpty } from '@/lib/utils';
   import { formatdateForInput } from '@/lib/date';
+  import { validationMixin } from 'vuelidate';
+  import { required, minLength } from 'vuelidate/lib/validators';
 
   export default {
     name: 'candidateForm',
     props: ['recruiter', 'isSaving'],
+    mixins: [validationMixin],
     data: function () {
       return {
         Lastname: '',
@@ -191,6 +198,12 @@
       },
       cancel: function () {
         this.$emit('cancel');
+      }
+    },
+    validations: {
+      Lastname: {
+        required,
+        minLength: minLength(2)
       }
     }
   };
